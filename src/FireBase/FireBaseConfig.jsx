@@ -11,7 +11,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCm_-6qNML3W1avAn57CyUpy5o56NwGIP0",
   authDomain: "laxmopump5.firebaseapp.com",
   projectId: "laxmopump5",
-  storageBucket: "laxmopump5.appspot.com",
+  storageBucket: "5.appspot.com",
   messagingSenderId: "494283509960",
   appId: "1:494283509960:web:f6f583ac074562b238d5fd",
   measurementId: "G-VBEN9186KQ"
