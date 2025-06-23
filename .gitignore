@@ -26,3 +26,4 @@ backup.json
 *.njsproj
 *.sln
 *.sw?
+*.zip
