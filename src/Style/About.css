@@ -15,17 +15,17 @@
 #about-top {
     margin: 0rem 0rem;
     padding: 5rem 0rem;
-    background-image: url(/about-us-7.jpg);
+    background-image: url(/admin.png);
     background-position: center;
     /* Center the image */
-    background-repeat: repeat;
+    background-repeat: no-repeat;
     /* Do not repeat the image */
-    background-size: 70% 100%;
+    /* background-size: 70% 100%; */
     /* Stretch the image to fit the container */
     color: white;
     font-size: 3rem;
     text-align: center;
-    height: 250px;
+    height: 450px;
 }
 
 

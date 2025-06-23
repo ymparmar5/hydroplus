@@ -7,9 +7,9 @@ const About = () => {
     <>
       <p id='about-top'></p>
       <h3 className='about-title'>
-        Laxmo Technology is Gujrat base manufacturer and supplier every type of pumps-motor & powertools for various purpose..
+        Hydroplus International is Gujrat base manufacturer and supplier every type of pumps-motor & powertools for various purpose..
       </h3>
-      <div id="about-main">
+      {/* <div id="about-main">
 
         <div className="about-section">
           <img src="./about-us-11.jpeg" alt="About Us Image 1" className="about-img" />
@@ -27,8 +27,8 @@ const About = () => {
         </div>
 
 
-      </div>
-      <div id="about-main">
+      </div> */}
+      {/* <div id="about-main">
 
         <div className="about-section">
 
@@ -52,7 +52,7 @@ const About = () => {
           </div>
         </div>
 
-      </div>
+      </div> */}
 
 
     </>

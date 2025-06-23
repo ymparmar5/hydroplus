@@ -24,14 +24,14 @@ const Header = () => {
           <img id="logo" src="/logo.png" alt="logo" />
         </NavLink>
 
-        {/* <nav className={isMobileMenuOpen ? "mobile-menu-open" : ""}>
+        <nav className={isMobileMenuOpen ? "mobile-menu-open" : ""}>
           <menu className={isMobileMenuOpen ? "mobile-menu-open" : ""}>
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/shop">Shop</Link>
-            </li>
+            </li> */}
 
             <li>
               <Link to="/contact">Contact</Link>
@@ -41,7 +41,7 @@ const Header = () => {
             </li>
 
           </menu>
-        </nav> */}
+        </nav>
 
         <div id="icons">
           {/* <div className="search-container">
