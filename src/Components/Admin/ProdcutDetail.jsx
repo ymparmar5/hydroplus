@@ -5,7 +5,6 @@ import Loader from "../Loader";
 import { deleteDoc, doc } from "firebase/firestore";
 import { fireDB } from "../../FireBase/FireBaseConfig";
 import toast from "react-hot-toast";
-import "../../Style/ProductDetail.css";
 
 const ProductDetail = () => {
     const context = useContext(myContext);

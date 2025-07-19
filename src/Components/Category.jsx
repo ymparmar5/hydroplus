@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../Style/Category.css";
 import { collection, doc, setDoc, getDocs } from "firebase/firestore";
 import { fireDB } from "../FireBase/FireBaseConfig";
 import { getAuth } from "firebase/auth";
@@ -78,39 +77,31 @@ const Category = () => {
     };
 
     return (
-        <>
-            <div className="category-heading">
-                <h1>Featured Categories</h1>
+        <section className="w-full py-8 md:py-12 bg-gradient-to-b from-white to-blue-50">
+            <div className="text-center mb-8">
+                <h1 className="text-2xl md:text-3xl font-bold text-blue-700">Featured Categories</h1>
             </div>
-            <div className="home-category" ref={containerRef}>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-5xl mx-auto px-2">
                 {category.map((item, index) => (
-                    <div>
-                        <div key={item.id} className="category-container">
-                            <div onClick={() => handleCategoryClick(item.name)}>
-                                <div className="category-imgs">
-                                    <img src={item.image} alt={item.name} />
-                                </div>
-                                <h1 className="category-names">{item.name}</h1>
-                                <p className="category-viewmore">View more..</p>
+                    <div key={item.id} className="flex flex-col items-center bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200 cursor-pointer">
+                        <div onClick={() => handleCategoryClick(item.name)} className="flex flex-col items-center w-full">
+                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden mb-3 border-2 border-blue-700 flex items-center justify-center bg-gray-50">
+                                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                             </div>
-                           
+                            <h1 className="text-lg font-semibold text-gray-900 mb-1 text-center">{item.name}</h1>
+                            <p className="text-blue-500 text-sm font-medium">View more..</p>
                         </div>
                         {role === "admin" && (
-                                <input style={{
-                                    width: "130px", // Smaller width
-                                    height: "px", // Reduce height
-                                    fontSize: "10px", // Adjust font size
-                                    padding: "4px", // Add padding
-                                    margin: "4px", // Add padding
-
-                                    border: "1px solid #ccc", // Light border
-                                    cursor: "pointer",
-                                }} type="file" onChange={(e) => handleImageUpload(e, index)} />
-                            )}
+                            <input
+                                className="w-32 text-xs p-1 mt-2 border border-gray-300 rounded cursor-pointer"
+                                type="file"
+                                onChange={(e) => handleImageUpload(e, index)}
+                            />
+                        )}
                     </div>
                 ))}
             </div>
-        </>
+        </section>
     );
 };
 

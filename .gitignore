@@ -10,11 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local 
-
-appConfig.json
-backup.json
-
+*.local
 
 # Editor directories and files
 .vscode/*
@@ -26,4 +22,3 @@ backup.json
 *.njsproj
 *.sln
 *.sw?
-*.zip

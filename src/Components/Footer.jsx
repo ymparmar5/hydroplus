@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import "../Style/Footer.css"
 import Certificates from "../Pages/Certificates";
 
 const Footer = () => {

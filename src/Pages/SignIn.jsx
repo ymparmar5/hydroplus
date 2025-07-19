@@ -6,8 +6,6 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../FireBase/FireBaseConfig";
 import Loader from "../Components/Loader";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import "../Style/SignIn.css";
-
 
 
 const SignIN = () => {
@@ -70,52 +68,50 @@ const SignIN = () => {
         }
     }
     return (
-        <div  id="sign-in" >
+        <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-2">
             {loading && <Loader />}
-          
-            <div id="signin-form" >
-
-                    <h3  id="signin-title">Sign In
-                    </h3>
-       
-             
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder='Email Address'
-                        value={userLogin.email}
-                        onChange={(e) => {
-                            setUserLogin({
-                                ...userLogin,
-                                email: e.target.value
-                            })
-                        }}
-                        className='signin-input'
-                    />
-          
-                    <input
-                        type="password"
-                        placeholder='Password'
-                        value={userLogin.password}
-                        onChange={(e) => {
-                            setUserLogin({
-                                ...userLogin,
-                                password: e.target.value
-                            })
-                        }}
-                        className='signin-input'
-                    />
-
-                    <button
-                     id="signin-btn" 
-                        type='button'
-                        onClick={userLoginFunction}
-                   
-                    >Sign In
-                    </button>
-                <div className='signin-text' >
-                    <p >Don't Have an account <b> <Link className='signin-text' to={'/sign-up'}>Sign up</Link>
-                    </b>
+            <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col gap-6">
+                <h3 className="text-2xl font-bold text-blue-700 text-center mb-2">Sign In</h3>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={userLogin.email}
+                    onChange={(e) => {
+                        setUserLogin({
+                            ...userLogin,
+                            email: e.target.value
+                        })
+                    }}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={userLogin.password}
+                    onChange={(e) => {
+                        setUserLogin({
+                            ...userLogin,
+                            password: e.target.value
+                        })
+                    }}
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                />
+                <button
+                    type="button"
+                    onClick={userLoginFunction}
+                    className="w-full bg-blue-700 text-white font-semibold py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 text-lg"
+                >
+                    Sign In
+                </button>
+                <div className="text-center text-gray-600 text-sm mt-2">
+                    <p>
+                        Don't have an account?{' '}
+                        <b>
+                            <Link className="text-blue-700 hover:underline" to={'/sign-up'}>
+                                Sign up
+                            </Link>
+                        </b>
                     </p>
                 </div>
             </div>

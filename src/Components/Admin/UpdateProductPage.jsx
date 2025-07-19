@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { fireDB } from "../../FireBase/FireBaseConfig";
 import toast from "react-hot-toast";
 import myContext from '../../Context/myContext';
-import "../../Style/AddProductPage.css";
 import { uploadImage } from '../Admin/Cloudnary'; // Import the Cloudinary upload function
 
 const UpdateProductPage = () => {

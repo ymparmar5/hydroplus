@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { fireDB } from "../../FireBase/FireBaseConfig";
 import { useNavigate } from "react-router";
 import myContext from '../../Context/myContext';
-import "../../Style/AddProductPage.css";
 import { uploadImage } from '../Admin/Cloudnary';
 
 const AddProductPage = () => {

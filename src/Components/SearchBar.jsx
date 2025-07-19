@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 import myContext from "../Context/myContext";
 import { useNavigate } from "react-router-dom";
-import "../Style/SearchBar.css"; //
 
 const SearchBar = () => {
     const context = useContext(myContext);

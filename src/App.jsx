@@ -25,6 +25,7 @@ import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Certificates from "./Pages/Certificates";
 import SocialSidebar from "./Components/SocialSidebar";
+import Subcategory from "./Pages/Subcategory";
 
 const App = () => {
 
@@ -38,17 +39,18 @@ const App = () => {
         <ScrollTop />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          {/* <Route path="/productinfo/:id" element={<ProductInfo />} /> */}
-          {/* <Route path="/shop" element={<Shop />} /> */}
+          <Route path="/productinfo/:id" element={<ProductInfo />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="/subcategory/:category" element={<Subcategory />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
-          {/* <Route path="/sign-up" element={<Signup />} /> */}
-          {/* <Route path="/sign-in" element={<SignIN />} /> */}
-          {/* <Route path="/privacy" element={<PrivacyPolicy />} /> */}
-          {/* <Route path="/tandc" element={<TermsAndConditions />} /> */}
-          {/* <Route path="/certificates" element={<Certificates />} /> */}
+          <Route path="/sign-up" element={<Signup />} />
+          <Route path="/sign-in" element={<SignIN />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/tandc" element={<TermsAndConditions />} />
+          <Route path="/certificates" element={<Certificates />} />
 
-          {/* <Route path="/user" element={
+          <Route path="/user" element={
             <ProtectedRouteForUser>
               <UserDashboard />
             </ProtectedRouteForUser>
@@ -68,7 +70,7 @@ const App = () => {
           <Route path="/update-product/:id" element={
           <ProtectedRouteForAdmin >
             <UpdateProductPage />
-            </ProtectedRouteForAdmin>} /> */}
+            </ProtectedRouteForAdmin>} />
 
           <Route path="/error" element={<Error />} />
         </Routes>

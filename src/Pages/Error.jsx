@@ -2,7 +2,7 @@ import React from 'react'
 
 const Error = () => {
   return (
-    <div className="main-content min-h-screen"  >Error</div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 text-red-600 text-2xl font-bold">Error: Page Not Found</div>
   )
 }
 

@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { fireDB } from "../FireBase/FireBaseConfig";
 import Loader from "../Components/Loader";
-import "../Style/ProductInfo.css";
 
 const ProductInfo = () => {
   const { loading, setLoading } = useContext(myContext);
@@ -37,102 +36,80 @@ const ProductInfo = () => {
 
   if (loading) {
     return (
-      <div className="loader-container">
+      <div className="flex items-center justify-center min-h-[60vh]">
         <Loader />
       </div>
     );
   }
 
   return (
-    <section className="product-info-section">
-      <div className="product-info-container">
+    <section className="w-full min-h-[80vh] bg-gray-50 py-8 px-2 md:px-8">
+      <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-4 md:p-8 flex flex-col md:flex-row gap-8">
         {product ? (
           <>
-            <div className="image-gallery">
-              {product?.imgurl1 && (
-                <img
-                  src={product.imgurl1}
-                  alt="Thumbnail"
-                  onClick={() => setMainImage(product.imgurl1)}
-                />
-              )}
-              {product?.imgurl2 && (
-                <img
-                  src={product.imgurl2}
-                  alt="Thumbnail"
-                  onClick={() => setMainImage(product.imgurl2)}
-                />
-              )}
-              {product?.imgurl3 && (
-                <img
-                  src={product.imgurl3}
-                  alt="Thumbnail"
-                  onClick={() => setMainImage(product.imgurl3)}
-                />
-              )}
-              {product?.imgurl4 && (
-                <img
-                  src={product.imgurl4}
-                  alt="Thumbnail"
-                  onClick={() => setMainImage(product.imgurl4)}
-                />
-              )}
+            {/* Image Gallery */}
+            <div className="flex flex-col items-center md:w-1/3 gap-4">
+              <div className="flex gap-2 mb-2 flex-wrap justify-center">
+                {[product?.imgurl1, product?.imgurl2, product?.imgurl3, product?.imgurl4].filter(Boolean).map((img, idx) => (
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`Thumbnail ${idx+1}`}
+                    onClick={() => setMainImage(img)}
+                    className={`w-16 h-16 object-cover rounded-lg border-2 cursor-pointer transition-all duration-200 ${mainImage === img ? 'border-blue-700' : 'border-gray-200'}`}
+                  />
+                ))}
+              </div>
+              <div className="w-full flex justify-center">
+                <img className="w-full max-w-xs h-64 object-contain rounded-xl border border-gray-200 bg-gray-100" src={mainImage} alt="Main" />
+              </div>
             </div>
-            <div className="product-image-container">
-              <img className="product-image" src={mainImage} alt="Main" />
-            </div>
-            <div className="right-side">
-              <div className="product-description-container">
-                <h2 className="product-title">{product.title}</h2>
-                <div className="product-specification-and-features">
-                  <div className="product-description">
-                    <h2 className="description-title">Specification:</h2>
-                    <ul>
-                      {product.specification
-                        ? product.specification
-                            .split("\n")
-                            .map((specification, index) => (
-                              <li key={index}>{specification}</li>
-                            ))
-                        : "No specifications available"}
-                    </ul>
-                  </div>
-                  <div className="product-description">
-                    <h2 className="description-title">Features:</h2>
-                    <ul>
-                      {product.features
-                        ? product.features
-                            .split("\n")
-                            .map((feature, index) => (
-                              <li key={index}>{feature}</li>
-                            ))
-                        : "No features available"}
-                    </ul>
-                  </div>
+            {/* Product Details */}
+            <div className="flex-1 flex flex-col gap-4">
+              <h2 className="text-2xl font-bold text-blue-700 mb-2">{product.title}</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Specification:</h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {product.specification
+                      ? product.specification.split("\n").map((specification, index) => (
+                          <li key={index}>{specification}</li>
+                        ))
+                      : <li>No specifications available</li>}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Features:</h3>
+                  <ul className="list-disc list-inside text-gray-700">
+                    {product.features
+                      ? product.features.split("\n").map((feature, index) => (
+                          <li key={index}>{feature}</li>
+                        ))
+                      : <li>No features available</li>}
+                  </ul>
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <p>Product not found</p>
+          <p className="text-center text-red-500 font-semibold">Product not found</p>
         )}
       </div>
-      <div className="product-info-container">
+      {/* Description Section */}
+      <div className="max-w-5xl mx-auto mt-8 bg-white rounded-xl shadow-lg p-4 md:p-8">
         {product ? (
-          <div className="product-description full-width">
-            <h2 className="description-title">Description:</h2>
-            <ul>
+          <div>
+            <h2 className="text-xl font-bold text-blue-700 mb-2">Description:</h2>
+            <ul className="list-disc list-inside text-gray-700">
               {product.description
-                ? product.description
-                    .split("\n")
-                    .map((description, index) => (
-                      <li key={index}>{description}</li>
-                    ))
-                : "No description available"}
+                ? product.description.split("\n").map((description, index) => (
+                    <li key={index}>{description}</li>
+                  ))
+                : <li>No description available</li>}
             </ul>
           </div>
         ) : (
-          <p>Description not found</p>
+          <p className="text-center text-red-500 font-semibold">Description not found</p>
         )}
       </div>
     </section>

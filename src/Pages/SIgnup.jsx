@@ -6,7 +6,6 @@ import { auth, fireDB } from "../FireBase/FireBaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import toast from "react-hot-toast";
 import Loader from "../Components/Loader";
-import "../Style/SignUp.css";
 
 const Signup = () => {
 
@@ -81,17 +80,13 @@ const Signup = () => {
     }
 
     return (
-        <div id="sign-up" >
+        <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-2">
             {loading && <Loader />}
-            <div id="signup-form" >
-
-                <h3 id="signup-title">
-                    Sign Up
-                </h3>
-
+            <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col gap-6">
+                <h3 className="text-2xl font-bold text-blue-700 text-center mb-2">Sign Up</h3>
                 <input
                     type="text"
-                    placeholder='Full Name'
+                    placeholder="Full Name"
                     value={userSignup.name}
                     onChange={(e) => {
                         setUserSignup({
@@ -99,11 +94,11 @@ const Signup = () => {
                             name: e.target.value
                         })
                     }}
-                    className='signup-input'
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
                 />
                 <input
                     type="email"
-                    placeholder='Email Address'
+                    placeholder="Email Address"
                     value={userSignup.email}
                     onChange={(e) => {
                         setUserSignup({
@@ -111,11 +106,11 @@ const Signup = () => {
                             email: e.target.value
                         })
                     }}
-                    className='signup-input'
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
                 />
                 <input
                     type="password"
-                    placeholder='Password'
+                    placeholder="Password"
                     value={userSignup.password}
                     onChange={(e) => {
                         setUserSignup({
@@ -123,19 +118,24 @@ const Signup = () => {
                             password: e.target.value
                         })
                     }}
-                    className='signup-input'
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
                 />
-                    <button
-                    id="signup-btn"
-                        type='button'
-                        onClick={userSignupFunction}
-                        className=' '
-                    >
-                        Sign up
-                    </button>
-
-                <div>
-                    <p className='signup-text'>Already have an account?<b> <Link className='signup-text' to={'/sign-in'}>Sign-in</Link></b></p>
+                <button
+                    type="button"
+                    onClick={userSignupFunction}
+                    className="w-full bg-blue-700 text-white font-semibold py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 text-lg"
+                >
+                    Sign up
+                </button>
+                <div className="text-center text-gray-600 text-sm mt-2">
+                    <p>
+                        Already have an account?{' '}
+                        <b>
+                            <Link className="text-blue-700 hover:underline" to={'/sign-in'}>
+                                Sign-in
+                            </Link>
+                        </b>
+                    </p>
                 </div>
             </div>
         </div>

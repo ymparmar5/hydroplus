@@ -3,7 +3,6 @@ import myContext from "../Context/myContext";
 import { useContext, useEffect } from "react";
 import Loader from "./Loader";
 import { useDispatch, useSelector } from "react-redux";
-import "../Style/HomeProductCard.css";
 
 const HomeProductCard = () => {
     const navigate = useNavigate();

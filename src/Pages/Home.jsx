@@ -9,17 +9,12 @@ const Home = () => {
     
 
 
-    return <div  className="main-content min-h-screen" >
-       
-
-       <HeroSection />
-    
-       {/* <Category /> */}
-  
-      {/* <HomeProductCard /> */}
-      {/* <HomeAbout />      */}
-       {/* <Testimonial /> */}
-    </div>;
+    return (
+        <main className="min-h-screen w-full flex flex-col gap-8 bg-white">
+            <HeroSection />
+            <Category />
+        </main>
+    );
 
 };
 
