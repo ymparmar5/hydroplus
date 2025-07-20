@@ -30,24 +30,14 @@ const socialLinks = [
 
 const SocialSidebar = () => {
   return (
-    <div className="fixed left-4 top-1/3 z-40 flex flex-col gap-3 md:left-4 md:top-1/3 md:flex-col md:gap-3
-      sm:bottom-4 sm:left-1/2 sm:-translate-x-1/2 sm:top-auto sm:flex-row sm:gap-4">
+    <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
       {socialLinks.map((link, index) => (
-        <a
+        <div
           key={index}
-          href={link.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex items-center md:flex-col sm:flex-row"
-          aria-label={link.label}
+          className="bg-white shadow border border-orange-500 w-28 h-14 rounded-l-full flex items-center justify-center"
         >
-          <div className="bg-white shadow-lg rounded-full w-12 h-12 flex items-center justify-center transition-transform transform hover:scale-110 hover:bg-blue-100 border border-blue-200">
-            <img src={link.icon} alt={link.label} className="w-7 h-7 object-contain" />
-          </div>
-          <span className="ml-3 md:ml-0 md:mt-2 text-sm text-gray-700 font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300 sm:hidden">
-            {link.label}
-          </span>
-        </a>
+          <img src={link.icon} alt={link.label} className="w-7 h-7 object-contain" />
+        </div>
       ))}
     </div>
   );

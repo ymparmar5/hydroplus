@@ -27,61 +27,118 @@ const team = [
   },
 ];
 
+const highlights = [
+  {
+    icon: '✅',
+    title: 'Trusted & Certified',
+    desc: 'ISO 9001:2015 certified, 25+ years of trust in water and air solutions.'
+  },
+  {
+    icon: '🛠️',
+    title: 'Expertise & Support',
+    desc: 'Professional team, 750+ SKUs, and strong dealer education.'
+  },
+  {
+    icon: '🔧',
+    title: 'Wide Product Range',
+    desc: 'Specializing in high-pressure washers, air compressors, and more.'
+  },
+  {
+    icon: '🌏',
+    title: 'Global Presence',
+    desc: 'Products available worldwide, easy access to parts & support.'
+  },
+];
+
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden ">
-      {/* Hero/Header Section */}
-      <div className="relative h-[160px] xs:h-[200px] sm:h-[220px] md:h-[300px] lg:h-[350px] w-full mb-8 sm:mb-12 overflow-hidden animate-pulse-glow">
-        <div
-          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/about-us-11.jpeg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            filter: 'brightness(0.8)',
-          }}
+    <div className="min-h-[80vh] w-full bg-gradient-to-br from-black via-gray-900 to-black text-white py-0">
+      {/* Full-width hero image and heading */}
+      <div className="w-full">
+        <img
+          src="/istockphoto-1827291486-612x612.jpg"
+          alt="About Us"
+          className="w-full h-56 sm:h-72 md:h-96 object-contain sm:object-cover bg-black"
         />
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black" />
-        <div className="relative z-10 flex items-center justify-center h-full px-2">
-          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 text-left ">
-            About <span className="text-primary ">Hydroplus International</span>
-          </h1>
-        </div>
       </div>
-      <style jsx>{`
-        @keyframes pulse-glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(255, 67, 0, 0.3); }
-          50% { box-shadow: 0 0 40px rgba(255, 67, 0, 0.6); }
-        }
-        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
-      `}</style>
+      <div className="w-full text-primary font-bold text-3xl sm:text-4xl mb-8 text-center mt-4">About Hydroplus International</div>
       <div className="container mx-auto px-3 sm:px-4 md:px-6">
-        {/* Story Card */}
-        <div className="bg-white/5 rounded-2xl shadow-2xl p-0 sm:p-0 my-10 backdrop-blur-md border border-white/10 overflow-hidden">
-          <div className="w-full">
-            <img src="/about-us-11.jpeg" alt="About Us" className="w-full h-56 sm:h-72 md:h-96 object-cover object-center rounded-t-2xl" />
+        {/* Company Summary */}
+        <div className="max-w-3xl mx-auto text-center mb-10">
+          <p className="text-lg sm:text-xl text-gray-200">
+            Hydroplus International is a leading manufacturer and supplier of pumps, motors, and power tools for residential, commercial, and industrial use. With over a decade of experience, we are trusted for our quality, innovation, and customer satisfaction.
+          </p>
+        </div>
+        {/* Years of Experience / Achievements */}
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-14">
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-primary">20+</div>
+            <div className="text-gray-300 text-base">Years Of Experience</div>
           </div>
-          <div className="p-6 sm:p-10">
-            <div className="text-primary font-semibold text-xl mb-2">Our Story</div>
-            <div className="text-base leading-7 mb-2 text-gray-200">
-              Founded in 2010, Hydroplus International is a Gujarat-based manufacturer and supplier of every type of pump, motor, and power tool for various purposes. Our journey began with a vision to revolutionize the industry by delivering high-quality, innovative products. From a small workshop, we have grown into a leading manufacturer known for our commitment to excellence and customer satisfaction.
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-primary">30+</div>
+            <div className="text-gray-300 text-base">Team Members</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-primary">750+</div>
+            <div className="text-gray-300 text-base">SKUs</div>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="text-4xl font-bold text-primary">1000+</div>
+            <div className="text-gray-300 text-base">Happy Clients</div>
+          </div>
+        </div>
+        {/* Why Choose Us Section */}
+        <div className="mb-14">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-primary">Why Choose Us</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {highlights.map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center bg-white/10 rounded-xl p-6 shadow-lg">
+                <div className="text-4xl mb-3">{item.icon}</div>
+                <div className="font-bold text-lg text-white text-center mb-1">{item.title}</div>
+                <div className="text-gray-300 text-sm text-center">{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Video Section */}
+        <div className="max-w-3xl mx-auto mb-14">
+          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10 flex flex-col items-center">
+            <div className="text-primary font-semibold text-xl mb-4">Watch Our Company Video</div>
+            <iframe width="100%" height="250" className="rounded-lg mb-4" src="https://www.youtube.com/embed/NLN0R8RXLmA?si=i-omFJ2dooiaxbRx" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
+          </div>
+        </div>
+        {/* Founder's Word Section */}
+        <div className="max-w-3xl mx-auto mb-14">
+          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10 flex flex-col items-center">
+            <div className="text-primary font-semibold text-xl mb-2">Founder's Word</div>
+            <blockquote className="italic text-gray-200 text-lg mb-4 text-center">
+              "At Hydroplus, we save your time, money, and energy with innovative solutions and exceptional service. Our mission goes beyond selling products – we deliver solutions designed to simplify your life and enhance reliability. Thank you for trusting us to be part of your journey. Together, we’ll set new standards in efficiency and convenience."
+            </blockquote>
+            <div className="text-primary font-bold text-base">Warm Regards,</div>
+            <div className="text-white font-semibold text-base">Divesh Ramchandani</div>
+            <div className="text-gray-400 text-xs">Founder & CEO</div>
+          </div>
+        </div>
+        {/* Office Contacts Section */}
+        <div className="max-w-3xl mx-auto mb-14">
+          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10">
+            <div className="text-primary font-semibold text-xl mb-4 text-center">Office Contacts</div>
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
+              <div className="flex-1">
+                <div className="text-gray-400 text-sm mb-1">Phone</div>
+                <div className="text-white text-base font-semibold mb-3">+91 77109 21153</div>
+                <div className="text-gray-400 text-sm mb-1">Email</div>
+                <div className="text-white text-base font-semibold mb-3">info@hydroplus.com</div>
+              </div>
+              <div className="flex-1">
+                <div className="text-gray-400 text-sm mb-1">Address</div>
+                <div className="text-white text-base font-semibold">
+                  G1-2, Ground Floor, Shivai Plaza Co-Op Socity,<br />
+                  Marol, Andheri East, Mumbai - 400059
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        {/* Mission Card */}
-        <div className="bg-white/5 rounded-2xl shadow-2xl p-6 sm:p-10 my-10 backdrop-blur-md border border-white/10">
-          <div className="text-primary font-semibold text-xl mb-2">Our Mission</div>
-          <div className="text-base leading-7 mb-2 text-gray-200">
-            Our mission is to deliver top-notch, customizable pumps and motors that effectively meet our clients' needs and enhance their operational efficiency. We are committed to sustainability, using eco-friendly materials and practices to minimize our environmental impact. Innovation is at the heart of everything we do, and our team is dedicated to providing exceptional service and building lasting relationships with our clients.
-          </div>
-        </div>
-        {/* Products Card */}
-        <div className="bg-white/5 rounded-2xl shadow-2xl p-6 sm:p-10 my-10 backdrop-blur-md border border-white/10">
-          <div className="text-primary font-semibold text-xl mb-2">Our Products</div>
-          <iframe width="100%" height="250" className="rounded-lg mb-4" src="https://www.youtube.com/embed/NLN0R8RXLmA?si=i-omFJ2dooiaxbRx" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
-          <div className="text-base leading-7 mb-2 text-gray-200">
-            Our range of products is designed to provide superior performance, reliability, and efficiency across various industries. We offer customizable solutions to ensure our products align perfectly with our clients' operational needs. Our commitment to excellence drives us to continually improve and refine our designs, ensuring every product incorporates the latest technological advancements and highest industry standards.
           </div>
         </div>
         {/* Meet Our Minds Section */}
