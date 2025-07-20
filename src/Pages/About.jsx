@@ -29,11 +29,34 @@ const team = [
 
 const About = () => {
   return (
-    <div className="min-h-[80vh] w-full bg-gradient-to-br from-black via-gray-900 to-black text-white py-8">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden ">
+      {/* Hero/Header Section */}
+      <div className="relative h-[160px] xs:h-[200px] sm:h-[220px] md:h-[300px] lg:h-[350px] w-full mb-8 sm:mb-12 overflow-hidden animate-pulse-glow">
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/about-us-11.jpeg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'brightness(0.8)',
+          }}
+        />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black" />
+        <div className="relative z-10 flex items-center justify-center h-full px-2">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 text-left ">
+            About <span className="text-primary ">Hydroplus International</span>
+          </h1>
+        </div>
+      </div>
+      <style jsx>{`
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255, 67, 0, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(255, 67, 0, 0.6); }
+        }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+      `}</style>
       <div className="container mx-auto px-3 sm:px-4 md:px-6">
-        {/* Heading */}
-        
-        <div className="text-primary font-bold text-3xl sm:text-4xl mb-8 text-center">About Hydroplus International</div>
         {/* Story Card */}
         <div className="bg-white/5 rounded-2xl shadow-2xl p-0 sm:p-0 my-10 backdrop-blur-md border border-white/10 overflow-hidden">
           <div className="w-full">
