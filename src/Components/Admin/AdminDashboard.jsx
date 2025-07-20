@@ -8,73 +8,38 @@ const AdminDashboard = () => {
     const context = useContext(myContext);
     const { getAllProduct } = context;
 
-    const containerStyle = {
-        minHeight: '80vh',
-        background: 'var(--background)',
-        color: 'var(--text)',
-        padding: '2rem',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    };
-    const userInfoStyle = {
-        background: 'var(--surface)',
-        borderRadius: '10px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
-        padding: '2rem',
-        margin: '1.5rem 0',
-        maxWidth: '500px',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    };
-    const userPhotoStyle = {
-        width: '100px',
-        height: '100px',
-        borderRadius: '50%',
-        objectFit: 'cover',
-        marginBottom: '1rem',
-        border: '2px solid var(--primary)',
-    };
-    const detailsStyle = {
-        marginBottom: '1rem',
-        textAlign: 'center',
-    };
-    const buttonStyle = {
-        background: 'var(--primary)',
-        color: 'var(--text-light)',
-        border: 'none',
-        borderRadius: '6px',
-        padding: '0.7rem 1.5rem',
-        fontWeight: 600,
-        fontSize: '1rem',
-        cursor: 'pointer',
-        marginTop: '1rem',
-        transition: 'background 0.2s',
-    };
-    const productInfoStyle = {
-        width: '100%',
-        marginTop: '2rem',
-        maxWidth: '900px',
-    };
     return (
-        <div style={containerStyle}>
-            <div style={userInfoStyle}>
-                <img style={userPhotoStyle} src="/admin.png" alt="User" />
-                <div style={detailsStyle}>
-                    <h1><span style={{ fontWeight: 700 }}>Name: </span>{user?.name}</h1>
-                    <h1><span style={{ fontWeight: 700 }}>Email: </span>{user?.email}</h1>
-                    <h1><span style={{ fontWeight: 700 }}>Role: </span>{user?.role}</h1>
-                </div>
-                <Link to={'/AddProductPage'}>
-                    <button style={buttonStyle}>Add Product</button>
-                </Link>
+        <div className="relative min-h-[80vh] bg-secondary-black text-secondary-white px-2 py-8 flex flex-col items-center overflow-x-hidden">
+            {/* Animated Background */}
+            <div className="absolute inset-0 -z-10 overflow-hidden">
+                {/* Blurred animated circles */}
+                <div className="absolute top-[-60px] left-[-60px] w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" style={{animationDuration: '4s'}}></div>
+                <div className="absolute bottom-[-80px] right-[-80px] w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{animationDuration: '6s', animationDelay: '2s'}}></div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] animate-pulse" style={{animationDuration: '8s', animationDelay: '4s'}}></div>
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-secondary-black/80 to-primary/10 pointer-events-none" />
             </div>
-            <div style={productInfoStyle}>
-                <div>
-                    <ProductDetail />
+            <div className="w-full max-w-6xl bg-secondary-white text-secondary-black rounded-xl shadow-lg p-4 sm:p-8 my-6 flex flex-col md:flex-row items-center md:items-stretch border border-primary/20">
+                {/* Left: Large Admin Image */}
+                <div className="flex-shrink-0 flex justify-center items-center w-full md:w-1/3 mb-6 md:mb-0 md:mr-8">
+                    <img className="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover border-4 border-primary shadow" src="/admin.png" alt="User" />
                 </div>
+                {/* Right: Details */}
+                <div className="flex flex-col justify-center w-full md:w-2/3">
+                    <div className="mb-4 text-center md:text-left space-y-2">
+                        <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Name: </span>{user?.name}</h1>
+                        <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Email: </span>{user?.email}</h1>
+                        <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Role: </span>{user?.role}</h1>
+                    </div>
+                    <div className="flex justify-center md:justify-start">
+                        <Link to={'/AddProductPage'} className="w-full max-w-xs">
+                            <button className="bg-primary hover:bg-primary-700 text-secondary-white rounded-md px-6 py-2 font-semibold text-base mt-2 transition-colors duration-200 shadow focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 w-full">Add Product</button>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+            <div className="w-full max-w-6xl mt-8">
+                <ProductDetail />
             </div>
         </div>
     );
