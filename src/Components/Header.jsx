@@ -80,6 +80,32 @@ const Header = () => {
               Contact
               <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </NavLink>
+            <NavLink 
+              to="/shop" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              shop
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
+            <NavLink 
+              to="/exhibitions" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              exhibitions
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
           </nav>
 
           {/* Search Bar - Desktop */}

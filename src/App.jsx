@@ -26,6 +26,7 @@ import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Certificates from "./Pages/Certificates";
 import SocialSidebar from "./Components/SocialSidebar";
 import Subcategory from "./Pages/Subcategory";
+import Exhibitions from "./Pages/exhibitions";
 
 const App = () => {
 
@@ -49,6 +50,8 @@ const App = () => {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/tandc" element={<TermsAndConditions />} />
           <Route path="/certificates" element={<Certificates />} />
+          <Route path="/exhibitions" element={<Exhibitions />} />
+
 
           <Route path="/user" element={
             <ProtectedRouteForUser>

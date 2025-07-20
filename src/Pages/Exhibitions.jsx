@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, User, MessageCircle } from 'lucide-react';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const ContactPage = () => {
+const Exhibitions = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -267,4 +267,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+export default Exhibitions;
