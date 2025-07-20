@@ -1,76 +1,212 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SearchBar from "./SearchBar";
+import { Menu, X, Search, ShoppingCart, User } from "lucide-react";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const cartItems = useSelector((state) => state.cart);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="w-full bg-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 md:py-3">
-        {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-2">
-          <img src="/logo.png" alt="logo" className="h-12 w-auto object-contain" />
-        </NavLink>
+    <header className={`w-full sticky top-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-black/80 backdrop-blur-lg border-b border-white/10' 
+        : 'bg-gradient-to-r from-black/90 via-gray-900/90 to-black/90 backdrop-blur-sm'
+    }`}>
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <NavLink to="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <img src="/logo.png" alt="logo" className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-bold text-white">HydroPlus</h1>
+              <p className="text-xs text-gray-400">Water Solutions</p>
+            </div>
+          </NavLink>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-6 items-center">
-          <NavLink to="/" className={({ isActive }) => `text-base font-medium px-2 py-1 rounded transition-colors duration-200 ${isActive ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700'}`}>Home</NavLink>
-          {/* <NavLink to="/shop" className={({ isActive }) => `text-base font-medium px-2 py-1 rounded transition-colors duration-200 ${isActive ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700'}`}>Shop</NavLink> */}
-          <NavLink to="/contact" className={({ isActive }) => `text-base font-medium px-2 py-1 rounded transition-colors duration-200 ${isActive ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700'}`}>Contact</NavLink>
-          <NavLink to="/about" className={({ isActive }) => `text-base font-medium px-2 py-1 rounded transition-colors duration-200 ${isActive ? 'text-blue-700' : 'text-gray-700 hover:text-blue-700'}`}>About</NavLink>
-        </nav>
-
-        {/* Right Icons */}
-        <div className="flex items-center gap-4">
-          {/* Search Icon & Bar */}
-          <div className="relative flex items-center">
-            {isSearchOpen && (
-              <div className="absolute right-0 top-10 w-64 z-50">
-                <SearchBar />
-              </div>
-            )}
-            <button
-              className="p-2 rounded-full hover:bg-blue-100 transition-colors"
-              onClick={() => setIsSearchOpen((v) => !v)}
-              aria-label="Toggle search"
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-8">
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
             >
-              <i className="fa-solid fa-magnifying-glass text-xl text-blue-700"></i>
+              Home
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
+            
+            <NavLink 
+              to="/about" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              About
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
+            
+            <NavLink 
+              to="/contact" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              Contact
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
+          </nav>
+
+          {/* Search Bar - Desktop */}
+          <div className="hidden md:flex items-center gap-4 flex-1 max-w-md mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300"
+              />
+            </div>
+          </div>
+
+          {/* Right Side Icons */}
+          <div className="flex items-center gap-3">
+            {/* Search Icon - Mobile */}
+            <button className="md:hidden p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300">
+              <Search className="w-5 h-5 text-white" />
+            </button>
+
+            {/* Cart Icon */}
+            <Link to="/cart" className="relative p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+              <ShoppingCart className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                  {cartItems.length}
+                </span>
+              )}
+            </Link>
+
+            {/* User Icon */}
+            <Link to="/signin" className="p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+              <User className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" />
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 text-white" />
+              ) : (
+                <Menu className="w-5 h-5 text-white" />
+              )}
             </button>
           </div>
-          {/* Hamburger for mobile */}
-          <button
-            className="md:hidden p-2 rounded-full hover:bg-blue-100 transition-colors"
-            onClick={() => setIsMobileMenuOpen((v) => !v)}
-            aria-label="Toggle menu"
-          >
-            <i className={`fa-solid text-xl text-blue-700 ${isMobileMenuOpen ? "fa-xmark" : "fa-bars"}`}></i>
-          </button>
         </div>
+
+        {/* Mobile Search Bar */}
+        <div className="md:hidden mt-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300"
+            />
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <nav className="lg:hidden mt-4 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 animate-slide-down">
+            <div className="p-4 space-y-2">
+              <NavLink 
+                to="/" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) => 
+                  `block text-base font-medium px-4 py-3 rounded-xl transition-all duration-300 ${
+                    isActive 
+                      ? 'text-primary bg-primary/20 border border-primary/30' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  }`
+                }
+              >
+                Home
+              </NavLink>
+              
+              <NavLink 
+                to="/about" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) => 
+                  `block text-base font-medium px-4 py-3 rounded-xl transition-all duration-300 ${
+                    isActive 
+                      ? 'text-primary bg-primary/20 border border-primary/30' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  }`
+                }
+              >
+                About
+              </NavLink>
+              
+              <NavLink 
+                to="/contact" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) => 
+                  `block text-base font-medium px-4 py-3 rounded-xl transition-all duration-300 ${
+                    isActive 
+                      ? 'text-primary bg-primary/20 border border-primary/30' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/10'
+                  }`
+                }
+              >
+                Contact
+              </NavLink>
+            </div>
+          </nav>
+        )}
       </div>
 
-      {/* Mobile Nav */}
-      {isMobileMenuOpen && (
-        <nav className="md:hidden bg-white shadow-lg border-t border-blue-100 animate-fade-in-down">
-          <ul className="flex flex-col gap-2 py-4 px-6">
-            <li>
-              <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => `block text-base font-medium px-2 py-2 rounded transition-colors duration-200 ${isActive ? 'text-blue-700 bg-blue-50' : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'}`}>Home</NavLink>
-            </li>
-            {/* <li>
-              <NavLink to="/shop" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => `block text-base font-medium px-2 py-2 rounded transition-colors duration-200 ${isActive ? 'text-blue-700 bg-blue-50' : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'}`}>Shop</NavLink>
-            </li> */}
-            <li>
-              <NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => `block text-base font-medium px-2 py-2 rounded transition-colors duration-200 ${isActive ? 'text-blue-700 bg-blue-50' : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'}`}>Contact</NavLink>
-            </li>
-            <li>
-              <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => `block text-base font-medium px-2 py-2 rounded transition-colors duration-200 ${isActive ? 'text-blue-700 bg-blue-50' : 'text-gray-700 hover:text-blue-700 hover:bg-blue-50'}`}>About</NavLink>
-            </li>
-          </ul>
-        </nav>
-      )}
+      <style jsx>{`
+        @keyframes slide-down {
+          0% { 
+            opacity: 0; 
+            transform: translateY(-10px); 
+          }
+          100% { 
+            opacity: 1; 
+            transform: translateY(0); 
+          }
+        }
+        .animate-slide-down { 
+          animation: slide-down 0.3s ease-out; 
+        }
+      `}</style>
     </header>
   );
 };
