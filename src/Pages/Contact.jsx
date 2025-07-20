@@ -1,148 +1,269 @@
-import React, { useState } from "react";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import React, { useState, useEffect } from 'react';
+import { Mail, Phone, MapPin, Send, User, MessageCircle } from 'lucide-react';
 
-const Contact = () => {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: "", email: "", message: "" });
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsSubmitting(false);
+    setFormData({ name: '', email: '', subject: '', message: '' });
+  };
+
+  const FloatingShape = ({ delay, duration, size, top, left }) => (
+    <div 
+      className={`absolute w-${size} h-${size} rounded-full opacity-20`}
+      style={{
+        background: `linear-gradient(45deg, #ff4300, rgba(255, 67, 0, 0.3))`,
+        top: `${top}%`,
+        left: `${left}%`,
+        animation: `float ${duration}s ease-in-out infinite ${delay}s`,
+      }}
+    />
+  );
+
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50">
-      {/* Hero Section with contact.png */}
-      <div className="w-full h-full items-center justify-center overflow-hidden bg-white">
-        <img
-          src="/contact.png"
-          alt="Contact Hero"
-          className="w-full h-98 object-cover object-center "
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+      {/* Header Section */}
+      <div className="relative h-80 mb-12 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/contact.png')",
+            filter: 'brightness(0.4)',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+        <div className="relative z-10 flex items-center justify-center h-full">
+          <div className="text-center">
+            <h1 className="text-6xl lg:text-7xl font-bold text-white mb-4 animate-pulse-glow">
+              Let's
+              <span className="text-primary block">Connect</span>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Ready to bring your ideas to life? Drop us a message and let's create something amazing together.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Animated Background */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute w-96 h-96 rounded-full opacity-10 animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #ff4300, transparent)',
+            left: `${mousePosition.x / 20}px`,
+            top: `${mousePosition.y / 20}px`,
+            transform: 'translate(-50%, -50%)',
+          }}
         />
       </div>
 
-      {/* Main Content Section */}
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 py-10 md:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Contact Form */}
-          <div className="bg-white rounded-3xl shadow-2xl p-4 sm:p-8 lg:p-12 border border-primary-100">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary-DEFAULT mb-2 md:mb-3">Get In Touch</h2>
-            <p className="text-gray-600 text-base md:text-lg mb-6">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
-            {submitted && (
-              <div className="mb-6 p-4 rounded-xl bg-primary-50 text-primary-DEFAULT border border-primary-200 text-center flex items-center justify-center gap-2">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span className="font-semibold">Thank you! We'll get back to you soon.</span>
-              </div>
-            )}
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-DEFAULT focus:border-transparent outline-none text-base bg-white text-gray-900 placeholder-gray-400 transition-all hover:border-primary-200"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-DEFAULT focus:border-transparent outline-none text-base bg-white text-gray-900 placeholder-gray-400 transition-all hover:border-primary-200"
-                />
-              </div>
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                value={form.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-primary-DEFAULT focus:border-transparent outline-none text-base bg-white text-gray-900 placeholder-gray-400 resize-none transition-all hover:border-primary-200"
-              />
-              <button
-                type="submit"
-                className="w-full bg-primary-DEFAULT text-white font-bold py-3 rounded-xl hover:bg-secondary-black transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] border-2 border-primary-DEFAULT hover:border-secondary-black"
-              >
-                Send Message
-              </button>
-            </form>
-            {/* Contact Info Cards */}
-            <div className="mt-8 grid sm:grid-cols-2 gap-4">
-              <div className="bg-primary-50 rounded-xl p-4 border border-primary-200 flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary-DEFAULT rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                  </svg>
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        @keyframes pulse-glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(255, 67, 0, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(255, 67, 0, 0.6); }
+        }
+        @keyframes slideIn {
+          0% { transform: translateX(-100%); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideInRight {
+          0% { transform: translateX(100%); opacity: 0; }
+          100% { transform: translateX(0); opacity: 1; }
+        }
+        .animate-slide-in { animation: slideIn 1s ease-out; }
+        .animate-slide-in-right { animation: slideInRight 1s ease-out 0.3s both; }
+        .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+      `}</style>
+
+      <div className="container mx-auto px-4 py-12 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-start">
+          
+          {/* Left Side - Lottie Animation & Contact Info */}
+          <div className="animate-slide-in">
+            <div className="relative">
+              <FloatingShape delay={0} duration={4} size={16} top={10} left={10} />
+              <FloatingShape delay={1} duration={5} size={12} top={60} left={80} />
+              <FloatingShape delay={2} duration={6} size={8} top={80} left={20} />
+              
+              <div className="space-y-8">
+                {/* Lottie Animation Placeholder */}
+                <div className="w-full h-96 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center border border-primary/20">
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                      <Mail className="w-12 h-12 text-white" />
+                    </div>
+                    <p className="text-gray-400">Lottie Animation Area</p>
+                    <p className="text-sm text-gray-500 mt-2">Your animation will appear here</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm font-semibold text-primary-DEFAULT">Email</p>
-                  <p className="text-xs text-gray-600 break-all">contact.hydroplusinternational@gmail.com</p>
+
+                {/* Contact Info moved to bottom */}
+                <div className="space-y-6 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                  <div className="flex items-center space-x-4 group">
+                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Mail className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold">Email</h3>
+                      <p className="text-gray-400">hello@company.com</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-4 group">
+                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <Phone className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold">Phone</h3>
+                      <p className="text-gray-400">+1 (555) 123-4567</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-4 group">
+                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <MapPin className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold">Location</h3>
+                      <p className="text-gray-400">New York, NY</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-primary-50 rounded-xl p-4 border border-primary-200 flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary-DEFAULT rounded-full flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-primary-DEFAULT">Phone</p>
-                  <p className="text-xs text-gray-600">+91 8000074088</p>
+
+                {/* Animated Geometric Shapes */}
+                <div className="relative flex justify-center">
+                  <div className="w-32 h-32 border-2 border-primary rounded-full animate-spin" style={{animationDuration: '20s'}}></div>
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-24 border-2 border-primary-300 rounded-full animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
+                  <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-primary rounded-full opacity-20 animate-pulse"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Lottie Animation */}
-          <div className="flex items-center justify-center">
-            <div className="w-full max-w-md">
-              <div className="bg-white rounded-3xl shadow-2xl p-4 sm:p-8 border border-primary-100">
-                <DotLottieReact
-                  src="https://lottie.host/528327d7-b622-4b6e-ba9a-61630d945b81/jeZOmcehp2.lottie"
-                  loop
-                  autoplay
-                  style={{ width: '100%', height: '320px' }}
-                />
-                <div className="text-center mt-4">
-                  <h3 className="text-xl md:text-2xl font-bold text-primary-DEFAULT mb-1">Ready to Connect?</h3>
-                  <p className="text-gray-600 text-sm md:text-base">Fill out the form and we'll get back to you within 24 hours.</p>
-                </div>
+          {/* Right Side - Contact Form */}
+          <div className="animate-slide-in-right">
+            <div className="bg-white/5 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/10">
+              <div className="mb-8">
+                <h2 className="text-3xl font-bold text-white mb-2">Send Message</h2>
+                <p className="text-gray-400">Fill out the form below and we'll get back to you soon.</p>
               </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Address Section */}
-        <div className="mt-10 md:mt-16 bg-white rounded-3xl shadow-2xl p-4 sm:p-8 lg:p-12 border border-primary-100">
-          <div className="text-center mb-6 md:mb-8">
-            <h3 className="text-2xl md:text-3xl font-bold text-primary-DEFAULT mb-2 md:mb-3">Visit Our Office</h3>
-            <p className="text-gray-600 text-base md:text-lg">Come say hello at our office headquarters</p>
-          </div>
-          <div className="flex items-center justify-center gap-3 md:gap-4 max-w-2xl mx-auto">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary-DEFAULT rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-5 h-5 md:w-6 md:h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-base md:text-lg font-semibold text-primary-DEFAULT">Our Address</p>
-              <p className="text-gray-600 text-sm md:text-base">Pasodara Rd, near Pasodara, Kholvad, Surat, Gujarat, India</p>
+              <div className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="relative group">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors duration-300" />
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Full Name"
+                      required
+                      className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300"
+                    />
+                  </div>
+
+                  <div className="relative group">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors duration-300" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Email Address"
+                      required
+                      className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300"
+                    />
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <MessageCircle className="absolute left-3 top-4 w-5 h-5 text-gray-400 group-focus-within:text-primary transition-colors duration-300" />
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    placeholder="Subject"
+                    required
+                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300"
+                  />
+                </div>
+
+                <div className="relative group">
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Your Message"
+                    rows="5"
+                    required
+                    className="w-full px-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:bg-white/20 transition-all duration-300 resize-none"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-4 px-8 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 hover:shadow-lg hover:shadow-primary/25 disabled:opacity-70"
+                >
+                  {isSubmitting ? (
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      <span>Send Message</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Success Animation */}
+              {!isSubmitting && formData.name === '' && (
+                <div className="mt-4 text-green-400 text-sm opacity-0 animate-pulse">
+                  Message sent successfully! ✓
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Additional Background Elements */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-primary/10 to-transparent"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-radial from-primary/20 to-transparent rounded-full blur-3xl"></div>
     </div>
   );
 };
 
-export default Contact;
+export default ContactPage;
