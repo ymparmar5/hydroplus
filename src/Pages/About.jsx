@@ -32,6 +32,7 @@ const About = () => {
     <div className="min-h-[80vh] w-full bg-gradient-to-br from-black via-gray-900 to-black text-white py-8">
       <div className="container mx-auto px-3 sm:px-4 md:px-6">
         {/* Heading */}
+        
         <div className="text-primary font-bold text-3xl sm:text-4xl mb-8 text-center">About Hydroplus International</div>
         {/* Story Card */}
         <div className="bg-white/5 rounded-2xl shadow-2xl p-0 sm:p-0 my-10 backdrop-blur-md border border-white/10 overflow-hidden">

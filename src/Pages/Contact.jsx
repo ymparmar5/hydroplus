@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, User, MessageCircle } from 'lucide-react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const ContactPage = () => {
   };
 
   const FloatingShape = ({ delay, duration, size, top, left }) => (
-    <div 
+    <div
       className={`absolute w-${size} h-${size} rounded-full opacity-20`}
       style={{
         background: `linear-gradient(45deg, #ff4300, rgba(255, 67, 0, 0.3))`,
@@ -45,33 +46,31 @@ const ContactPage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden ">
       {/* Header Section */}
-      <div className="relative h-80 mb-12 overflow-hidden">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      <div className="relative h-[220px] sm:h-[300px] md:h-[350px] lg:h-[400px] w-full mb-12 overflow-hidden animate-pulse-glow">
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: "url('/contact.png')",
-            filter: 'brightness(0.4)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'brightness(0.8)',
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black" />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black" />
         <div className="relative z-10 flex items-center justify-center h-full">
-          <div className="text-center">
-            <h1 className="text-6xl lg:text-7xl font-bold text-white mb-4 animate-pulse-glow">
-              Let's
-              <span className="text-primary block">Connect</span>
-            </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Ready to bring your ideas to life? Drop us a message and let's create something amazing together.
-            </p>
-          </div>
+          <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 text-left ">
+            Let's <span className="text-primary ">Connect</span>
+          </h1>
         </div>
       </div>
 
+
       {/* Animated Background */}
       <div className="absolute inset-0">
-        <div 
+        <div
           className="absolute w-96 h-96 rounded-full opacity-10 animate-pulse"
           style={{
             background: 'radial-gradient(circle, #ff4300, transparent)',
@@ -106,63 +105,66 @@ const ContactPage = () => {
 
       <div className="container mx-auto px-4 py-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          
+
           {/* Left Side - Lottie Animation & Contact Info */}
           <div className="animate-slide-in">
             <div className="relative">
               <FloatingShape delay={0} duration={4} size={16} top={10} left={10} />
               <FloatingShape delay={1} duration={5} size={12} top={60} left={80} />
               <FloatingShape delay={2} duration={6} size={8} top={80} left={20} />
-              
+
               <div className="space-y-8">
-                {/* Lottie Animation Placeholder */}
+                {/* Lottie Animation */}
                 <div className="w-full h-96 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center border border-primary/20">
-                  <div className="text-center">
-                    <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
-                      <Mail className="w-12 h-12 text-white" />
-                    </div>
-                    <p className="text-gray-400">Lottie Animation Area</p>
-                    <p className="text-sm text-gray-500 mt-2">Your animation will appear here</p>
-                  </div>
+                  <DotLottieReact
+                    src="https://lottie.host/ae36f017-af39-4778-8908-d1687a0c97fb/UMvc5mwvQL.lottie"
+                    loop
+                    autoplay
+                  />
                 </div>
 
                 {/* Contact Info moved to bottom */}
                 <div className="space-y-6 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                  <div className="flex items-center space-x-4 group">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Mail className="w-6 h-6 text-white" />
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
+                    {/* Email */}
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="w-14 h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
+                        <Mail className="w-7 h-7 text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-white font-semibold text-base">Email</div>
+                        <div className="text-gray-300 text-sm truncate">contact.hydroplusinternational@gmail.com</div>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-white font-semibold">Email</h3>
-                      <p className="text-gray-400">hello@company.com</p>
+                    {/* Phone */}
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="w-14 h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
+                        <Phone className="w-7 h-7 text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-white font-semibold text-base">Phone</div>
+                        <div className="text-gray-300 text-sm truncate">+91 8000074088</div>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4 group">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Phone className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-semibold">Phone</h3>
-                      <p className="text-gray-400">+1 (555) 123-4567</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-4 group">
-                    <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-semibold">Location</h3>
-                      <p className="text-gray-400">New York, NY</p>
+                    {/* Location */}
+                    <div className="flex items-center space-x-4 flex-1 min-w-0">
+                      <div className="w-14 h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
+                        <MapPin className="w-7 h-7 text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-white font-semibold text-base">Location</div>
+                        <div className="text-gray-300 text-sm truncate">
+                          Pasodara Rd, opposite Brahamahans Plaza, near Pasodara, Kholvad, Surat, 394185, Gujarat, India
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Animated Geometric Shapes */}
                 <div className="relative flex justify-center">
-                  <div className="w-32 h-32 border-2 border-primary rounded-full animate-spin" style={{animationDuration: '20s'}}></div>
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-24 border-2 border-primary-300 rounded-full animate-spin" style={{animationDuration: '15s', animationDirection: 'reverse'}}></div>
+                  <div className="w-32 h-32 border-2 border-primary rounded-full animate-spin" style={{ animationDuration: '20s' }}></div>
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-24 h-24 border-2 border-primary-300 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}></div>
                   <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-primary rounded-full opacity-20 animate-pulse"></div>
                 </div>
               </div>
