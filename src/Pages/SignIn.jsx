@@ -71,7 +71,7 @@ const SignIN = () => {
         <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-2">
             {loading && <Loader />}
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col gap-6">
-                <h3 className="text-2xl font-bold text-blue-700 text-center mb-2">Sign In</h3>
+                <h3 className="text-2xl font-bold text-primary-500 text-center mb-2">Sign In</h3>
                 <input
                     type="email"
                     name="email"
@@ -83,7 +83,7 @@ const SignIN = () => {
                             email: e.target.value
                         })
                     }}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-400 text-base"
                 />
                 <input
                     type="password"
@@ -95,12 +95,12 @@ const SignIN = () => {
                             password: e.target.value
                         })
                     }}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-base"
+                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-400 text-base"
                 />
                 <button
                     type="button"
                     onClick={userLoginFunction}
-                    className="w-full bg-blue-700 text-white font-semibold py-2 rounded-lg hover:bg-blue-800 transition-colors duration-200 text-lg"
+                    className="w-full bg-primary-700 text-white font-semibold py-2 rounded-lg hover:bg-primary-800 transition-colors duration-200 text-lg"
                 >
                     Sign In
                 </button>
@@ -108,7 +108,7 @@ const SignIN = () => {
                     <p>
                         Don't have an account?{' '}
                         <b>
-                            <Link className="text-blue-700 hover:underline" to={'/sign-up'}>
+                            <Link className="text-primary-500 hover:underline" to={'/sign-up'}>
                                 Sign up
                             </Link>
                         </b>

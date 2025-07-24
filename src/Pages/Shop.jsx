@@ -14,6 +14,7 @@ const Shop = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const productsPerPage = 12;
+    const [expandedCategory, setExpandedCategory] = useState('');
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -26,12 +27,13 @@ const Shop = () => {
     const handleSort = (e) => {
         setSortOption(e.target.value);
     };
-
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);
         setSelectedSubcategory('');
+        setExpandedCategory(prev => prev === category ? '' : category); // toggle
         navigate(`/subcategory/${encodeURIComponent(category)}`);
     };
+
 
     const handleSubcategoryClick = (subcategory) => {
         setSelectedSubcategory(subcategory);
@@ -83,18 +85,19 @@ const Shop = () => {
     return (
         <div className="flex flex-col md:flex-row bg-gray-100 min-h-[80vh] text-gray-900">
             {/* Sidebar */}
-            <aside className="w-full md:w-64 bg-white border-r border-blue-700 p-4 md:p-8 min-h-[80vh]">
-                <h2 className="text-blue-700 mb-4 text-xl font-bold">Categories</h2>
+            <aside className="w-full md:w-64 bg-white border-r border-primary-700 p-4 md:p-8 min-h-[80vh]">
+                <h2 className="text-primary-900 mb-4 text-xl font-bold">Categories</h2>
                 <ul className="space-y-2">
                     {Object.keys(categories).map((categoryName, index) => (
                         <li key={index}>
                             <div
-                                className={`px-4 py-2 rounded-lg cursor-pointer font-medium transition-colors duration-200 ${selectedCategory === categoryName ? 'bg-blue-700 text-white' : 'bg-white text-gray-900 border border-blue-700'}`}
+                                className={`px-4 py-2 rounded-lg cursor-pointer font-medium flex justify-between items-center transition-colors duration-200 ${selectedCategory === categoryName ? 'bg-primary-700 text-white' : 'bg-white text-gray-900 border border-primary-700'}`}
                                 onClick={() => handleCategoryClick(categoryName)}
                             >
                                 {categoryName}
+                                <span>{expandedCategory === categoryName ? '-' : '+'}</span>
                             </div>
-                            {categories[categoryName].length > 0 && (
+                            {expandedCategory === categoryName && categories[categoryName].length > 0 && (
                                 <ul className="pl-4 mt-2 space-y-1">
                                     {categories[categoryName].map((subcategory, subIndex) => (
                                         <li
@@ -109,13 +112,15 @@ const Shop = () => {
                             )}
                         </li>
                     ))}
+
+
                 </ul>
             </aside>
             {/* Products Section */}
             <main className="flex-1 p-4 md:p-8">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-                    <div className="text-2xl font-bold text-blue-700">{selectedSubcategory || selectedCategory || 'All Products'}</div>
-                    <select onChange={handleSort} value={sortOption} className="px-3 py-2 rounded-md border border-blue-700 text-base">
+                    <div className="text-2xl font-bold text-primary-900">{selectedSubcategory || selectedCategory || 'All Products'}</div>
+                    <select onChange={handleSort} value={sortOption} className="px-3 py-2 rounded-md border border-primary-700 text-base">
                         <option value="">Filter</option>
                         <option value="price-low-high">Price: Low to High</option>
                         <option value="price-high-low">Price: High to Low</option>
@@ -129,7 +134,7 @@ const Shop = () => {
                             <p>Loading...</p>
                         ) : (
                             currentProducts.map((item, index) => (
-                                <div key={index} className="bg-white border border-blue-700 rounded-lg p-4 cursor-pointer shadow-md hover:shadow-lg transition-transform duration-200 hover:scale-105" onClick={() => navigate(`/productinfo/${item.id}`)}>
+                                <div key={index} className="bg-white border border-primary-700 rounded-lg p-4 cursor-pointer shadow-md hover:shadow-lg transition-transform duration-200 hover:scale-105" onClick={() => navigate(`/productinfo/${item.id}`)}>
                                     <div className="flex flex-col items-center">
                                         <img src={item.imgurl1} alt={item.title} className="w-full max-w-[180px] h-[180px] object-contain mb-4" />
                                         <div className="text-lg font-semibold text-gray-900 text-center mb-2">{item.title.substring(0, 25)}</div>
@@ -145,7 +150,7 @@ const Shop = () => {
                         {Array.from({ length: totalPages }, (_, i) => (
                             <button
                                 key={i}
-                                className={`px-4 py-2 rounded-md font-medium ${currentPage === i + 1 ? 'bg-blue-700 text-white' : 'bg-white border border-blue-700 text-blue-700'} transition-colors duration-200`}
+                                className={`px-4 py-2 rounded-md font-medium ${currentPage === i + 1 ? 'bg-primary-700 text-white' : 'bg-white border border-primary-700 text-primary-900'} transition-colors duration-200`}
                                 onClick={() => paginate(i + 1)}
                             >
                                 {i + 1}

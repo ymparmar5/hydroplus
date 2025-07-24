@@ -158,7 +158,7 @@ const AddOrUpdateProductPage = () => {
         return <div className="flex items-center justify-center min-h-screen text-lg font-semibold">Loading...</div>;
     }
 
-    const inputClass = "border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200";
+    const inputClass = "border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-200";
     const buttonClass = "px-4 py-2 rounded font-medium transition-colors";
     const labelClass = "text-sm text-gray-600 mb-1";
 
@@ -216,7 +216,7 @@ const AddOrUpdateProductPage = () => {
                                         type="file"
                                         name={`imgurl${num}`}
                                         onChange={handleImageUpload}
-                                        className="w-full text-sm file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        className="w-full text-sm file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
                                     />
                                     {product[`imgurl${num}`] && (
                                         <img
@@ -313,7 +313,7 @@ const AddOrUpdateProductPage = () => {
                     {/* Submit Button */}
                     <button 
                         type="submit"
-                        className={`${buttonClass} w-full bg-blue-600 text-white hover:bg-blue-700 ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                        className={`${buttonClass} w-full bg-primary-600 text-white hover:bg-primary-700 ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
                         disabled={loading}
                     >
                         {loading && (
@@ -384,7 +384,7 @@ const AddOrUpdateProductPage = () => {
                                     className={`${inputClass} flex-1`}
                                 />
                                 <button 
-                                    className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700`}
+                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700`}
                                     onClick={handleAddSubcategory}
                                 >
                                     Add

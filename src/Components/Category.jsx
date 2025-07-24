@@ -17,7 +17,7 @@ const Category = () => {
 
     useEffect(() => {
         if (user?.email) {
-            setRole("admin");
+            // setRole("admin");
         }
     }, [user]);
 
@@ -101,7 +101,7 @@ const Category = () => {
                     {category.map((item, index) => (
                         <div 
                             key={item.id} 
-                            className={`group relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-primary/50 transition-all duration-500 cursor-pointer overflow-hidden ${
+                            className={`group relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-text-primary-500 transition-all duration-500 cursor-pointer overflow-hidden ${
                                 hoveredIndex === index ? 'scale-105' : 'scale-100'
                             }`}
                             onMouseEnter={() => setHoveredIndex(index)}
@@ -118,7 +118,7 @@ const Category = () => {
                             <div className="relative z-10">
                                 {/* Image Container */}
                                 <div className="relative mb-6">
-                                    <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-2xl overflow-hidden border-2 border-white/20 group-hover:border-primary/50 transition-all duration-500 bg-gradient-to-br from-white/10 to-white/5">
+                                    <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-2xl overflow-hidden border-2 border-white/20 group-hover:border-text-primary-500 transition-all duration-500 bg-gradient-to-br from-white/10 to-white/5">
                                         <img 
                                             src={item.image} 
                                             alt={item.name} 

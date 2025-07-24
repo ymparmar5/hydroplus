@@ -130,7 +130,7 @@ const CustomerReviews = () => {
                       slidesPerView === 1 ? 'grid-cols-1' : slidesPerView === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
                     }`}>
                       {slideReviews.map((review) => (
-                        <div key={review.id} className="bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/10 hover:border-primary/50 transition-all duration-500 hover:scale-105 flex flex-col">
+                        <div key={review.id} className="bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/10 hover:border-text-primary-500 transition-all duration-500 hover:scale-105 flex flex-col">
                           {/* Quote Icon */}
                           <div className="flex justify-center items-center mb-3 sm:mb-4">
                             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-full flex items-center justify-center">
@@ -147,7 +147,7 @@ const CustomerReviews = () => {
 
                           {/* Customer Info */}
                           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary/50 flex-shrink-0">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-text-primary-500 flex-shrink-0">
                               <img 
                                 src={review.image} 
                                 alt={review.name} 
