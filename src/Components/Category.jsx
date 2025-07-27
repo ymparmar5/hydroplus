@@ -6,7 +6,40 @@ import { getAuth } from "firebase/auth";
 import { ArrowRight, Sparkles, Zap, ChevronRight } from "lucide-react";
 
 const Category = () => {
-    const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState([
+       
+            {
+              id: "Agriculture",
+              name: "Agriculture",
+              image: "/20.png",
+            },
+            {
+              id: "Industrial",
+              name: "Industrial",
+              image: "/25.png",
+            },
+            {
+              id: "Machinery",
+              name: "Machinery",
+              image: "/04.png",
+            },
+            {
+              id: "Pressure system",
+              name: "Pressure system",
+              image: "/12.png",
+            },
+            {
+              id: "Residential",
+              name: "Residential",
+              image: "/20-1.png",
+            },
+            {
+              id: "Solar",
+              name: "Solar",
+              image: "/22.png",
+            },
+          
+    ]);
     const [role, setRole] = useState("");
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [isVisible, setIsVisible] = useState(false);
@@ -43,7 +76,8 @@ const Category = () => {
                 id: doc.id,
                 ...doc.data(),
             }));
-            setCategory(categoryList);
+            // setCategory(categoryList);
+         
         } catch (error) {
             console.error("Error fetching categories:", error);
         }
@@ -108,7 +142,7 @@ const Category = () => {
                 .glassmorphic-card {
                     position: relative;
                     width: 100%;
-                    height: 500px;
+                    height: 350px;
                     border-radius: 16px;
                     background: rgba(255, 67, 0, 0.08); /* Use primary color with opacity for card background */
                     background: linear-gradient(180deg, rgba(255, 67, 0, 0.16) 0%, rgba(25, 25, 25, 0.7) 60%);
