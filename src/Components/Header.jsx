@@ -23,12 +23,12 @@ const Header = () => {
         ? 'bg-black/80 backdrop-blur-lg border-b border-white/10' 
         : 'bg-gradient-to-r from-black/90 via-gray-900/90 to-black/90 backdrop-blur-sm'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto ">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <NavLink to="/" className="flex items-center gap-3 group">
+          <NavLink to="/" className="flex items-center gap-3 group mx-3">
             <div className="relative">
-              <img src="/logo.png" alt="logo" className="h-12 w-auto object-contain group-hover:scale-105 transition-transform duration-300" />
+              <img src="/logo.svg" alt="logo" className="h-[100px] sm:h-[100px] object-contain group-hover:scale-105 transition-transform duration-300" />
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </div>
             <div className="hidden sm:block">
