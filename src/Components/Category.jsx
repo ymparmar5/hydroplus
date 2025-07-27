@@ -110,8 +110,8 @@ const Category = () => {
                     width: 100%;
                     height: 500px;
                     border-radius: 16px;
-                    background: #191919aa;
-                    background: linear-gradient(180deg, #292929aa 0%, #191919cc 50%);
+                    background: rgba(255, 67, 0, 0.08); /* Use primary color with opacity for card background */
+                    background: linear-gradient(180deg, rgba(255, 67, 0, 0.16) 0%, rgba(25, 25, 25, 0.7) 60%);
                     backdrop-filter: blur(4px);
                     box-shadow: inset 0 2px 2px 0 #e7c4a088, inset 0 -2px 2px 0 #0003;
                     color: #ccc;
@@ -123,6 +123,8 @@ const Category = () => {
                     font-family: "Mona-Sans", "Mona Sans", sans-serif;
                     cursor: pointer;
                     transition: all 0.3s ease;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
                 }
                 
                 .glassmorphic-card:hover {
@@ -147,8 +149,8 @@ const Category = () => {
                     border-radius: 100px;
                     padding: 8px 36px;
                     margin-top: 12px;
-                    background: #fff2;
-                    box-shadow: 0 0 0 1px #fff3, inset 120px 0 100px -100px #000c, 0 0 0 0 #fff1;
+                    background: none;
+                    box-shadow: none;
                     transition: box-shadow 0.4s ease-in-out;
                     cursor: pointer;
                 }
@@ -377,26 +379,25 @@ const Category = () => {
                             Featured <span className="text-primary">Categories</span>
                         </h1>
                     </div>
-                </div>
+                </div>  
 
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className={`grid gap-6 md:gap-12 ${getGridClasses()}`}>
+                <div className="max-w-7xl mx-auto px-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-14 md:gap-20 lg:gap-24 xl:gap-32">
                         {category.map((item, index) => {
                             const isLastOddItem = category.length % 2 === 1 && index === category.length - 1;
-
                             return (
                                 <div
                                     key={item.id}
-                                    className={`relative ${isLastOddItem ? "sm:col-span-2 sm:mx-auto lg:col-span-1" : ""} ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
+                                    className={`relative ${isLastOddItem ? "col-span-full mx-auto" : ""} ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}
                                     style={{ animationDelay: `${index * 150}ms` }}
                                 >
                                     <div
-                                        className="glassmorphic-card"
+                                        className="glassmorphic-card p-4 sm:p-6 md:p-8 flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105"
                                         onClick={() => handleCategoryClick(item.name)}
                                     >
-                                        <img src={item.image} alt={item.name} />
-                                        <h2>{item.name}</h2>
-                                        <div className="glassmorphic-button">Get Started</div>
+                                        <img className="w-full max-w-xs h-40 sm:h-48 md:h-56 object-cover rounded-md mb-4" src={item.image} alt={item.name} />
+                                        <h2 className="mt-2 text-lg sm:text-xl font-semibold text-center">{item.name}</h2>
+                                        <div className="glassmorphic-button mt-4 bg-primary text-white border border-primary hover:bg-primary/90 transition-colors duration-300">Get Started</div>
 
                                         {role === "admin" && (
                                             <div className="absolute top-2 right-2 z-30">
@@ -423,13 +424,7 @@ const Category = () => {
                     </div>
                 </div>
 
-                <div className={`text-center mt-12 transition-all duration-1000 delay-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                    <button className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-primary/25 flex items-center gap-3 mx-auto group">
-                        <Zap className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
-                        <p className="text-sm sm:text-md md:text-md lg:text-2xl xlg:text-md font-bold text-white">View All Categories</p>
-                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    </button>
-                </div>
+                
             </div>
         </section>
     );
