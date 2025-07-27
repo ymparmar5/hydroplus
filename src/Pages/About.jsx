@@ -1,163 +1,423 @@
 import React from 'react';
+import { Mail, Phone, MapPin, Award, Users, Target, Eye, Wrench, Shield, Globe, Zap, Droplet, ChevronRight, Star, CheckCircle, ArrowUp } from 'lucide-react';
 
-const team = [
-  {
-    name: 'Divesh Ramchandani',
-    role: 'CEO & Founder',
-    image: '/about-us-11.jpeg',
-    desc: 'Visionary leader with 15+ years in water solutions.'
-  },
-  {
-    name: 'S Mishra',
-    role: 'UI Developer',
-    image: '/about-us-2.jpg',
-    desc: 'Designs seamless digital experiences for our clients.'
-  },
-  {
-    name: 'Y M Parmar',
-    role: 'Developer',
-    image: '/about-us-3.jpeg',
-    desc: 'Builds robust, scalable systems for HydroPlus.'
-  },
-  {
-    name: 'Lisa Wang',
-    role: 'Operations',
-    image: '/about-us-7.jpg',
-    desc: 'Ensures smooth operations and customer satisfaction.'
-  },
-];
+const colors = {
+  primary: '#ff4300',
+  secondary: '#ff6b35',
+};
 
-const highlights = [
-  {
-    icon: '✅',
-    title: 'Trusted & Certified',
-    desc: 'ISO 9001:2015 certified, 25+ years of trust in water and air solutions.'
-  },
-  {
-    icon: '🛠️',
-    title: 'Expertise & Support',
-    desc: 'Professional team, 750+ SKUs, and strong dealer education.'
-  },
-  {
-    icon: '🔧',
-    title: 'Wide Product Range',
-    desc: 'Specializing in high-pressure washers, air compressors, and more.'
-  },
-  {
-    icon: '🌏',
-    title: 'Global Presence',
-    desc: 'Products available worldwide, easy access to parts & support.'
-  },
-];
-
-const About = () => {
+export default function About() {
   return (
-    <div className="min-h-[80vh] w-full bg-gradient-to-br from-black via-gray-900 to-black text-white py-0">
-      {/* Full-width hero image and heading */}
-      <div className="w-full">
-        <img
-          src="/istockphoto-1827291486-612x612.jpg"
-          alt="About Us"
-          className="w-full h-56 sm:h-72 md:h-96 object-contain sm:object-cover bg-black"
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden text-white">
+      {/* Animated Background (static) */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div
+          className="absolute w-60 h-60 xs:w-72 xs:h-72 sm:w-96 sm:h-96 rounded-full opacity-10 animate-pulse"
+          style={{
+            background: 'radial-gradient(circle, #ff4300, transparent)',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}
         />
       </div>
-      <div className="w-full text-primary font-bold text-3xl sm:text-4xl mb-8 text-center mt-4">About Hydroplus International</div>
-      <div className="container mx-auto px-3 sm:px-4 md:px-6">
-        {/* Company Summary */}
-        <div className="max-w-3xl mx-auto text-center mb-10">
-          <p className="text-lg sm:text-xl text-gray-200">
-            Hydroplus International is a leading manufacturer and supplier of pumps, motors, and power tools for residential, commercial, and industrial use. With over a decade of experience, we are trusted for our quality, innovation, and customer satisfaction.
-          </p>
+      {/* Additional Background Elements */}
+      <div className="absolute bottom-0 left-0 w-full h-16 xs:h-24 sm:h-32 bg-gradient-to-t from-primary/10 to-transparent z-0"></div>
+      <div className="absolute top-0 right-0 w-40 xs:w-52 sm:w-64 h-40 xs:h-52 sm:h-64 bg-gradient-radial from-primary/20 to-transparent rounded-full blur-3xl z-0"></div>
+      <style jsx>{`
+        .gradient-text {
+          background: linear-gradient(135deg, ${colors.primary}, ${colors.secondary});
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 67, 0, 0.1);
+        }
+      `}</style>
+
+      {/* Header Section (exact replica of Contact) */}
+      <div className="relative h-[160px] xs:h-[200px] sm:h-[220px] md:h-[300px] lg:h-[350px] w-full mb-8 sm:mb-12 overflow-hidden animate-pulse-glow">
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/contact.png')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            filter: 'brightness(0.8)',
+          }}
+        />
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-b from-transparent via-black/50 to-black" />
+        <div className="relative z-10 flex items-center justify-center h-full px-2">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-2 sm:mb-4 text-left ">
+            About <span className="text-primary ">Hydroplus</span> International
+          </h1>
         </div>
-        {/* Years of Experience / Achievements */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 mb-14">
-          <div className="flex flex-col items-center">
-            <div className="text-4xl font-bold text-primary">20+</div>
-            <div className="text-gray-300 text-base">Years Of Experience</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="text-4xl font-bold text-primary">30+</div>
-            <div className="text-gray-300 text-base">Team Members</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="text-4xl font-bold text-primary">750+</div>
-            <div className="text-gray-300 text-base">SKUs</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="text-4xl font-bold text-primary">1000+</div>
-            <div className="text-gray-300 text-base">Happy Clients</div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        {/* Company Overview */}
+        <div className="text-center mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 gradient-text">Our Story</h2>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+              Hydroplus International stands as a beacon of innovation in the water solutions industry. 
+              With over two decades of unwavering commitment to excellence, we have evolved from a 
+              visionary startup to a globally recognized leader in manufacturing and supplying premium 
+              pumps, motors, and power tools.
+            </p>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Our journey is marked by continuous innovation, exceptional quality, and an unrelenting 
+              focus on customer satisfaction. Today, we serve thousands of clients worldwide, delivering 
+              solutions that power industries and enhance lives.
+            </p>
           </div>
         </div>
-        {/* Why Choose Us Section */}
-        <div className="mb-14">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 text-primary">Why Choose Us</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {highlights.map((item, idx) => (
-              <div key={idx} className="flex flex-col items-center bg-white/10 rounded-xl p-6 shadow-lg">
-                <div className="text-4xl mb-3">{item.icon}</div>
-                <div className="font-bold text-lg text-white text-center mb-1">{item.title}</div>
-                <div className="text-gray-300 text-sm text-center">{item.desc}</div>
+
+        {/* Achievements Counter (static) */}
+        <div className="mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6 md:p-8">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Award className="w-5 h-5" /></div>
+                <div className="text-3xl md:text-4xl font-bold mb-2 gradient-text">5+</div>
+                <div className="text-gray-600 text-sm md:text-base font-medium">Years Experience</div>
               </div>
-            ))}
-          </div>
-        </div>
-        {/* Video Section */}
-        <div className="max-w-3xl mx-auto mb-14">
-          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10 flex flex-col items-center">
-            <div className="text-primary font-semibold text-xl mb-4">Watch Our Company Video</div>
-            <iframe width="100%" height="250" className="rounded-lg mb-4" src="https://www.youtube.com/embed/NLN0R8RXLmA?si=i-omFJ2dooiaxbRx" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>
-          </div>
-        </div>
-        {/* Founder's Word Section */}
-        <div className="max-w-3xl mx-auto mb-14">
-          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10 flex flex-col items-center">
-            <div className="text-primary font-semibold text-xl mb-2">Founder's Word</div>
-            <blockquote className="italic text-gray-200 text-lg mb-4 text-center">
-              "At Hydroplus, we save your time, money, and energy with innovative solutions and exceptional service. Our mission goes beyond selling products – we deliver solutions designed to simplify your life and enhance reliability. Thank you for trusting us to be part of your journey. Together, we’ll set new standards in efficiency and convenience."
-            </blockquote>
-            <div className="text-primary font-bold text-base">Warm Regards,</div>
-            <div className="text-white font-semibold text-base">Divesh Ramchandani</div>
-            <div className="text-gray-400 text-xs">Founder & CEO</div>
-          </div>
-        </div>
-        {/* Office Contacts Section */}
-        <div className="max-w-3xl mx-auto mb-14">
-          <div className="bg-white/5 rounded-2xl shadow-2xl p-8 sm:p-10 border border-white/10">
-            <div className="text-primary font-semibold text-xl mb-4 text-center">Office Contacts</div>
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
-              <div className="flex-1">
-                <div className="text-gray-400 text-sm mb-1">Phone</div>
-                <div className="text-white text-base font-semibold mb-3">+91 77109 21153</div>
-                <div className="text-gray-400 text-sm mb-1">Email</div>
-                <div className="text-white text-base font-semibold mb-3">info@hydroplus.com</div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6 md:p-8">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Users className="w-5 h-5" /></div>
+                <div className="text-3xl md:text-4xl font-bold mb-2 gradient-text">30+</div>
+                <div className="text-gray-600 text-sm md:text-base font-medium">Team Members</div>
               </div>
-              <div className="flex-1">
-                <div className="text-gray-400 text-sm mb-1">Address</div>
-                <div className="text-white text-base font-semibold">
-                  G1-2, Ground Floor, Shivai Plaza Co-Op Socity,<br />
-                  Marol, Andheri East, Mumbai - 400059
-                </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6 md:p-8">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Wrench className="w-5 h-5" /></div>
+                <div className="text-3xl md:text-4xl font-bold mb-2 gradient-text">50+</div>
+                <div className="text-gray-600 text-sm md:text-base font-medium">SKUs</div>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6 md:p-8">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Star className="w-5 h-5" /></div>
+                <div className="text-3xl md:text-4xl font-bold mb-2 gradient-text">1000+</div>
+                <div className="text-gray-600 text-sm md:text-base font-medium">Happy Clients</div>
               </div>
             </div>
           </div>
         </div>
-        {/* Meet Our Minds Section */}
-        <div className="w-full mt-14">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 text-primary">Meet Our Minds</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {team.map((member, idx) => (
-              <div key={idx} className="flex flex-col items-center bg-white/10 rounded-xl p-6 shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-300 group">
-                <img src={member.image} alt={member.name} className="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-4 border-primary shadow-md mb-3 group-hover:scale-110 transition-transform duration-300" />
-                <div className="font-bold text-lg text-white text-center mb-1 group-hover:text-primary transition-colors duration-300">{member.name}</div>
-                <div className="text-primary text-xs font-semibold mb-1 text-center">{member.role}</div>
-                <div className="text-gray-300 text-xs text-center">{member.desc}</div>
+
+        {/* Mission & Vision (static) */}
+        <div className="mb-20 grid md:grid-cols-2 gap-8 md:gap-12">
+          <div className="glass-effect rounded-2xl p-8">
+            <div className="flex items-center mb-6">
+              <Target className="w-8 h-8 mr-4" style={{ color: colors.primary }} />
+              <h3 className="text-2xl font-bold gradient-text">Our Mission</h3>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              To revolutionize the water and power solutions industry by delivering innovative, 
+              reliable, and sustainable products that exceed customer expectations while 
+              contributing to global progress and environmental stewardship.
+            </p>
+          </div>
+          <div className="glass-effect rounded-2xl p-8">
+            <div className="flex items-center mb-6">
+              <Eye className="w-8 h-8 mr-4" style={{ color: colors.primary }} />
+              <h3 className="text-2xl font-bold gradient-text">Our Vision</h3>
+            </div>
+            <p className="text-gray-700 leading-relaxed">
+              To be the world's most trusted and innovative leader in water and power solutions, 
+              setting new industry standards while fostering sustainable development and 
+              empowering communities globally.
+            </p>
+          </div>
+        </div>
+
+        {/* Our Services (static) */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Our Solutions</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="glass-effect rounded-2xl p-8">
+              <div className="mb-6" style={{ color: colors.primary }}><Droplet className="w-8 h-8" /></div>
+              <h3 className="text-xl font-bold mb-4 gradient-text">Water Pumps</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                High-efficiency water pumps for residential, commercial and industrial applications.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Submersible Pumps</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Centrifugal Pumps</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Pressure Booster Pumps</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Solar Water Pumps</li>
+              </ul>
+            </div>
+            <div className="glass-effect rounded-2xl p-8">
+              <div className="mb-6" style={{ color: colors.primary }}><Zap className="w-8 h-8" /></div>
+              <h3 className="text-xl font-bold mb-4 gradient-text">Motors & Drives</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Reliable motors and drive systems engineered for optimal performance.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />AC Motors</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />DC Motors</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Variable Drives</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Motor Controllers</li>
+              </ul>
+            </div>
+            <div className="glass-effect rounded-2xl p-8">
+              <div className="mb-6" style={{ color: colors.primary }}><Wrench className="w-8 h-8" /></div>
+              <h3 className="text-xl font-bold mb-4 gradient-text">Power Tools</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Professional-grade power tools for various industrial applications.
+              </p>
+              <ul className="space-y-2">
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />High-Pressure Washers</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Air Compressors</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Welding Equipment</li>
+                <li className="flex items-center text-sm text-gray-500"><ChevronRight className="w-4 h-4 mr-2" style={{ color: colors.primary }} />Cutting Tools</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Core Values (static) */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Our Values</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Target className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold mb-3 gradient-text">Innovation</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">Continuously advancing technology to deliver cutting-edge solutions.</p>
               </div>
-            ))}
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Shield className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold mb-3 gradient-text">Quality</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">Uncompromising commitment to excellence in every product we manufacture.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><CheckCircle className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold mb-3 gradient-text">Reliability</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">Building trust through consistent performance and dependable service.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6">
+                <div className="mb-4 flex justify-center" style={{ color: colors.primary }}><Globe className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold mb-3 gradient-text">Sustainability</h3>
+                <p className="text-gray-600 text-sm leading-relaxed">Creating eco-friendly solutions for a sustainable future.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Why Choose Us (static) */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Why Choose Hydroplus</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6 h-full">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto text-white" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}><Shield className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold text-center mb-3 gradient-text">Trusted & Certified</h3>
+                <p className="text-gray-600 text-sm text-center leading-relaxed">ISO 9001:2015 certified, 25+ years of trust in water and air solutions.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6 h-full">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto text-white" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}><Wrench className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold text-center mb-3 gradient-text">Expertise & Support</h3>
+                <p className="text-gray-600 text-sm text-center leading-relaxed">Professional team, 750+ SKUs, and strong dealer education.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6 h-full">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto text-white" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}><Globe className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold text-center mb-3 gradient-text">Wide Product Range</h3>
+                <p className="text-gray-600 text-sm text-center leading-relaxed">Specializing in high-pressure washers, air compressors, and more.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-xl p-6 h-full">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4 mx-auto text-white" style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}><Zap className="w-6 h-6" /></div>
+                <h3 className="text-lg font-bold text-center mb-3 gradient-text">Global Presence</h3>
+                <p className="text-gray-600 text-sm text-center leading-relaxed">Products available worldwide, easy access to parts & support.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Company Video (static) */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <div className="glass-effect rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-center mb-6 gradient-text">Experience Hydroplus</h3>
+            <div className="relative rounded-lg overflow-hidden shadow-lg aspect-video">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                className="absolute inset-0 rounded-lg" 
+                src="https://www.youtube.com/embed/NLN0R8RXLmA?si=i-omFJ2dooiaxbRx" 
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerPolicy="strict-origin-when-cross-origin" 
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Founder's Message (static) */}
+        <div className="max-w-4xl mx-auto mb-20">
+          <div className="glass-effect rounded-2xl p-8 text-center">
+            <h3 className="text-2xl font-bold mb-6 gradient-text">Message from Our Founder</h3>
+            <blockquote className="text-lg text-gray-700 italic mb-8 leading-relaxed">
+              "At Hydroplus, we don't just manufacture products – we craft solutions that transform lives. 
+              Our commitment extends beyond delivering exceptional quality; we're dedicated to saving your 
+              time, money, and energy through innovative engineering and unparalleled service."
+            </blockquote>
+            <div className="space-y-2">
+              <div className="gradient-text font-bold text-lg">Warm Regards,</div>
+              <div className="text-gray-800 font-semibold text-xl">Aardeep Jogani</div>
+              <div className="text-gray-500 text-sm">Founder & CEO, Hydroplus International</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Team Section (static) */}
+        <div className="mb-20">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 gradient-text">Meet Our Leadership</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6">
+                <div className="relative mb-6">
+                  <img 
+                    src="/admin.png" 
+                    alt="Divesh Ramchandani" 
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto shadow-lg" 
+                    style={{ border: `3px solid ${colors.primary}40` }}
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-2 gradient-text">Aardeep jogani</h3>
+                <div className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>CEO & Founder</div>
+                <div className="text-xs mb-3" style={{ color: colors.secondary }}>Strategic Leadership</div>
+                <p className="text-gray-600 text-sm leading-relaxed">Visionary leader with 15+ years in water solutions.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6">
+                <div className="relative mb-6">
+                  <img 
+                    src="/about-us-2.jpg" 
+                    alt="S Mishra" 
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto shadow-lg" 
+                    style={{ border: `3px solid ${colors.primary}40` }}
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-2 gradient-text">S Mishra</h3>
+                <div className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>UI Developer</div>
+                <div className="text-xs mb-3" style={{ color: colors.secondary }}>Digital Innovation</div>
+                <p className="text-gray-600 text-sm leading-relaxed">Designs seamless digital experiences for our clients.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6">
+                <div className="relative mb-6">
+                  <img 
+                    src="/about-us-3.jpeg" 
+                    alt="Y M Parmar" 
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto shadow-lg" 
+                    style={{ border: `3px solid ${colors.primary}40` }}
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-2 gradient-text">Y M Parmar</h3>
+                <div className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>Developer</div>
+                <div className="text-xs mb-3" style={{ color: colors.secondary }}>System Architecture</div>
+                <p className="text-gray-600 text-sm leading-relaxed">Builds robust, scalable systems for HydroPlus.</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="glass-effect rounded-2xl p-6">
+                <div className="relative mb-6">
+                  <img 
+                    src="/about-us-7.jpg" 
+                    alt="Lisa Wang" 
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover mx-auto shadow-lg" 
+                    style={{ border: `3px solid ${colors.primary}40` }}
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-2 gradient-text">Lisa Wang</h3>
+                <div className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>Operations</div>
+                <div className="text-xs mb-3" style={{ color: colors.secondary }}>Quality Assurance</div>
+                <p className="text-gray-600 text-sm leading-relaxed">Ensures smooth operations and customer satisfaction.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Section (static) */}
+        <div className="max-w-4xl mx-auto">
+          <div className="glass-effect rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-center mb-8 gradient-text">Get in Touch</h3>
+            <div className="grid sm:grid-cols-3 gap-6">
+              <a 
+                href="mailto:contact.hydroplusinternational@gmail.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex flex-col items-center p-4 rounded-xl"
+                style={{ backgroundColor: `${colors.primary}08` }}
+              >
+                <div 
+                  className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg mb-3 text-white"
+                  style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                >
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div className="gradient-text font-semibold mb-1">Email</div>
+                <div className="text-gray-600 text-sm text-center leading-snug">contact.hydroplusinternational@gmail.com</div>
+              </a>
+              <a 
+                href="tel:+918000074088" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex flex-col items-center p-4 rounded-xl"
+                style={{ backgroundColor: `${colors.primary}08` }}
+              >
+                <div 
+                  className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg mb-3 text-white"
+                  style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                >
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div className="gradient-text font-semibold mb-1">Phone</div>
+                <div className="text-gray-600 text-sm text-center leading-snug">+91 8000074088</div>
+              </a>
+              <a 
+                href="https://goo.gl/maps/2w1vQw8Qw8Qw8Qw8A" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex flex-col items-center p-4 rounded-xl"
+                style={{ backgroundColor: `${colors.primary}08` }}
+              >
+                <div 
+                  className="w-10 h-10 flex items-center justify-center rounded-full shadow-lg mb-3 text-white"
+                  style={{ background: `linear-gradient(135deg, ${colors.primary}, ${colors.secondary})` }}
+                >
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div className="gradient-text font-semibold mb-1">Location</div>
+                <div className="text-gray-600 text-sm text-center leading-snug">Surat, Gujarat, India</div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default About;
+}
