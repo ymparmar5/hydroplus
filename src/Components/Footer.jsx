@@ -54,17 +54,26 @@ const Footer = () => {
               Leading provider of premium water treatment and filtration solutions for residential, commercial, and industrial applications.
             </p>
             <div className="flex space-x-3 sm:space-x-4 mt-2">
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.facebook.com/people/Hydroplus-International/61576041157055/?mibextid=wwXIfr&rdid=Fbqr3NIgIqq5Eja9&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Hr5PnDc7J%2F%3Fmibextid%3DwwXIfr" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
                 <Facebook className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
-                <Twitter className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://www.instagram.com/hydroplus_international_" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
                 <Instagram className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+              <a href="https://in.linkedin.com/in/hydroplus-international-17a643365?original_referer=https%3A%2F%2Fwww.google.com%2F" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
                 <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+              </a>
+              <a href="https://www.youtube.com/@hydroplusinternational" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.228 3.5 12 3.5 12 3.5s-7.228 0-9.391.569A2.994 2.994 0 0 0 .502 6.186C0 8.36 0 12 0 12s0 3.64.502 5.814a2.994 2.994 0 0 0 2.107 2.117C4.772 20.5 12 20.5 12 20.5s7.228 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117C24 15.64 24 12 24 12s0-3.64-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+              <a href="https://wa.me/918000074088" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+                <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 sm:w-5 sm:h-5" />
+              </a>
+              <a href="https://t.me/hydroplusinternational" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+                <img src="/telecall.png" alt="Telegram" className="w-4 h-4 sm:w-5 sm:h-5" />
+              </a>
+              <a href="tel:+918000074088" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
+                <img src="/contact.png" alt="Call" className="w-4 h-4 sm:w-5 sm:h-5" />
               </a>
             </div>
           </div>
@@ -234,7 +243,7 @@ const Footer = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-gray-400 text-xs md:text-sm">Phone</p>
-                    <p className="text-white text-xs md:text-sm truncate">+1 (555) 123-4567</p>
+                    <p className="text-white text-xs md:text-sm truncate"><a href="tel:+918000074088">+91 80000 74088</a></p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2 md:gap-3">
@@ -252,7 +261,7 @@ const Footer = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-gray-400 text-xs md:text-sm">Address</p>
-                    <p className="text-white text-xs md:text-sm leading-relaxed">123 Water Street, City, State 12345</p>
+                    <p className="text-white text-xs md:text-sm leading-relaxed">Surat, Gujarat, India</p>
                   </div>
                 </div>
               </div>
@@ -278,7 +287,7 @@ const Footer = () => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-gray-400 text-sm">Phone</p>
-                      <p className="text-white text-sm">+1 (555) 123-4567</p>
+                      <p className="text-white text-sm"><a href="tel:+918000074088">+91 80000 74088</a></p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -296,7 +305,7 @@ const Footer = () => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-gray-400 text-sm">Address</p>
-                      <p className="text-white text-sm leading-relaxed">123 Water Street, City, State 12345</p>
+                      <p className="text-white text-sm leading-relaxed">Surat, Gujarat, India</p>
                     </div>
                   </div>
                 </div>
