@@ -47,9 +47,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-4 lg:gap-8">
           {/* Company Info - always first column */}
           <div className="flex flex-col items-center lg:items-start gap-2">
-            <img src="/logo.png" alt="HydroPlus" className="h-10 w-auto mb-1" />
-            <h3 className="text-lg sm:text-xl font-bold text-white">HydroPlus</h3>
-            <p className="text-xs sm:text-sm text-gray-400 mb-2">Water Solutions</p>
+            <img src="/logo.svg" alt="HydroPlus" className="h-10 w-auto mb-1" />
+            <h3 className="text-lg sm:text-xl font-bold text-white">HydroPlus Internation</h3>
+            <p className="text-xs sm:text-sm text-gray-400 mb-2">Strenth in every strokes</p>
             <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-2 text-center lg:text-left">
               Leading provider of premium water treatment and filtration solutions for residential, commercial, and industrial applications.
             </p>
@@ -66,15 +66,7 @@ const Footer = () => {
               <a href="https://www.youtube.com/@hydroplusinternational" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
                 <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.107-2.117C19.228 3.5 12 3.5 12 3.5s-7.228 0-9.391.569A2.994 2.994 0 0 0 .502 6.186C0 8.36 0 12 0 12s0 3.64.502 5.814a2.994 2.994 0 0 0 2.107 2.117C4.772 20.5 12 20.5 12 20.5s7.228 0 9.391-.569a2.994 2.994 0 0 0 2.107-2.117C24 15.64 24 12 24 12s0-3.64-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </a>
-              <a href="https://wa.me/918000074088" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
-                <img src="/whatsapp.png" alt="WhatsApp" className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="https://t.me/hydroplusinternational" target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
-                <img src="/telecall.png" alt="Telegram" className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="tel:+918000074088" className="w-8 h-8 sm:w-10 sm:h-10 bg-white/10 hover:bg-primary/20 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 border border-white/20">
-                <img src="/contact.png" alt="Call" className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
+          
             </div>
           </div>
           {/* Quick Links - Responsive with Dropdown */}
