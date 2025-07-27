@@ -8,59 +8,60 @@ const CustomerReviews = () => {
   const reviews = [
     {
       id: 1,
-      name: "Michael Chen",
-      role: "Business Owner",
+      name: "Rajesh Patel",
+      role: "Farm Owner",
       rating: 5,
       image: "/admin.png",
-      text: "As a restaurant owner, water quality is crucial. HydroPlus delivered an industrial-grade solution that exceeded expectations!",
-      company: "Restaurant Chain"
+      text: "HydroPlus water pumps are perfect for our agricultural needs. High pressure and very reliable even in remote areas!",
+      company: "Patel Farms, Gujarat"
     },
     {
       id: 2,
-      name: "Sarah Johnson",
+      name: "Priya Sharma",
       role: "Homeowner",
       rating: 5,
       image: "/admin.png",
-      text: "The water filtration system from HydroPlus has completely transformed our home. The water quality is exceptional!",
-      company: "Residential Customer"
+      text: "We’ve been using HydroPlus at home for over a year now. The water flow is great, and there’s zero maintenance hassle.",
+      company: "Sharma Residence, Delhi"
     },
     {
       id: 3,
-      name: "Emily Rodriguez",
-      role: "Property Manager",
+      name: "Anil Verma",
+      role: "Factory Manager",
       rating: 5,
       image: "/admin.png",
-      text: "We installed HydroPlus systems across all our properties. The maintenance is minimal and quality is consistently excellent!",
-      company: "Property Management"
+      text: "HydroPlus industrial pumps helped streamline our machinery cooling systems. Great performance and service!",
+      company: "Verma Industries, Pune"
     },
     {
       id: 4,
-      name: "David Thompson",
-      role: "Manufacturing Director",
+      name: "Sneha Iyer",
+      role: "Car Wash Owner",
       rating: 5,
       image: "/admin.png",
-      text: "The industrial water treatment solutions have significantly improved our production efficiency. Professional team!",
-      company: "Manufacturing Industry"
+      text: "The high-pressure pumps from HydroPlus are perfect for our car wash station. Durable and efficient!",
+      company: "Sparkle Car Wash, Bengaluru"
     },
     {
       id: 5,
-      name: "Lisa Wang",
-      role: "Healthcare Administrator",
+      name: "Ravi Singh",
+      role: "Workshop Supervisor",
       rating: 5,
       image: "/admin.png",
-      text: "Our hospital needed the highest quality water treatment. HydroPlus provided a comprehensive solution that meets all standards!",
-      company: "Healthcare Facility"
+      text: "Using HydroPlus pumps in our automobile workshop has made engine cleaning so much faster and more effective.",
+      company: "Singh Auto Works, Lucknow"
     },
     {
       id: 6,
-      name: "John Smith",
-      role: "Hotel Manager",
+      name: "Neha Desai",
+      role: "Housing Society Secretary",
       rating: 5,
       image: "/admin.png",
-      text: "The commercial water systems from HydroPlus have improved our guest satisfaction. Excellent service and support!",
-      company: "Hotel Chain"
+      text: "We installed HydroPlus pumps in our residential building and the water pressure is perfect across all floors.",
+      company: "Greenview Apartments, Mumbai"
     }
   ];
+  
 
   // Responsive slides per view calculation
   useEffect(() => {
@@ -99,24 +100,21 @@ const CustomerReviews = () => {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 pointer-events-none select-none">
         <div className="absolute top-10 right-1/4 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-10 left-1/4 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-10 left-1/4 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="container mx-auto px-3 sm:px-4 md:px-6 relative z-10">
-        {/* Header Section */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="flex justify-center items-center mb-3 sm:mb-4">
-            <span className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-primary/20 border border-primary/30">
-              <Star className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-primary animate-pulse" />
-            </span>
+       
+
+        <div className="text-center mb-12">
+          <div className={`inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm rounded-full px-6 py-3 border border-primary/30 mb-6 transition-all duration-1000 transform  }`}>
+            <Star className="w-5 h-5 text-primary animate-pulse" />
+            <h1 className="text-sm sm:text-sm md:text-lg lg:text-3xl xlg:text-3lg font-bold text-white animate-slide-up">
+              Customers<span className="text-primary">Testimonials</span>
+            </h1>
           </div>
-          <div className="inline-flex items-center gap-2 bg-primary/20 backdrop-blur-sm rounded-full px-4 py-2 sm:px-6 sm:py-3 border border-primary/30 mb-3 sm:mb-4">
-            <span className="text-primary font-semibold text-xs sm:text-sm">Customer Testimonials</span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl zmd:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
-            What Our <span className="text-primary">Customers Say</span>
-          </h2>
         </div>
+
 
         {/* Responsive Swiper */}
         <div className="max-w-5xl mx-auto relative">
@@ -126,9 +124,8 @@ const CustomerReviews = () => {
                 const slideReviews = reviews.slice(slideIndex * slidesPerView, slideIndex * slidesPerView + slidesPerView);
                 return (
                   <div key={slideIndex} className="w-full flex-shrink-0">
-                    <div className={`grid gap-6 px-1 sm:px-2 md:px-4 ${
-                      slidesPerView === 1 ? 'grid-cols-1' : slidesPerView === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                    }`}>
+                    <div className={`grid gap-6 px-1 my-2 sm:px-2 md:px-4 ${slidesPerView === 1 ? 'grid-cols-1' : slidesPerView === 2 ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                      }`}>
                       {slideReviews.map((review) => (
                         <div key={review.id} className="bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 border border-white/10 hover:border-text-primary-500 transition-all duration-500 hover:scale-105 flex flex-col">
                           {/* Quote Icon */}
@@ -148,9 +145,9 @@ const CustomerReviews = () => {
                           {/* Customer Info */}
                           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
                             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-text-primary-500 flex-shrink-0">
-                              <img 
-                                src={review.image} 
-                                alt={review.name} 
+                              <img
+                                src={review.image}
+                                alt={review.name}
                                 className="w-full h-full object-cover object-center"
                               />
                             </div>
@@ -179,16 +176,16 @@ const CustomerReviews = () => {
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="absolute left-1 sm:left-2 top-1/2 transform -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-black/70 hover:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 border border-white/40 z-20 shadow-xl"
+            className="absolute left-0 sm:left-2 top-1/2 transform -translate-y-1/2  w-5 h-5 sm:w-5 sm:h-5 md:w-5 md:h-5 bg-black/70 hover:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 border border-white/40 z-20 shadow-xl"
           >
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7" />
+            <ChevronLeft className="w-3 h-3 sm:w-2 sm:h-2 md:w-4 md:h-4" />
           </button>
-          
+
           <button
             onClick={nextSlide}
-            className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-black/70 hover:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 border border-white/40 z-20 shadow-xl"
+            className="absolute right-0 sm:right-2 top-1/2 transform -translate-y-1/2 w-5 h-5 sm:w-4 sm:h-5 md:w-5 md:h-5 bg-black/70 hover:bg-black/90 backdrop-blur-sm rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 border border-white/40 z-20 shadow-xl"
           >
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7" />
+            <ChevronRight className="w-3 h-3 sm:w-2 sm:h-2 md:w-4 md:h-4" />
           </button>
 
           {/* Slide Indicators */}
@@ -197,11 +194,10 @@ const CustomerReviews = () => {
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 border-2 shadow-lg ${
-                  index === currentSlide 
-                    ? 'bg-primary border-primary scale-125' 
+                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 border-2 shadow-lg ${index === currentSlide
+                    ? 'bg-primary border-primary scale-125'
                     : 'bg-white/50 border-white/70 hover:bg-white/70'
-                }`}
+                  }`}
               ></button>
             ))}
           </div>
