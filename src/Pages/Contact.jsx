@@ -122,43 +122,7 @@ const ContactPage = () => {
                   />
                 </div>
 
-                {/* Contact Info moved to bottom */}
-                <div className="space-y-4 sm:space-y-6 bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:space-x-6 sm:gap-0">
-                    {/* Email */}
-                    <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
-                        <Mail className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-white font-semibold text-sm sm:text-base">Email</div>
-                        <div className="text-gray-300 text-xs sm:text-sm truncate">contact.hydroplusinternational@gmail.com</div>
-                      </div>
-                    </div>
-                    {/* Phone */}
-                    <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
-                        <Phone className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-white font-semibold text-sm sm:text-base">Phone</div>
-                        <div className="text-gray-300 text-xs sm:text-sm truncate">+91 8000074088</div>
-                      </div>
-                    </div>
-                    {/* Location */}
-                    <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 bg-primary flex items-center justify-center rounded-full shadow-lg">
-                        <MapPin className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-white font-semibold text-sm sm:text-base">Location</div>
-                        <div className="text-gray-300 text-xs sm:text-sm truncate">
-                          Pasodara Rd, opposite Brahamahans Plaza, near Pasodara, Kholvad, Surat, 394185, Gujarat, India
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Animated Geometric Shapes */}
                 <div className="relative flex justify-center">
@@ -174,7 +138,7 @@ const ContactPage = () => {
           <div className="animate-slide-in-right">
             <div className="bg-white/5 backdrop-blur-lg rounded-2xl sm:rounded-3xl p-4 xs:p-6 sm:p-8 shadow-2xl border border-white/10">
               <div className="mb-4 xs:mb-6 sm:mb-8">
-                <h2 className="text-2xl xs:text-2.5xl sm:text-3xl font-bold text-white mb-1 xs:mb-2">Send Message</h2>
+                <h2 className="text-2xl xs:text-2.5xl sm:text-3xl font-bold text-white mb-1 xs:mb-2">Send A Message</h2>
                 <p className="text-gray-400 text-xs sm:text-base">Fill out the form below and we'll get back to you soon.</p>
               </div>
 
@@ -242,22 +206,54 @@ const ContactPage = () => {
                     <div className="w-5 h-5 xs:w-6 xs:h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <Send className="w-5 h-5" />
+                      <img src='/whatsapp.png' className="w-8 h-8" />
                       <span>Send Message</span>
                     </>
                   )}
                 </button>
               </div>
 
-              {/* Success Animation */}
-              {!isSubmitting && formData.name === '' && (
-                <div className="mt-4 text-green-400 text-xs sm:text-sm opacity-0 animate-pulse">
-                  Message sent successfully! ✓
-                </div>
-              )}
+
             </div>
           </div>
+
         </div>
+        
+        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {/* Item */}
+            {[
+              {
+                icon: <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />,
+                label: "Email",
+                value: "contact.hydroplusinternational@gmail.com"
+              },
+              {
+                icon: <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />,
+                label: "Phone",
+                value: "+91 8000074088"
+              },
+              {
+                icon: <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />,
+                label: "Location",
+                value: "Surat, Gujrat, India"
+              }
+            ].map((item, index) => (
+              <div key={index} className="flex items-start space-x-3">
+                <div className="min-w-[44px] min-h-[44px] sm:min-w-[52px] sm:min-h-[52px] bg-primary flex items-center justify-center rounded-full shadow-lg shrink-0">
+                  {item.icon}
+                </div>
+                <div className="text-sm sm:text-base text-white space-y-1">
+                  <div className="font-semibold">{item.label}</div>
+                  <div className="text-gray-300 text-xs sm:text-sm leading-snug">
+                    {item.value}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
 
       {/* Additional Background Elements */}

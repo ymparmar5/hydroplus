@@ -30,11 +30,11 @@ const socialLinks = [
 
 const SocialSidebar = () => {
   return (
-    <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
+    <div className="fixed right-1 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-4">
       {socialLinks.map((link, index) => (
         <div
           key={index}
-          className="bg-white shadow border border-orange-500 w-28 h-14 rounded-l-full flex items-center justify-center"
+          className="bg-white shadow border border-orange-500 w-12 h-14 rounded-l-full flex items-center justify-center"
         >
           <img src={link.icon} alt={link.label} className="w-7 h-7 object-contain" />
         </div>
