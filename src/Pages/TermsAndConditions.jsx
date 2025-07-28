@@ -6,7 +6,7 @@ const TermsAndConditions = () => {
       <p className="text-sm text-gray-500 mb-4">Last updated: 10/6/2024</p>
       <p className="mb-4">
         By accessing this website, you accept these terms and conditions. If you
-        do not agree, do not use Laxmo Pump's website.
+        do not agree, do not use Hydroplus International's website.
       </p>
       <h2 className="text-lg font-semibold mt-6 mb-2">1. Intellectual Property Rights</h2>
       <p className="mb-4">
@@ -59,7 +59,7 @@ const TermsAndConditions = () => {
       </p>
       <h2 className="text-lg font-semibold mt-6 mb-2">10. Entire Agreement</h2>
       <p className="mb-4">
-        These terms constitute the entire agreement between you and Laxmo Pump.
+        These terms constitute the entire agreement between you and Hydroplus International.
       </p>
       <h2 className="text-lg font-semibold mt-6 mb-2">11. Governing Law & Jurisdiction</h2>
       <p className="mb-4">
@@ -70,12 +70,10 @@ const TermsAndConditions = () => {
       <h2 className="text-lg font-semibold mt-6 mb-2">Contact Us</h2>
       <p className="mb-2">If you have questions, contact us at:</p>
       <address className="not-italic text-gray-700 mb-4">
-        Laxmo Pump<br />
+        Hydroplus International<br />
         Email: www.hydroplusinternational@gmail.com<br />
-        Phone: +91 9316755501<br />
-        Address: 104/C Block, Orchid Green,<br />
-        LP Savani Rd, Palanpur,<br />
-        Surat, 395009, Gujarat, India
+        Phone: +91 80000 74088<br />
+        Address: Surat, Gujrat, India
       </address>
     </div>
   );

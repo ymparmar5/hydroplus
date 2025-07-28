@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
       <h1 className="text-2xl md:text-3xl font-bold text-primary-700 mb-2">Privacy Policy</h1>
       <p className="text-sm text-gray-500 mb-4">Last updated: 10/6/2024</p>
       <p className="mb-4">
-        Welcome to Laxmo Pump. This Privacy Policy explains how we collect, use,
+        Welcome to Hydroplus International. This Privacy Policy explains how we collect, use,
         disclose, and safeguard your information when you visit our website
         <a href="http://www.hydroplusinternational.com" className="text-primary-700 underline ml-1">www.hydroplusinternational.com</a>. If you do not
         agree with the terms, please do not access the site.
@@ -44,12 +44,10 @@ const PrivacyPolicy = () => {
       <h2 className="text-lg font-semibold mt-6 mb-2">7. Contact Us</h2>
       <p className="mb-2">If you have questions, contact us at:</p>
       <address className="not-italic text-gray-700 mb-4">
-        Laxmo Pump<br />
+        Hydroplus International<br />
         Email: hydroplusinternational@gmail.com<br />
-        Phone: +91 9316755501<br />
-        Address: 104/C Block, Orchid Green,<br />
-        LP Savani Rd, Palanpur,<br />
-        Surat, 395009, Gujarat, India
+        Phone: +91 80000 74088<br />
+        Address: Surat, Gujrat, India
       </address>
       <h1 className="text-2xl md:text-3xl font-bold text-primary-700 mt-8 mb-2">Return and Refund Policy</h1>
       <p className="text-sm text-gray-500 mb-4">Last updated: 10/6/2024</p>
@@ -60,12 +58,10 @@ const PrivacyPolicy = () => {
       <h2 className="text-lg font-semibold mt-6 mb-2">Contact Us</h2>
       <p className="mb-2">If you have questions, contact us at:</p>
       <address className="not-italic text-gray-700 mb-4">
-        Laxmo Pump<br />
+        Hydroplus International<br />
         Email: hydroplusinternational@gmail.com<br />
-        Phone: +91 9316755501<br />
-        Address: Kevadiya Farm,<br />
-        Nr. Sahaj Imperia, Dabholi,<br />
-        Surat, 395004, Gujarat, India
+        Phone: +91 80000 74088<br />
+        Surat, Gujrat, India
       </address>
       <h1 className="text-2xl md:text-3xl font-bold text-primary-700 mt-8 mb-2">Shipping Policy</h1>
       <p className="text-sm text-gray-500 mb-4">Last updated: 10/6/2024</p>
@@ -79,12 +75,10 @@ const PrivacyPolicy = () => {
       <h2 className="text-lg font-semibold mt-6 mb-2">Contact Us</h2>
       <p className="mb-2">If you have questions, contact us at:</p>
       <address className="not-italic text-gray-700 mb-4">
-        Laxmo Pump<br />
+        Hydroplus International<br />
         Email: hydroplusinternational@gmail.com<br />
-        Phone: +91 9316755501<br />
-        Address: Kevadiya Farm,<br />
-        Nr. Sahaj Imperia, Dabholi,<br />
-        Surat, 395004, Gujarat, India
+        Phone: +91 80000 74088<br />
+        Surat, Gujrat, India
       </address>
     </div>
   );

@@ -31,7 +31,7 @@ const HomeProductCard = () => {
                                     <div className="home-product-card-content" onClick={() => navigate(`/productinfo/${id}`)}>
                                         <img src={imgurl1} alt="product" className="home-product-image" />
                                         <div className="home-product-details">
-                                            {/* <h2 className="home-product-brand">Laxmo pumps</h2> */}
+                                            {/* <h2 className="home-product-brand">Hydroplus Internationals</h2> */}
                                             <h1 className="home-product-title">{title.substring(0, 25)}</h1>
                                             <div className="home-product-button-container">
                                                 {/* Add any buttons or additional details here if needed */}

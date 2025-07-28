@@ -254,7 +254,7 @@ export default function About() {
         </div>
 
         {/* Company Video (static) */}
-        <div className="max-w-4xl mx-auto mb-20">
+        {/* <div className="max-w-4xl mx-auto mb-20">
           <div className="glass-effect rounded-2xl p-8">
             <h3 className="text-2xl font-bold text-center mb-6 gradient-text">Experience Hydroplus</h3>
             <div className="relative rounded-lg overflow-hidden shadow-lg aspect-video">
@@ -271,7 +271,7 @@ export default function About() {
               />
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Founder's Message (static) */}
         <div className="max-w-4xl mx-auto mb-20">
