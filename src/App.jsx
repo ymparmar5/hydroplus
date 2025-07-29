@@ -49,7 +49,6 @@ const App = () => {
           <Route path="/sign-in" element={<SignIN />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/tandc" element={<TermsAndConditions />} />
-          <Route path="/certificates" element={<Certificates />} />
           <Route path="/exhibitions" element={<Exhibitions />} />
 
 

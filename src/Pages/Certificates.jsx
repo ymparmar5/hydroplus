@@ -9,7 +9,7 @@ export default function Certificates() {
 
   return (
     <div className="image-scroll-container">
-      {images.map((src, index) => (
+      {/* {images.map((src, index) => (
         <img
           key={index}
           src={src}
@@ -24,7 +24,7 @@ export default function Certificates() {
             <img src={selectedImage} alt="Selected" className="modal-image" />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

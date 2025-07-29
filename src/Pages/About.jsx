@@ -284,7 +284,7 @@ export default function About() {
             </blockquote>
             <div className="space-y-2">
               <div className="gradient-text font-bold text-lg">Warm Regards,</div>
-              <div className="text-gray-800 font-semibold text-xl">Aardeep Jogani</div>
+              <div className="text-gray-800 font-semibold text-xl">Aardip Jogani</div>
               <div className="text-gray-500 text-sm">Founder & CEO, Hydroplus International</div>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function About() {
                     style={{ border: `3px solid ${colors.primary}40` }}
                   />
                 </div>
-                <h3 className="text-lg font-bold mb-2 gradient-text">Aardeep jogani</h3>
+                <h3 className="text-lg font-bold mb-2 gradient-text">Aardip jogani</h3>
                 <div className="text-sm font-semibold mb-2" style={{ color: colors.primary }}>CEO & Founder</div>
                 <div className="text-xs mb-3" style={{ color: colors.secondary }}>Strategic Leadership</div>
                 <p className="text-gray-600 text-sm leading-relaxed">Visionary leader with 15+ years in water solutions.</p>
