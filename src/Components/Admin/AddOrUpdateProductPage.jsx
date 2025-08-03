@@ -37,9 +37,13 @@ const AddOrUpdateProductPage = () => {
         }),
     });
     const [newCategory, setNewCategory] = useState("");
+    const [newCategoryImage, setNewCategoryImage] = useState("");
     const [newSubcategory, setNewSubcategory] = useState("");
+    const [newSubcategoryImage, setNewSubcategoryImage] = useState("");
     const [selectedCategoryForSub, setSelectedCategoryForSub] = useState("");
     const [loading, setLoading] = useState(false);
+    const [categoryImageUploading, setCategoryImageUploading] = useState(false);
+    const [subcategoryImageUploading, setSubcategoryImageUploading] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -111,6 +115,38 @@ const AddOrUpdateProductPage = () => {
         }
     };
 
+    const handleCategoryImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setCategoryImageUploading(true);
+            try {
+                const url = await uploadImage(file);
+                setNewCategoryImage(url);
+                toast.success('Category image uploaded successfully!');
+            } catch (error) {
+                toast.error('Category image upload failed');
+            } finally {
+                setCategoryImageUploading(false);
+            }
+        }
+    };
+
+    const handleSubcategoryImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setSubcategoryImageUploading(true);
+            try {
+                const url = await uploadImage(file);
+                setNewSubcategoryImage(url);
+                toast.success('Subcategory image uploaded successfully!');
+            } catch (error) {
+                toast.error('Subcategory image upload failed');
+            } finally {
+                setSubcategoryImageUploading(false);
+            }
+        }
+    };
+
     const handleCategoryChange = (index, value) => {
         const updatedProduct = { ...product, [`category${index}`]: value, [`subcategory${index}`]: '' };
         setProduct(updatedProduct);
@@ -122,9 +158,10 @@ const AddOrUpdateProductPage = () => {
 
     const handleAddCategory = () => {
         if (newCategory) {
-            addNewCategory(newCategory);
+            addNewCategory(newCategory, newCategoryImage);
             toast.success(`Category "${newCategory}" added successfully!`);
             setNewCategory("");
+            setNewCategoryImage("");
         }
     };
 
@@ -133,14 +170,16 @@ const AddOrUpdateProductPage = () => {
             deleteCategory(newCategory);
             toast.success(`Category "${newCategory}" deleted successfully!`);
             setNewCategory("");
+            setNewCategoryImage("");
         }
     };
 
     const handleAddSubcategory = () => {
         if (selectedCategoryForSub && newSubcategory) {
-            addNewSubcategory(selectedCategoryForSub, newSubcategory);
+            addNewSubcategory(selectedCategoryForSub, newSubcategory, newSubcategoryImage);
             toast.success(`Subcategory "${newSubcategory}" added to "${selectedCategoryForSub}" successfully!`);
             setNewSubcategory("");
+            setNewSubcategoryImage("");
             setSelectedCategoryForSub("");
         }
     };
@@ -150,26 +189,37 @@ const AddOrUpdateProductPage = () => {
             deleteSubcategory(selectedCategoryForSub, newSubcategory);
             toast.success(`Subcategory "${newSubcategory}" deleted successfully!`);
             setNewSubcategory("");
+            setNewSubcategoryImage("");
             setSelectedCategoryForSub("");
         }
     };
 
     if (loading) {
-        return <div className="flex items-center justify-center min-h-screen text-lg font-semibold">Loading...</div>;
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-gray-900 text-lg font-semibold text-white">
+                <div className="flex items-center space-x-2">
+                    <svg className="animate-spin h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    <span>Loading...</span>
+                </div>
+            </div>
+        );
     }
 
-    const inputClass = "border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-200";
+    const inputClass = "border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-gray-700 text-white placeholder-gray-400";
     const buttonClass = "px-4 py-2 rounded font-medium transition-colors";
-    const labelClass = "text-sm text-gray-600 mb-1";
+    const labelClass = "text-sm text-gray-300 mb-1 block";
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-            <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-8">
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+            <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-2xl p-8 border border-gray-700">
                 <div className="mb-6 text-center">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    <h2 className="text-2xl font-bold text-white mb-2">
                         {id ? 'Update Product' : 'Add Product'}
                     </h2>
-                    <p className="text-gray-600">
+                    <p className="text-gray-400">
                         Fill in the details below to {id ? 'update' : 'add'} a product.
                     </p>
                 </div>
@@ -177,10 +227,10 @@ const AddOrUpdateProductPage = () => {
                 <form className="space-y-6" onSubmit={e => { e.preventDefault(); id ? updateProduct() : addProduct(); }}>
                     {/* Product Details */}
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">Product Details</h3>
+                        <h3 className="text-lg font-semibold text-white mb-3">Product Details</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label className={labelClass}>Title <span className="text-red-500">*</span></label>
+                                <label className={labelClass}>Title <span className="text-red-400">*</span></label>
                                 <input
                                     type="text"
                                     placeholder="Product Title"
@@ -207,7 +257,7 @@ const AddOrUpdateProductPage = () => {
 
                     {/* Product Images */}
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">Product Images</h3>
+                        <h3 className="text-lg font-semibold text-white mb-3">Product Images</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                             {[1,2,3,4,5].map((num) => (
                                 <div key={num} className="space-y-2">
@@ -216,13 +266,14 @@ const AddOrUpdateProductPage = () => {
                                         type="file"
                                         name={`imgurl${num}`}
                                         onChange={handleImageUpload}
-                                        className="w-full text-sm file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                                        accept="image/*"
                                     />
                                     {product[`imgurl${num}`] && (
                                         <img
                                             src={product[`imgurl${num}`]}
                                             alt={`Preview ${num}`}
-                                            className="w-20 h-20 object-cover rounded border"
+                                            className="w-20 h-20 object-cover rounded border border-gray-600"
                                         />
                                     )}
                                 </div>
@@ -232,7 +283,7 @@ const AddOrUpdateProductPage = () => {
 
                     {/* Categories */}
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">Categories & Subcategories</h3>
+                        <h3 className="text-lg font-semibold text-white mb-3">Categories & Subcategories</h3>
                         <div className="space-y-3">
                             {[1, 2, 3, 4].map((index) => (
                                 <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -257,7 +308,7 @@ const AddOrUpdateProductPage = () => {
                                             value={product[`subcategory${index}`]}
                                             onChange={(e) => handleSubcategoryChange(index, e.target.value)}
                                             disabled={!product[`category${index}`]}
-                                            className={`${inputClass} w-full disabled:bg-gray-100`}
+                                            className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
                                         >
                                             <option value="">Select Subcategory {index}</option>
                                             {product[`category${index}`] &&
@@ -275,7 +326,7 @@ const AddOrUpdateProductPage = () => {
 
                     {/* Product Description */}
                     <div>
-                        <h3 className="text-lg font-semibold text-gray-700 mb-3">Product Description</h3>
+                        <h3 className="text-lg font-semibold text-white mb-3">Product Description</h3>
                         <div className="space-y-4">
                             <div>
                                 <label className={labelClass}>Features</label>
@@ -327,45 +378,74 @@ const AddOrUpdateProductPage = () => {
                 </form>
 
                 {/* Category Management */}
-                <div className="mt-8 border-t pt-6">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-4">Category Management</h3>
+                <div className="mt-8 border-t border-gray-700 pt-6">
+                    <h3 className="text-lg font-semibold text-white mb-4">Category Management</h3>
                     
                     {/* Category Controls */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <h4 className="font-medium text-gray-600">Manage Categories</h4>
-                            <div className="flex gap-2">
+                            <h4 className="font-medium text-gray-300">Manage Categories</h4>
+                            <div className="space-y-3">
                                 <input
                                     type="text"
                                     placeholder="Category Name"
                                     value={newCategory}
                                     onChange={(e) => setNewCategory(e.target.value)}
-                                    className={`${inputClass} flex-1`}
+                                    className={`${inputClass} w-full`}
                                 />
-                                <button 
-                                    className={`${buttonClass} bg-green-600 text-white hover:bg-green-700`}
-                                    onClick={handleAddCategory}
-                                >
-                                    Add
-                                </button>
-                                {!id && (
+                                <div>
+                                    <label className={labelClass}>Category Image</label>
+                                    <input
+                                        type="file"
+                                        onChange={handleCategoryImageUpload}
+                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                                        accept="image/*"
+                                        disabled={categoryImageUploading}
+                                    />
+                                    {categoryImageUploading && (
+                                        <div className="flex items-center mt-2 text-sm text-gray-400">
+                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                            </svg>
+                                            Uploading...
+                                        </div>
+                                    )}
+                                    {newCategoryImage && (
+                                        <img
+                                            src={newCategoryImage}
+                                            alt="Category Preview"
+                                            className="w-20 h-20 object-cover rounded border border-gray-600 mt-2"
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
                                     <button 
-                                        className={`${buttonClass} bg-red-600 text-white hover:bg-red-700`}
-                                        onClick={handleDeleteCategory}
+                                        className={`${buttonClass} bg-green-600 text-white hover:bg-green-700 flex-1`}
+                                        onClick={handleAddCategory}
+                                        disabled={categoryImageUploading}
                                     >
-                                        Delete
+                                        Add Category
                                     </button>
-                                )}
+                                    {!id && (
+                                        <button 
+                                            className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 flex-1`}
+                                            onClick={handleDeleteCategory}
+                                        >
+                                            Delete Category
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
                         <div className="space-y-3">
-                            <h4 className="font-medium text-gray-600">Manage Subcategories</h4>
-                            <div className="flex gap-2">
+                            <h4 className="font-medium text-gray-300">Manage Subcategories</h4>
+                            <div className="space-y-3">
                                 <select
                                     value={selectedCategoryForSub}
                                     onChange={(e) => setSelectedCategoryForSub(e.target.value)}
-                                    className={`${inputClass} flex-1`}
+                                    className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category</option>
                                     {Object.keys(categories).map((category) => (
@@ -374,29 +454,56 @@ const AddOrUpdateProductPage = () => {
                                         </option>
                                     ))}
                                 </select>
-                            </div>
-                            <div className="flex gap-2">
                                 <input
                                     type="text"
                                     placeholder="Subcategory Name"
                                     value={newSubcategory}
                                     onChange={(e) => setNewSubcategory(e.target.value)}
-                                    className={`${inputClass} flex-1`}
+                                    className={`${inputClass} w-full`}
                                 />
-                                <button 
-                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700`}
-                                    onClick={handleAddSubcategory}
-                                >
-                                    Add
-                                </button>
-                                {!id && (
+                                <div>
+                                    <label className={labelClass}>Subcategory Image</label>
+                                    <input
+                                        type="file"
+                                        onChange={handleSubcategoryImageUpload}
+                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                                        accept="image/*"
+                                        disabled={subcategoryImageUploading}
+                                    />
+                                    {subcategoryImageUploading && (
+                                        <div className="flex items-center mt-2 text-sm text-gray-400">
+                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                            </svg>
+                                            Uploading...
+                                        </div>
+                                    )}
+                                    {newSubcategoryImage && (
+                                        <img
+                                            src={newSubcategoryImage}
+                                            alt="Subcategory Preview"
+                                            className="w-20 h-20 object-cover rounded border border-gray-600 mt-2"
+                                        />
+                                    )}
+                                </div>
+                                <div className="flex gap-2">
                                     <button 
-                                        className={`${buttonClass} bg-red-600 text-white hover:bg-red-700`}
-                                        onClick={handleDeleteSubcategory}
+                                        className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 flex-1`}
+                                        onClick={handleAddSubcategory}
+                                        disabled={subcategoryImageUploading}
                                     >
-                                        Delete
+                                        Add Subcategory
                                     </button>
-                                )}
+                                    {!id && (
+                                        <button 
+                                            className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 flex-1`}
+                                            onClick={handleDeleteSubcategory}
+                                        >
+                                            Delete Subcategory
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

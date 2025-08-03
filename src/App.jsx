@@ -35,7 +35,7 @@ const App = () => {
 
     <MyState >
       <BrowserRouter>
-      <Header/>
+        <Header />
 
         <ScrollTop />
         <Routes>
@@ -63,17 +63,22 @@ const App = () => {
               <AdminDashboard />
             </ProtectedRouteForAdmin>
           } />
-            <Route path="/AddUpdateImage" element={
+          <Route path="/AddUpdateImage" element={
             <ProtectedRouteForAdmin >
               <AddUpdateImage />
             </ProtectedRouteForAdmin>} />
 
-          <Route path="/AddProductPage/:id" element={
-            <ProtectedRouteForAdmin >
+          <Route path="/AddProductPage" element={
+            <ProtectedRouteForAdmin>
               <AddOrUpdateProductPage />
-            </ProtectedRouteForAdmin>} />
+            </ProtectedRouteForAdmin>
+          } />
+          <Route path="/AddProductPage/:id" element={
+            <ProtectedRouteForAdmin>
+              <AddOrUpdateProductPage />
+            </ProtectedRouteForAdmin>
+          } />
 
-         
 
           <Route path="/error" element={<Error />} />
         </Routes>
