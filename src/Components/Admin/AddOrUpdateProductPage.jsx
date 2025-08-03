@@ -1,5 +1,5 @@
 import { Timestamp, addDoc, collection, getDoc, doc, setDoc } from "firebase/firestore";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 import { fireDB } from "../../FireBase/FireBaseConfig";
 import { useNavigate, useParams } from "react-router-dom";
@@ -10,300 +10,277 @@ const AddOrUpdateProductPage = () => {
     const { id } = useParams();
     const { categories, addNewCategory, deleteCategory, addNewSubcategory, deleteSubcategory, updateCategory, updateSubcategory } = useContext(myContext);
     const navigate = useNavigate();
+    
     const [product, setProduct] = useState({
-        title: "",
-        imgurl1: "",
-        imgurl2: "",
-        imgurl3: "",
-        imgurl4: "",
-        imgurl5: "",
-        bestSell: "",
-        category1: "",
-        subcategory1: "",
-        category2: "",
-        subcategory2: "",
-        category3: "",
-        subcategory3: "",
-        category4: "",
-        subcategory4: "",
-        description: "",
-        specification: "",
-        features: "",
+        title: "",  imgurl1: "", imgurl2: "", imgurl3: "", imgurl4: "", imgurl5: "",
+        bestSell: "", category1: "", subcategory1: "", category2: "", subcategory2: "",
+        category3: "", subcategory3: "", category4: "", subcategory4: "",
+        description: "", specification: "", features: "",
         time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-            month: "short",
-            day: "2-digit",
-            year: "numeric",
-        }),
+        date: new Date().toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
     });
-    const [newCategory, setNewCategory] = useState("");
-    const [newCategoryImage, setNewCategoryImage] = useState("");
-    const [newSubcategory, setNewSubcategory] = useState("");
-    const [newSubcategoryImage, setNewSubcategoryImage] = useState("");
-    const [selectedCategoryForSub, setSelectedCategoryForSub] = useState("");
-    const [selectedCategoryToDelete, setSelectedCategoryToDelete] = useState("");
-    const [selectedSubcategoryToDelete, setSelectedSubcategoryToDelete] = useState("");
-    const [categoryToUpdate, setCategoryToUpdate] = useState("");
-    const [updatedCategoryName, setUpdatedCategoryName] = useState("");
-    const [updatedCategoryImage, setUpdatedCategoryImage] = useState("");
-    const [subcategoryToUpdate, setSubcategoryToUpdate] = useState("");
-    const [updatedSubcategoryName, setUpdatedSubcategoryName] = useState("");
-    const [updatedSubcategoryImage, setUpdatedSubcategoryImage] = useState("");
-    const [selectedCategoryForSubUpdate, setSelectedCategoryForSubUpdate] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [categoryImageUploading, setCategoryImageUploading] = useState(false);
-    const [subcategoryImageUploading, setSubcategoryImageUploading] = useState(false);
-    const [updatedCategoryImageUploading, setUpdatedCategoryImageUploading] = useState(false);
-    const [updatedSubcategoryImageUploading, setUpdatedSubcategoryImageUploading] = useState(false);
-    const [managementMode, setManagementMode] = useState('add'); // 'add', 'update', 'delete'
+    
+    const [categoryForm, setCategoryForm] = useState({
+        newCategory: "", newCategoryImage: "", selectedCategoryToDelete: "",
+        categoryToUpdate: "", updatedCategoryName: "", updatedCategoryImage: "",
+    });
+    
+    const [subcategoryForm, setSubcategoryForm] = useState({
+        newSubcategory: "", newSubcategoryImage: "", selectedCategoryForSub: "",
+        selectedSubcategoryToDelete: "", selectedCategoryForSubUpdate: "",
+        subcategoryToUpdate: "", updatedSubcategoryName: "", updatedSubcategoryImage: "",
+    });
+    
+    const [loadingStates, setLoadingStates] = useState({
+        page: false, productSubmit: false, categoryImage: false, subcategoryImage: false,
+        updatedCategoryImage: false, updatedSubcategoryImage: false,
+        categoryAction: false, subcategoryAction: false
+    });
+    
+    const [managementMode, setManagementMode] = useState('add');
+
+    // Prevent duplicate submissions with debounce
+    const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
+    const SUBMISSION_COOLDOWN = 2000; // 2 seconds
+
+    const canSubmit = useCallback((actionType) => {
+        const now = Date.now();
+        const key = `${actionType}_${now}`;
+        
+        if (now - lastSubmissionTime < SUBMISSION_COOLDOWN) {
+            toast.error('Please wait before submitting again');
+            return false;
+        }
+        
+        setLastSubmissionTime(now);
+        return true;
+    }, [lastSubmissionTime]);
+
+    const updateLoadingState = (key, value) => {
+        setLoadingStates(prev => ({ ...prev, [key]: value }));
+    };
+
+    const updateProduct = (updates) => setProduct(prev => ({ ...prev, ...updates }));
+    const updateCategoryForm = (updates) => setCategoryForm(prev => ({ ...prev, ...updates }));
+    const updateSubcategoryForm = (updates) => setSubcategoryForm(prev => ({ ...prev, ...updates }));
+
+    const resetForms = () => {
+        setCategoryForm({
+            newCategory: "", newCategoryImage: "", selectedCategoryToDelete: "",
+            categoryToUpdate: "", updatedCategoryName: "", updatedCategoryImage: "",
+        });
+        setSubcategoryForm({
+            newSubcategory: "", newSubcategoryImage: "", selectedCategoryForSub: "",
+            selectedSubcategoryToDelete: "", selectedCategoryForSubUpdate: "",
+            subcategoryToUpdate: "", updatedSubcategoryName: "", updatedSubcategoryImage: "",
+        });
+    };
 
     useEffect(() => {
-        if (id) {
-            setLoading(true);
-            const fetchProduct = async () => {
-                try {
-                    const docRef = doc(fireDB, "products", id);
-                    const docSnap = await getDoc(docRef);
-                    if (docSnap.exists()) {
-                        setProduct(docSnap.data());
-                    } else {
-                        toast.error("No such product!");
-                        navigate("/admin");
-                    }
-                } catch (error) {
-                    console.error("Error fetching product: ", error);
-                    toast.error("Failed to fetch product.");
-                } finally {
-                    setLoading(false);
+        if (!id) return;
+        
+        const fetchProduct = async () => {
+            updateLoadingState('page', true);
+            try {
+                const docRef = doc(fireDB, "products", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setProduct(docSnap.data());
+                } else {
+                    toast.error("Product not found!");
+                    navigate("/admin");
                 }
-            };
-            fetchProduct();
-        }
+            } catch (error) {
+                console.error("Error fetching product: ", error);
+                toast.error("Failed to fetch product.");
+            } finally {
+                updateLoadingState('page', false);
+            }
+        };
+        
+        fetchProduct();
     }, [id, navigate]);
 
-    const addProduct = async () => {
-        try {
-            await addDoc(collection(fireDB, "products"), product);
-            toast.success("Product added successfully!");
-            navigate("/admin");
-        } catch (error) {
-            console.error("Error adding product: ", error);
-            toast.error("Failed to add product.");
+    const handleProductSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!canSubmit('product') || loadingStates.productSubmit) return;
+        
+        if (!product.title.trim()) {
+            toast.error("Product title is required");
+            return;
         }
-    };
 
-    const updateProduct = async () => {
+        updateLoadingState('productSubmit', true);
+        
         try {
-            const docRef = doc(fireDB, "products", id);
-            await setDoc(docRef, {
+            const productData = {
                 ...product,
                 time: Timestamp.now(),
-                date: new Date().toLocaleString("en-US", {
-                    month: "short",
-                    day: "2-digit",
-                    year: "numeric",
-                }),
-            });
-            toast.success("Product updated successfully!");
+                date: new Date().toLocaleString("en-US", { month: "short", day: "2-digit", year: "numeric" }),
+            };
+
+            if (id) {
+                await setDoc(doc(fireDB, "products", id), productData);
+                toast.success("Product updated successfully!");
+            } else {
+                await addDoc(collection(fireDB, "products"), productData);
+                toast.success("Product added successfully!");
+            }
             navigate("/admin");
         } catch (error) {
-            console.error("Error updating product: ", error);
-            toast.error("Failed to update product.");
+            console.error(`Error ${id ? 'updating' : 'adding'} product: `, error);
+            toast.error(`Failed to ${id ? 'update' : 'add'} product.`);
+        } finally {
+            updateLoadingState('productSubmit', false);
         }
     };
 
-    const handleImageUpload = async (e) => {
+    const handleImageUpload = async (e, field) => {
         const file = e.target.files[0];
-        if (file) {
-            try {
-                const url = await uploadImage(file);
-                setProduct((prevProduct) => ({
-                    ...prevProduct,
-                    [e.target.name]: url,
-                }));
-            } catch (error) {
-                toast.error('Image upload failed');
+        if (!file) return;
+
+        try {
+            const url = await uploadImage(file);
+            if (field.startsWith('imgurl')) {
+                updateProduct({ [field]: url });
+            } else if (field.includes('category')) {
+                if (field.includes('updated')) {
+                    updateCategoryForm({ [field]: url });
+                } else {
+                    updateCategoryForm({ [field]: url });
+                }
+            } else if (field.includes('subcategory')) {
+                if (field.includes('updated')) {
+                    updateSubcategoryForm({ [field]: url });
+                } else {
+                    updateSubcategoryForm({ [field]: url });
+                }
             }
+            toast.success('Image uploaded successfully!');
+        } catch (error) {
+            toast.error('Image upload failed');
         }
     };
 
-    const handleCategoryImageUpload = async (e) => {
+    const createImageUploadHandler = (field, loadingKey) => async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            setCategoryImageUploading(true);
-            try {
-                const url = await uploadImage(file);
-                setNewCategoryImage(url);
-                toast.success('Category image uploaded successfully!');
-            } catch (error) {
-                toast.error('Category image upload failed');
-            } finally {
-                setCategoryImageUploading(false);
-            }
+        if (!file) return;
+
+        updateLoadingState(loadingKey, true);
+        try {
+            await handleImageUpload(e, field);
+        } finally {
+            updateLoadingState(loadingKey, false);
         }
     };
 
-    const handleSubcategoryImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setSubcategoryImageUploading(true);
-            try {
-                const url = await uploadImage(file);
-                setNewSubcategoryImage(url);
-                toast.success('Subcategory image uploaded successfully!');
-            } catch (error) {
-                toast.error('Subcategory image upload failed');
-            } finally {
-                setSubcategoryImageUploading(false);
+    const handleCategoryAction = async (action, data) => {
+        if (!canSubmit(`category_${action}`) || loadingStates.categoryAction) return;
+
+        updateLoadingState('categoryAction', true);
+        
+        try {
+            switch (action) {
+                case 'add':
+                    if (!data.name.trim()) {
+                        toast.error("Category name is required");
+                        return;
+                    }
+                    addNewCategory(data.name.trim(), data.image);
+                    toast.success(`Category "${data.name}" added successfully!`);
+                    updateCategoryForm({ newCategory: "", newCategoryImage: "" });
+                    break;
+                    
+                case 'update':
+                    if (!data.oldName || !data.newName.trim()) {
+                        toast.error("Please select a category and enter new name");
+                        return;
+                    }
+                    if (updateCategory) {
+                        updateCategory(data.oldName, data.newName.trim(), data.image);
+                    } else {
+                        deleteCategory(data.oldName);
+                        addNewCategory(data.newName.trim(), data.image);
+                    }
+                    toast.success(`Category "${data.oldName}" updated successfully!`);
+                    updateCategoryForm({ categoryToUpdate: "", updatedCategoryName: "", updatedCategoryImage: "" });
+                    break;
+                    
+                case 'delete':
+                    if (!data.name) {
+                        toast.error("Please select a category to delete");
+                        return;
+                    }
+                    deleteCategory(data.name);
+                    toast.success(`Category "${data.name}" deleted successfully!`);
+                    updateCategoryForm({ selectedCategoryToDelete: "" });
+                    break;
             }
+        } catch (error) {
+            toast.error(`Failed to ${action} category`);
+        } finally {
+            updateLoadingState('categoryAction', false);
         }
     };
 
-    const handleUpdatedCategoryImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setUpdatedCategoryImageUploading(true);
-            try {
-                const url = await uploadImage(file);
-                setUpdatedCategoryImage(url);
-                toast.success('Updated category image uploaded successfully!');
-            } catch (error) {
-                toast.error('Updated category image upload failed');
-            } finally {
-                setUpdatedCategoryImageUploading(false);
-            }
-        }
-    };
+    const handleSubcategoryAction = async (action, data) => {
+        if (!canSubmit(`subcategory_${action}`) || loadingStates.subcategoryAction) return;
 
-    const handleUpdatedSubcategoryImageUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setUpdatedSubcategoryImageUploading(true);
-            try {
-                const url = await uploadImage(file);
-                setUpdatedSubcategoryImage(url);
-                toast.success('Updated subcategory image uploaded successfully!');
-            } catch (error) {
-                toast.error('Updated subcategory image upload failed');
-            } finally {
-                setUpdatedSubcategoryImageUploading(false);
+        updateLoadingState('subcategoryAction', true);
+        
+        try {
+            switch (action) {
+                case 'add':
+                    if (!data.category || !data.name.trim()) {
+                        toast.error("Please select a category and enter subcategory name");
+                        return;
+                    }
+                    addNewSubcategory(data.category, data.name.trim(), data.image);
+                    toast.success(`Subcategory "${data.name}" added successfully!`);
+                    updateSubcategoryForm({ newSubcategory: "", newSubcategoryImage: "", selectedCategoryForSub: "" });
+                    break;
+                    
+                case 'update':
+                    if (!data.category || !data.oldName || !data.newName.trim()) {
+                        toast.error("Please select category, subcategory and enter new name");
+                        return;
+                    }
+                    if (updateSubcategory) {
+                        updateSubcategory(data.category, data.oldName, data.newName.trim(), data.image);
+                    } else {
+                        deleteSubcategory(data.category, data.oldName);
+                        addNewSubcategory(data.category, data.newName.trim(), data.image);
+                    }
+                    toast.success(`Subcategory "${data.oldName}" updated successfully!`);
+                    updateSubcategoryForm({ 
+                        selectedCategoryForSubUpdate: "", subcategoryToUpdate: "", 
+                        updatedSubcategoryName: "", updatedSubcategoryImage: "" 
+                    });
+                    break;
+                    
+                case 'delete':
+                    if (!data.category || !data.name) {
+                        toast.error("Please select both category and subcategory to delete");
+                        return;
+                    }
+                    deleteSubcategory(data.category, data.name);
+                    toast.success(`Subcategory "${data.name}" deleted successfully!`);
+                    updateSubcategoryForm({ selectedSubcategoryToDelete: "", selectedCategoryForSub: "" });
+                    break;
             }
+        } catch (error) {
+            toast.error(`Failed to ${action} subcategory`);
+        } finally {
+            updateLoadingState('subcategoryAction', false);
         }
     };
 
     const handleCategoryChange = (index, value) => {
-        const updatedProduct = { ...product, [`category${index}`]: value, [`subcategory${index}`]: '' };
-        setProduct(updatedProduct);
+        updateProduct({ [`category${index}`]: value, [`subcategory${index}`]: '' });
     };
 
-    const handleSubcategoryChange = (index, value) => {
-        setProduct({ ...product, [`subcategory${index}`]: value });
-    };
-
-    const handleAddCategory = () => {
-        if (newCategory.trim()) {
-            addNewCategory(newCategory.trim(), newCategoryImage);
-            toast.success(`Category "${newCategory}" added successfully!`);
-            setNewCategory("");
-            setNewCategoryImage("");
-        } else {
-            toast.error("Please enter a category name");
-        }
-    };
-
-    const handleDeleteCategory = () => {
-        if (selectedCategoryToDelete) {
-            deleteCategory(selectedCategoryToDelete);
-            toast.success(`Category "${selectedCategoryToDelete}" deleted successfully!`);
-            setSelectedCategoryToDelete("");
-        } else {
-            toast.error("Please select a category to delete");
-        }
-    };
-
-    const handleUpdateCategory = () => {
-        if (categoryToUpdate && updatedCategoryName.trim()) {
-            if (updateCategory) {
-                updateCategory(categoryToUpdate, updatedCategoryName.trim(), updatedCategoryImage);
-                toast.success(`Category "${categoryToUpdate}" updated successfully!`);
-            } else {
-                // Fallback: delete old and add new if updateCategory is not available
-                deleteCategory(categoryToUpdate);
-                addNewCategory(updatedCategoryName.trim(), updatedCategoryImage);
-                toast.success(`Category updated successfully!`);
-            }
-            setCategoryToUpdate("");
-            setUpdatedCategoryName("");
-            setUpdatedCategoryImage("");
-        } else {
-            toast.error("Please select a category and enter new name");
-        }
-    };
-
-    const handleAddSubcategory = () => {
-        if (selectedCategoryForSub && newSubcategory.trim()) {
-            addNewSubcategory(selectedCategoryForSub, newSubcategory.trim(), newSubcategoryImage);
-            toast.success(`Subcategory "${newSubcategory}" added to "${selectedCategoryForSub}" successfully!`);
-            setNewSubcategory("");
-            setNewSubcategoryImage("");
-            setSelectedCategoryForSub("");
-        } else {
-            toast.error("Please select a category and enter subcategory name");
-        }
-    };
-
-    const handleDeleteSubcategory = () => {
-        if (selectedCategoryForSub && selectedSubcategoryToDelete) {
-            deleteSubcategory(selectedCategoryForSub, selectedSubcategoryToDelete);
-            toast.success(`Subcategory "${selectedSubcategoryToDelete}" deleted successfully!`);
-            setSelectedSubcategoryToDelete("");
-            setSelectedCategoryForSub("");
-        } else {
-            toast.error("Please select both category and subcategory to delete");
-        }
-    };
-
-    const handleUpdateSubcategory = () => {
-        if (selectedCategoryForSubUpdate && subcategoryToUpdate && updatedSubcategoryName.trim()) {
-            if (updateSubcategory) {
-                updateSubcategory(selectedCategoryForSubUpdate, subcategoryToUpdate, updatedSubcategoryName.trim(), updatedSubcategoryImage);
-                toast.success(`Subcategory "${subcategoryToUpdate}" updated successfully!`);
-            } else {
-                // Fallback: delete old and add new if updateSubcategory is not available
-                deleteSubcategory(selectedCategoryForSubUpdate, subcategoryToUpdate);
-                addNewSubcategory(selectedCategoryForSubUpdate, updatedSubcategoryName.trim(), updatedSubcategoryImage);
-                toast.success(`Subcategory updated successfully!`);
-            }
-            setSelectedCategoryForSubUpdate("");
-            setSubcategoryToUpdate("");
-            setUpdatedSubcategoryName("");
-            setUpdatedSubcategoryImage("");
-        } else {
-            toast.error("Please select category, subcategory and enter new name");
-        }
-    };
-
-    const resetCategoryForms = () => {
-        setNewCategory("");
-        setNewCategoryImage("");
-        setSelectedCategoryToDelete("");
-        setCategoryToUpdate("");
-        setUpdatedCategoryName("");
-        setUpdatedCategoryImage("");
-    };
-
-    const resetSubcategoryForms = () => {
-        setNewSubcategory("");
-        setNewSubcategoryImage("");
-        setSelectedCategoryForSub("");
-        setSelectedSubcategoryToDelete("");
-        setSelectedCategoryForSubUpdate("");
-        setSubcategoryToUpdate("");
-        setUpdatedSubcategoryName("");
-        setUpdatedSubcategoryImage("");
-    };
-
-    if (loading) {
+    if (loadingStates.page) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-gray-900 text-lg font-semibold text-white">
                 <div className="flex items-center space-x-2">
@@ -321,8 +298,65 @@ const AddOrUpdateProductPage = () => {
     const buttonClass = "px-4 py-2 rounded font-medium transition-colors";
     const labelClass = "text-sm text-gray-300 mb-1 block";
 
+    const ImageUploadField = ({ name, field, value, onUpload, loading, label }) => (
+        <div className="space-y-2">
+            <label className={labelClass}>{label}</label>
+            <input
+                type="file"
+                name={name}
+                onChange={onUpload}
+                className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                accept="image/*"
+                disabled={loading}
+            />
+            {loading && (
+                <div className="flex items-center text-sm text-gray-400">
+                    <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                    </svg>
+                    Uploading...
+                </div>
+            )}
+            {value && (
+                <div className="relative inline-block">
+                    <img src={value} alt="Preview" className="w-20 h-20 object-cover rounded border border-gray-600" />
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (field.startsWith('imgurl')) updateProduct({ [field]: "" });
+                            else if (field.includes('category')) updateCategoryForm({ [field]: "" });
+                            else updateSubcategoryForm({ [field]: "" });
+                        }}
+                        className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                    >
+                        ×
+                    </button>
+                </div>
+            )}
+        </div>
+    );
+
+    const ActionButton = ({ onClick, loading, className, children, disabled = false }) => (
+        <button
+            type="button"
+            onClick={onClick}
+            disabled={loading || disabled}
+            className={`${buttonClass} ${className} ${(loading || disabled) ? 'opacity-60 cursor-not-allowed' : ''}`}
+        >
+            {loading && (
+                <svg className="animate-spin h-4 w-4 mr-2 inline" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+            )}
+            {children}
+        </button>
+    );
+
     return (
         <div className="min-h-screen flex flex-col gap-2 items-center justify-center bg-gray-900 p-4">
+            {/* Product Form */}
             <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-2xl p-8 border border-gray-700">
                 <div className="mb-6 text-center">
                     <h2 className="text-2xl font-bold text-white mb-2">
@@ -330,7 +364,7 @@ const AddOrUpdateProductPage = () => {
                     </h2>
                 </div>
 
-                <form className="space-y-6" onSubmit={e => { e.preventDefault(); id ? updateProduct() : addProduct(); }}>
+                <form className="space-y-6" onSubmit={handleProductSubmit}>
                     {/* Product Details */}
                     <div>
                         <h3 className="text-lg font-semibold text-white mb-3">Product Details</h3>
@@ -341,7 +375,7 @@ const AddOrUpdateProductPage = () => {
                                     type="text"
                                     placeholder="Product Title"
                                     value={product.title}
-                                    onChange={(e) => setProduct({ ...product, title: e.target.value })}
+                                    onChange={(e) => updateProduct({ title: e.target.value })}
                                     className={`${inputClass} w-full`}
                                     required
                                 />
@@ -349,7 +383,7 @@ const AddOrUpdateProductPage = () => {
                             <div>
                                 <label className={labelClass}>Best Selling?</label>
                                 <select
-                                    onChange={(e) => setProduct({ ...product, bestSell: e.target.value })}
+                                    onChange={(e) => updateProduct({ bestSell: e.target.value })}
                                     value={product.bestSell}
                                     className={`${inputClass} w-full`}
                                 >
@@ -366,32 +400,15 @@ const AddOrUpdateProductPage = () => {
                         <h3 className="text-lg font-semibold text-white mb-3">Product Images</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                             {[1, 2, 3, 4, 5].map((num) => (
-                                <div key={num} className="space-y-2">
-                                    <label className={labelClass}>Image {num}</label>
-                                    <input
-                                        type="file"
-                                        name={`imgurl${num}`}
-                                        onChange={handleImageUpload}
-                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
-                                        accept="image/*"
-                                    />
-                                    {product[`imgurl${num}`] && (
-                                        <div className="relative">
-                                            <img
-                                                src={product[`imgurl${num}`]}
-                                                alt={`Preview ${num}`}
-                                                className="w-20 h-20 object-cover rounded border border-gray-600"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setProduct({ ...product, [`imgurl${num}`]: "" })}
-                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
+                                <ImageUploadField
+                                    key={num}
+                                    name={`imgurl${num}`}
+                                    field={`imgurl${num}`}
+                                    value={product[`imgurl${num}`]}
+                                    onUpload={createImageUploadHandler(`imgurl${num}`, 'productSubmit')}
+                                    loading={false}
+                                    label={`Image ${num}`}
+                                />
                             ))}
                         </div>
                     </div>
@@ -411,9 +428,7 @@ const AddOrUpdateProductPage = () => {
                                         >
                                             <option value="">Select Category {index}</option>
                                             {Object.keys(categories).map((category) => (
-                                                <option key={category} value={category}>
-                                                    {category}
-                                                </option>
+                                                <option key={category} value={category}>{category}</option>
                                             ))}
                                         </select>
                                     </div>
@@ -421,16 +436,14 @@ const AddOrUpdateProductPage = () => {
                                         <label className={labelClass}>Subcategory {index}</label>
                                         <select
                                             value={product[`subcategory${index}`]}
-                                            onChange={(e) => handleSubcategoryChange(index, e.target.value)}
+                                            onChange={(e) => updateProduct({ [`subcategory${index}`]: e.target.value })}
                                             disabled={!product[`category${index}`]}
                                             className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
                                         >
                                             <option value="">Select Subcategory {index}</option>
                                             {product[`category${index}`] &&
                                                 categories[product[`category${index}`]].map((subcategory) => (
-                                                    <option key={subcategory} value={subcategory}>
-                                                        {subcategory}
-                                                    </option>
+                                                    <option key={subcategory} value={subcategory}>{subcategory}</option>
                                                 ))}
                                         </select>
                                     </div>
@@ -443,103 +456,64 @@ const AddOrUpdateProductPage = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-white mb-3">Product Description</h3>
                         <div className="space-y-4">
-                            <div>
-                                <label className={labelClass}>Features</label>
-                                <textarea
-                                    placeholder="Product Features"
-                                    value={product.features}
-                                    onChange={(e) => setProduct({ ...product, features: e.target.value })}
-                                    rows={3}
-                                    className={`${inputClass} w-full`}
-                                />
-                            </div>
-                            <div>
-                                <label className={labelClass}>Specification</label>
-                                <textarea
-                                    placeholder="Product Specification"
-                                    value={product.specification}
-                                    onChange={(e) => setProduct({ ...product, specification: e.target.value })}
-                                    rows={3}
-                                    className={`${inputClass} w-full`}
-                                />
-                            </div>
-                            <div>
-                                <label className={labelClass}>Description</label>
-                                <textarea
-                                    placeholder="Product Description"
-                                    value={product.description}
-                                    onChange={(e) => setProduct({ ...product, description: e.target.value })}
-                                    rows={3}
-                                    className={`${inputClass} w-full`}
-                                />
-                            </div>
+                            {[
+                                { key: 'features', label: 'Features', placeholder: 'Product Features' },
+                                { key: 'specification', label: 'Specification', placeholder: 'Product Specification' },
+                                { key: 'description', label: 'Description', placeholder: 'Product Description' }
+                            ].map(({ key, label, placeholder }) => (
+                                <div key={key}>
+                                    <label className={labelClass}>{label}</label>
+                                    <textarea
+                                        placeholder={placeholder}
+                                        value={product[key]}
+                                        onChange={(e) => updateProduct({ [key]: e.target.value })}
+                                        rows={3}
+                                        className={`${inputClass} w-full`}
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
 
                     {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className={`${buttonClass} w-full bg-primary-600 text-white hover:bg-primary-700 ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
-                        disabled={loading}
+                    <ActionButton
+                        onClick={() => {}}
+                        loading={loadingStates.productSubmit}
+                        className="w-full bg-primary-600 text-white hover:bg-primary-700"
+                        disabled={loadingStates.productSubmit}
                     >
-                        {loading && (
-                            <svg className="animate-spin h-4 w-4 mr-2 inline" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                            </svg>
-                        )}
                         {id ? 'Update Product' : 'Add Product'}
-                    </button>
+                    </ActionButton>
                 </form>
             </div>
 
+            {/* Category Management */}
             <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-2xl p-8 border border-gray-700">
-                {/* Category Management */}
                 <h3 className="text-lg font-semibold text-white mb-4">Category Management</h3>
                 
                 {/* Management Mode Selector */}
                 <div className="mb-6">
                     <div className="flex gap-2 mb-4">
-                        <button
-                            className={`${buttonClass} ${managementMode === 'add' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
-                            onClick={() => {
-                                setManagementMode('add');
-                                resetCategoryForms();
-                                resetSubcategoryForms();
-                            }}
-                        >
-                            Add
-                        </button>
-                        <button
-                            className={`${buttonClass} ${managementMode === 'update' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
-                            onClick={() => {
-                                setManagementMode('update');
-                                resetCategoryForms();
-                                resetSubcategoryForms();
-                            }}
-                        >
-                            Update
-                        </button>
-                        <button
-                            className={`${buttonClass} ${managementMode === 'delete' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
-                            onClick={() => {
-                                setManagementMode('delete');
-                                resetCategoryForms();
-                                resetSubcategoryForms();
-                            }}
-                        >
-                            Delete
-                        </button>
+                        {['add', 'update', 'delete'].map((mode) => (
+                            <button
+                                key={mode}
+                                className={`${buttonClass} ${managementMode === mode ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700 capitalize`}
+                                onClick={() => {
+                                    setManagementMode(mode);
+                                    resetForms();
+                                }}
+                            >
+                                {mode}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Category Management */}
                     <div className="space-y-3">
-                        <h4 className="font-medium text-gray-300">
-                            {managementMode === 'add' && 'Add Categories'}
-                            {managementMode === 'update' && 'Update Categories'}
-                            {managementMode === 'delete' && 'Delete Categories'}
+                        <h4 className="font-medium text-gray-300 capitalize">
+                            {managementMode} Categories
                         </h4>
                         
                         {managementMode === 'add' && (
@@ -547,345 +521,244 @@ const AddOrUpdateProductPage = () => {
                                 <input
                                     type="text"
                                     placeholder="Category Name"
-                                    value={newCategory}
-                                    onChange={(e) => setNewCategory(e.target.value)}
+                                    value={categoryForm.newCategory}
+                                    onChange={(e) => updateCategoryForm({ newCategory: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 />
-                                <div>
-                                    <label className={labelClass}>Category Image</label>
-                                    <input
-                                        type="file"
-                                        onChange={handleCategoryImageUpload}
-                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
-                                        accept="image/*"
-                                        disabled={categoryImageUploading}
-                                    />
-                                    {categoryImageUploading && (
-                                        <div className="flex items-center mt-2 text-sm text-gray-400">
-                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                                            </svg>
-                                            Uploading...
-                                        </div>
-                                    )}
-                                    {newCategoryImage && (
-                                        <div className="relative inline-block mt-2">
-                                            <img
-                                                src={newCategoryImage}
-                                                alt="Category Preview"
-                                                className="w-20 h-20 object-cover rounded border border-gray-600"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setNewCategoryImage("")}
-                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                                <button
-                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 w-full`}
-                                    onClick={handleAddCategory}
-                                    disabled={categoryImageUploading}
+                                <ImageUploadField
+                                    name="categoryImage"
+                                    field="newCategoryImage"
+                                    value={categoryForm.newCategoryImage}
+                                    onUpload={createImageUploadHandler('newCategoryImage', 'categoryImage')}
+                                    loading={loadingStates.categoryImage}
+                                    label="Category Image"
+                                />
+                                <ActionButton
+                                    onClick={() => handleCategoryAction('add', {
+                                        name: categoryForm.newCategory,
+                                        image: categoryForm.newCategoryImage
+                                    })}
+                                    loading={loadingStates.categoryAction}
+                                    className="bg-primary-600 text-white hover:bg-primary-700 w-full"
                                 >
                                     Add Category
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
 
                         {managementMode === 'update' && (
                             <div className="space-y-3">
                                 <select
-                                    value={categoryToUpdate}
-                                    onChange={(e) => {
-                                        setCategoryToUpdate(e.target.value);
-                                        setUpdatedCategoryName(e.target.value);
-                                    }}
+                                    value={categoryForm.categoryToUpdate}
+                                    onChange={(e) => updateCategoryForm({
+                                        categoryToUpdate: e.target.value,
+                                        updatedCategoryName: e.target.value
+                                    })}
                                     className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category to Update</option>
                                     {Object.keys(categories).map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
+                                        <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
                                 <input
                                     type="text"
                                     placeholder="New Category Name"
-                                    value={updatedCategoryName}
-                                    onChange={(e) => setUpdatedCategoryName(e.target.value)}
+                                    value={categoryForm.updatedCategoryName}
+                                    onChange={(e) => updateCategoryForm({ updatedCategoryName: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 />
-                                <div>
-                                    <label className={labelClass}>New Category Image (Optional)</label>
-                                    <input
-                                        type="file"
-                                        onChange={handleUpdatedCategoryImageUpload}
-                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
-                                        accept="image/*"
-                                        disabled={updatedCategoryImageUploading}
-                                    />
-                                    {updatedCategoryImageUploading && (
-                                        <div className="flex items-center mt-2 text-sm text-gray-400">
-                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                                            </svg>
-                                            Uploading...
-                                        </div>
-                                    )}
-                                    {updatedCategoryImage && (
-                                        <div className="relative inline-block mt-2">
-                                            <img
-                                                src={updatedCategoryImage}
-                                                alt="Updated Category Preview"
-                                                className="w-20 h-20 object-cover rounded border border-gray-600"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setUpdatedCategoryImage("")}
-                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                                <button
-                                    className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700 w-full`}
-                                    onClick={handleUpdateCategory}
-                                    disabled={updatedCategoryImageUploading}
+                                <ImageUploadField
+                                    name="updatedCategoryImage"
+                                    field="updatedCategoryImage"
+                                    value={categoryForm.updatedCategoryImage}
+                                    onUpload={createImageUploadHandler('updatedCategoryImage', 'updatedCategoryImage')}
+                                    loading={loadingStates.updatedCategoryImage}
+                                    label="New Category Image (Optional)"
+                                />
+                                <ActionButton
+                                    onClick={() => handleCategoryAction('update', {
+                                        oldName: categoryForm.categoryToUpdate,
+                                        newName: categoryForm.updatedCategoryName,
+                                        image: categoryForm.updatedCategoryImage
+                                    })}
+                                    loading={loadingStates.categoryAction}
+                                    className="bg-blue-600 text-white hover:bg-blue-700 w-full"
                                 >
                                     Update Category
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
 
                         {managementMode === 'delete' && (
                             <div className="space-y-3">
                                 <select
-                                    value={selectedCategoryToDelete}
-                                    onChange={(e) => setSelectedCategoryToDelete(e.target.value)}
+                                    value={categoryForm.selectedCategoryToDelete}
+                                    onChange={(e) => updateCategoryForm({ selectedCategoryToDelete: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category to Delete</option>
                                     {Object.keys(categories).map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
+                                        <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
-                                <button
-                                    className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 w-full`}
-                                    onClick={handleDeleteCategory}
+                                <ActionButton
+                                    onClick={() => handleCategoryAction('delete', {
+                                        name: categoryForm.selectedCategoryToDelete
+                                    })}
+                                    loading={loadingStates.categoryAction}
+                                    className="bg-red-600 text-white hover:bg-red-700 w-full"
                                 >
                                     Delete Category
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
                     </div>
 
                     {/* Subcategory Management */}
                     <div className="space-y-3">
-                        <h4 className="font-medium text-gray-300">
-                            {managementMode === 'add' && 'Add Subcategories'}
-                            {managementMode === 'update' && 'Update Subcategories'}
-                            {managementMode === 'delete' && 'Delete Subcategories'}
+                        <h4 className="font-medium text-gray-300 capitalize">
+                            {managementMode} Subcategories
                         </h4>
 
                         {managementMode === 'add' && (
                             <div className="space-y-3">
                                 <select
-                                    value={selectedCategoryForSub}
-                                    onChange={(e) => setSelectedCategoryForSub(e.target.value)}
+                                    value={subcategoryForm.selectedCategoryForSub}
+                                    onChange={(e) => updateSubcategoryForm({ selectedCategoryForSub: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category</option>
                                     {Object.keys(categories).map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
+                                        <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
                                 <input
                                     type="text"
                                     placeholder="Subcategory Name"
-                                    value={newSubcategory}
-                                    onChange={(e) => setNewSubcategory(e.target.value)}
+                                    value={subcategoryForm.newSubcategory}
+                                    onChange={(e) => updateSubcategoryForm({ newSubcategory: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 />
-                                <div>
-                                    <label className={labelClass}>Subcategory Image</label>
-                                    <input
-                                        type="file"
-                                        onChange={handleSubcategoryImageUpload}
-                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
-                                        accept="image/*"
-                                        disabled={subcategoryImageUploading}
-                                    />
-                                    {subcategoryImageUploading && (
-                                        <div className="flex items-center mt-2 text-sm text-gray-400">
-                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                                            </svg>
-                                            Uploading...
-                                        </div>
-                                    )}
-                                    {newSubcategoryImage && (
-                                        <div className="relative inline-block mt-2">
-                                            <img
-                                                src={newSubcategoryImage}
-                                                alt="Subcategory Preview"
-                                                className="w-20 h-20 object-cover rounded border border-gray-600"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setNewSubcategoryImage("")}
-                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                                <button
-                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 w-full`}
-                                    onClick={handleAddSubcategory}
-                                    disabled={subcategoryImageUploading}
+                                <ImageUploadField
+                                    name="subcategoryImage"
+                                    field="newSubcategoryImage"
+                                    value={subcategoryForm.newSubcategoryImage}
+                                    onUpload={createImageUploadHandler('newSubcategoryImage', 'subcategoryImage')}
+                                    loading={loadingStates.subcategoryImage}
+                                    label="Subcategory Image"
+                                />
+                                <ActionButton
+                                    onClick={() => handleSubcategoryAction('add', {
+                                        category: subcategoryForm.selectedCategoryForSub,
+                                        name: subcategoryForm.newSubcategory,
+                                        image: subcategoryForm.newSubcategoryImage
+                                    })}
+                                    loading={loadingStates.subcategoryAction}
+                                    className="bg-primary-600 text-white hover:bg-primary-700 w-full"
                                 >
                                     Add Subcategory
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
 
                         {managementMode === 'update' && (
                             <div className="space-y-3">
                                 <select
-                                    value={selectedCategoryForSubUpdate}
-                                    onChange={(e) => {
-                                        setSelectedCategoryForSubUpdate(e.target.value);
-                                        setSubcategoryToUpdate("");
-                                    }}
+                                    value={subcategoryForm.selectedCategoryForSubUpdate}
+                                    onChange={(e) => updateSubcategoryForm({
+                                        selectedCategoryForSubUpdate: e.target.value,
+                                        subcategoryToUpdate: ""
+                                    })}
                                     className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category</option>
                                     {Object.keys(categories).map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
+                                        <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
                                 <select
-                                    value={subcategoryToUpdate}
-                                    onChange={(e) => {
-                                        setSubcategoryToUpdate(e.target.value);
-                                        setUpdatedSubcategoryName(e.target.value);
-                                    }}
-                                    disabled={!selectedCategoryForSubUpdate}
+                                    value={subcategoryForm.subcategoryToUpdate}
+                                    onChange={(e) => updateSubcategoryForm({
+                                        subcategoryToUpdate: e.target.value,
+                                        updatedSubcategoryName: e.target.value
+                                    })}
+                                    disabled={!subcategoryForm.selectedCategoryForSubUpdate}
                                     className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
                                 >
                                     <option value="">Select Subcategory to Update</option>
-                                    {selectedCategoryForSubUpdate &&
-                                        categories[selectedCategoryForSubUpdate].map((subcategory) => (
-                                            <option key={subcategory} value={subcategory}>
-                                                {subcategory}
-                                            </option>
+                                    {subcategoryForm.selectedCategoryForSubUpdate &&
+                                        categories[subcategoryForm.selectedCategoryForSubUpdate].map((subcategory) => (
+                                            <option key={subcategory} value={subcategory}>{subcategory}</option>
                                         ))}
                                 </select>
                                 <input
                                     type="text"
                                     placeholder="New Subcategory Name"
-                                    value={updatedSubcategoryName}
-                                    onChange={(e) => setUpdatedSubcategoryName(e.target.value)}
+                                    value={subcategoryForm.updatedSubcategoryName}
+                                    onChange={(e) => updateSubcategoryForm({ updatedSubcategoryName: e.target.value })}
                                     className={`${inputClass} w-full`}
                                 />
-                                <div>
-                                    <label className={labelClass}>New Subcategory Image (Optional)</label>
-                                    <input
-                                        type="file"
-                                        onChange={handleUpdatedSubcategoryImageUpload}
-                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
-                                        accept="image/*"
-                                        disabled={updatedSubcategoryImageUploading}
-                                    />
-                                    {updatedSubcategoryImageUploading && (
-                                        <div className="flex items-center mt-2 text-sm text-gray-400">
-                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
-                                            </svg>
-                                            Uploading...
-                                        </div>
-                                    )}
-                                    {updatedSubcategoryImage && (
-                                        <div className="relative inline-block mt-2">
-                                            <img
-                                                src={updatedSubcategoryImage}
-                                                alt="Updated Subcategory Preview"
-                                                className="w-20 h-20 object-cover rounded border border-gray-600"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setUpdatedSubcategoryImage("")}
-                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
-                                            >
-                                                ×
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                                <button
-                                    className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700 w-full`}
-                                    onClick={handleUpdateSubcategory}
-                                    disabled={updatedSubcategoryImageUploading}
+                                <ImageUploadField
+                                    name="updatedSubcategoryImage"
+                                    field="updatedSubcategoryImage"
+                                    value={subcategoryForm.updatedSubcategoryImage}
+                                    onUpload={createImageUploadHandler('updatedSubcategoryImage', 'updatedSubcategoryImage')}
+                                    loading={loadingStates.updatedSubcategoryImage}
+                                    label="New Subcategory Image (Optional)"
+                                />
+                                <ActionButton
+                                    onClick={() => handleSubcategoryAction('update', {
+                                        category: subcategoryForm.selectedCategoryForSubUpdate,
+                                        oldName: subcategoryForm.subcategoryToUpdate,
+                                        newName: subcategoryForm.updatedSubcategoryName,
+                                        image: subcategoryForm.updatedSubcategoryImage
+                                    })}
+                                    loading={loadingStates.subcategoryAction}
+                                    className="bg-blue-600 text-white hover:bg-blue-700 w-full"
                                 >
                                     Update Subcategory
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
 
                         {managementMode === 'delete' && (
                             <div className="space-y-3">
                                 <select
-                                    value={selectedCategoryForSub}
-                                    onChange={(e) => {
-                                        setSelectedCategoryForSub(e.target.value);
-                                        setSelectedSubcategoryToDelete("");
-                                    }}
+                                    value={subcategoryForm.selectedCategoryForSub}
+                                    onChange={(e) => updateSubcategoryForm({
+                                        selectedCategoryForSub: e.target.value,
+                                        selectedSubcategoryToDelete: ""
+                                    })}
                                     className={`${inputClass} w-full`}
                                 >
                                     <option value="">Select Category</option>
                                     {Object.keys(categories).map((category) => (
-                                        <option key={category} value={category}>
-                                            {category}
-                                        </option>
+                                        <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
                                 <select
-                                    value={selectedSubcategoryToDelete}
-                                    onChange={(e) => setSelectedSubcategoryToDelete(e.target.value)}
-                                    disabled={!selectedCategoryForSub}
+                                    value={subcategoryForm.selectedSubcategoryToDelete}
+                                    onChange={(e) => updateSubcategoryForm({ selectedSubcategoryToDelete: e.target.value })}
+                                    disabled={!subcategoryForm.selectedCategoryForSub}
                                     className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
                                 >
                                     <option value="">Select Subcategory to Delete</option>
-                                    {selectedCategoryForSub &&
-                                        categories[selectedCategoryForSub].map((subcategory) => (
-                                            <option key={subcategory} value={subcategory}>
-                                                {subcategory}
-                                            </option>
+                                    {subcategoryForm.selectedCategoryForSub &&
+                                        categories[subcategoryForm.selectedCategoryForSub].map((subcategory) => (
+                                            <option key={subcategory} value={subcategory}>{subcategory}</option>
                                         ))}
                                 </select>
-                                <button
-                                    className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 w-full`}
-                                    onClick={handleDeleteSubcategory}
+                                <ActionButton
+                                    onClick={() => handleSubcategoryAction('delete', {
+                                        category: subcategoryForm.selectedCategoryForSub,
+                                        name: subcategoryForm.selectedSubcategoryToDelete
+                                    })}
+                                    loading={loadingStates.subcategoryAction}
+                                    className="bg-red-600 text-white hover:bg-red-700 w-full"
                                 >
                                     Delete Subcategory
-                                </button>
+                                </ActionButton>
                             </div>
                         )}
                     </div>
