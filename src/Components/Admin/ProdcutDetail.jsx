@@ -63,7 +63,7 @@ const ProductDetail = () => {
                                     <td className="py-2 px-2 flex gap-2 items-center">
                                         <button
                                             className="bg-primary hover:bg-primary-700 text-secondary-white px-4 py-1 rounded font-semibold shadow transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40"
-                                            onClick={() => navigate(`/update-product/${id}`)}
+                                            onClick={() => navigate(`/AddProductPage/${id}`)}
                                         >
                                             Edit
                                         </button>

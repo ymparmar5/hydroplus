@@ -13,8 +13,6 @@ import ScrollTop from "./Components/ScrollTop";
 
 import UserDashboard from "./Components/UserDashboard";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
-import AddProductPage from "./Components/Admin/AddProductPage";
-import UpdateProductPage from "./Components/Admin/UpdateProductPage";
 import MyState from "./Context/MyState";
 import { Toaster } from "react-hot-toast";
 import { ProtectedRouteForUser } from "./Components/ProtectedRouteForUser";
@@ -27,6 +25,8 @@ import Certificates from "./Pages/Certificates";
 import SocialSidebar from "./Components/SocialSidebar";
 import Subcategory from "./Pages/Subcategory";
 import Exhibitions from "./Pages/exhibitions";
+import AddUpdateImage from "./Components/Admin/AddUpdateImage";
+import AddOrUpdateProductPage from "./Components/Admin/AddOrUpdateProductPage";
 
 const App = () => {
 
@@ -63,16 +63,17 @@ const App = () => {
               <AdminDashboard />
             </ProtectedRouteForAdmin>
           } />
-
-          <Route path="/AddProductPage" element={
+            <Route path="/AddUpdateImage" element={
             <ProtectedRouteForAdmin >
-              <AddProductPage />
+              <AddUpdateImage />
             </ProtectedRouteForAdmin>} />
 
-          <Route path="/update-product/:id" element={
-          <ProtectedRouteForAdmin >
-            <UpdateProductPage />
+          <Route path="/AddProductPage/:id" element={
+            <ProtectedRouteForAdmin >
+              <AddOrUpdateProductPage />
             </ProtectedRouteForAdmin>} />
+
+         
 
           <Route path="/error" element={<Error />} />
         </Routes>

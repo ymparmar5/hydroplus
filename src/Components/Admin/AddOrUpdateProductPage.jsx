@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { fireDB } from "../../FireBase/FireBaseConfig";
 import { useNavigate, useParams } from "react-router-dom";
 import myContext from '../../Context/myContext';
-import { uploadImage } from '../Admin/Cloudnary';
+import { uploadImage } from './Cloudnary';
 
 const AddOrUpdateProductPage = () => {
     const { id } = useParams();
@@ -17,7 +17,7 @@ const AddOrUpdateProductPage = () => {
         imgurl3: "",
         imgurl4: "",
         imgurl5: "",
-        bestSell: "",
+        bestSell: "",   
         category1: "",
         subcategory1: "",
         category2: "",

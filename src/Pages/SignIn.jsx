@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, fireDB } from "../FireBase/FireBaseConfig";
 import Loader from "../Components/Loader";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, onSnapshot, query, where,getDocs  } from "firebase/firestore";
 
 
 const SignIN = () => {
@@ -25,48 +25,46 @@ const SignIN = () => {
     *========================================================================**/
 
     const userLoginFunction = async () => {
-        // validation 
-        if (userLogin.email === "" || userLogin.password === "") {
-            toast.error("All Fields are required")
-        }
-
-        setLoading(true);
-        try {
-            const users = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
-            // console.log(users.user)
-
-            try {
-                const q = query(
-                    collection(fireDB, "user"),
-                    where('uid', '==', users?.user?.uid)
-                );
-                const data = onSnapshot(q, (QuerySnapshot) => {
-                    let user;
-                    QuerySnapshot.forEach((doc) => user = doc.data());
-                    localStorage.setItem("users", JSON.stringify(user) )
-                    setUserLogin({
-                        email: "",
-                        password: ""
-                    })
-                    toast.success("Login Successfully");
-                    setLoading(false);
-                    if(user.role === "user") {
-                        navigate('/user');
-                    }else{
-                        navigate('/admin');
-                    }
-                });
-                return () => data;
-            } catch (error) {
-                console.log(error);
-                setLoading(false);
-            }
-        } catch (error) {
-            console.log(error);
-            setLoading(false);
-            toast.error("Login Failed");
-        }
+    if (userLogin.email === "" || userLogin.password === "") {
+        toast.error("All Fields are required");
+        return;
     }
+
+    setLoading(true);
+    try {
+        const users = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
+        console.log(users,)
+        const q = query(collection(fireDB, "user"), where("uid", "==", users?.user?.uid));
+        const querySnapshot = await getDocs(q);
+
+        let user = null;
+        querySnapshot.forEach((doc) => {
+            user = doc.data();
+        });
+
+        if (!user) {
+            toast.error("User not found in Firestore");
+            setLoading(false);
+            return;
+        }
+
+        localStorage.setItem("users", JSON.stringify(user));
+        setUserLogin({ email: "", password: "" });
+        toast.success("Login Successfully");
+        setLoading(false);
+
+        if (user.role === "user") {
+            navigate('/user');
+        } else {
+            navigate('/admin');
+        }
+    } catch (error) {
+        console.log(error);
+        setLoading(false);
+        toast.error("Login Failed");
+    }
+};
+
     return (
         <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 px-2">
             {loading && <Loader />}
@@ -86,7 +84,6 @@ const SignIN = () => {
                     className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-400 text-base"
                 />
                 <input
-                    type="password"
                     placeholder="Password"
                     value={userLogin.password}
                     onChange={(e) => {

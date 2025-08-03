@@ -63,13 +63,13 @@ export default function About() {
         <div className="text-center mb-20">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 gradient-text">Our Story</h2>
           <div className="max-w-4xl mx-auto space-y-6">
-            <p className="text-lg md:text-xl text-gray-700 leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-400 leading-relaxed">
               Hydroplus International stands as a beacon of innovation in the water solutions industry. 
               With over two decades of unwavering commitment to excellence, we have evolved from a 
               visionary startup to a globally recognized leader in manufacturing and supplying premium 
               pumps, motors, and power tools.
             </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
+            <p className="text-lg text-gray-400 leading-relaxed">
               Our journey is marked by continuous innovation, exceptional quality, and an unrelenting 
               focus on customer satisfaction. Today, we serve thousands of clients worldwide, delivering 
               solutions that power industries and enhance lives.

@@ -4,7 +4,12 @@ import { fireDB } from '../FireBase/FireBaseConfig';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 
 const HeroSection = () => {
-  const [slides, setSlides] = useState([]);
+  const [slides, setSlides] = useState([
+              { src: "/home1.jpg", alt: "Slide 1", name: "Slide 1" }, 
+          { src: "/home2.jpg", alt: "Slide 2", name: "Slide 2" },
+           { src: "/home3.jpg", alt: "Slide 3", name: "Slide 3" }, 
+           { src: "/home4.jpg", alt: "Slide 4", name: "Slide 4" },
+  ]);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -40,7 +45,6 @@ const HeroSection = () => {
            { src: "/home4.jpg", alt: "Slide 4", name: "Slide 4" },
           ];
         setSlides(staticSlides);
-        console.log(dynamicSlides);
       }
     } catch (error) {
       // Optionally handle error (e.g., toast)
