@@ -8,7 +8,7 @@ import { uploadImage } from './Cloudnary';
 
 const AddOrUpdateProductPage = () => {
     const { id } = useParams();
-    const { categories, addNewCategory, deleteCategory, addNewSubcategory, deleteSubcategory } = useContext(myContext);
+    const { categories, addNewCategory, deleteCategory, addNewSubcategory, deleteSubcategory, updateCategory, updateSubcategory } = useContext(myContext);
     const navigate = useNavigate();
     const [product, setProduct] = useState({
         title: "",
@@ -17,7 +17,7 @@ const AddOrUpdateProductPage = () => {
         imgurl3: "",
         imgurl4: "",
         imgurl5: "",
-        bestSell: "",   
+        bestSell: "",
         category1: "",
         subcategory1: "",
         category2: "",
@@ -41,9 +41,21 @@ const AddOrUpdateProductPage = () => {
     const [newSubcategory, setNewSubcategory] = useState("");
     const [newSubcategoryImage, setNewSubcategoryImage] = useState("");
     const [selectedCategoryForSub, setSelectedCategoryForSub] = useState("");
+    const [selectedCategoryToDelete, setSelectedCategoryToDelete] = useState("");
+    const [selectedSubcategoryToDelete, setSelectedSubcategoryToDelete] = useState("");
+    const [categoryToUpdate, setCategoryToUpdate] = useState("");
+    const [updatedCategoryName, setUpdatedCategoryName] = useState("");
+    const [updatedCategoryImage, setUpdatedCategoryImage] = useState("");
+    const [subcategoryToUpdate, setSubcategoryToUpdate] = useState("");
+    const [updatedSubcategoryName, setUpdatedSubcategoryName] = useState("");
+    const [updatedSubcategoryImage, setUpdatedSubcategoryImage] = useState("");
+    const [selectedCategoryForSubUpdate, setSelectedCategoryForSubUpdate] = useState("");
     const [loading, setLoading] = useState(false);
     const [categoryImageUploading, setCategoryImageUploading] = useState(false);
     const [subcategoryImageUploading, setSubcategoryImageUploading] = useState(false);
+    const [updatedCategoryImageUploading, setUpdatedCategoryImageUploading] = useState(false);
+    const [updatedSubcategoryImageUploading, setUpdatedSubcategoryImageUploading] = useState(false);
+    const [managementMode, setManagementMode] = useState('add'); // 'add', 'update', 'delete'
 
     useEffect(() => {
         if (id) {
@@ -87,9 +99,9 @@ const AddOrUpdateProductPage = () => {
                 ...product,
                 time: Timestamp.now(),
                 date: new Date().toLocaleString("en-US", {
-                  month: "short",
-                  day: "2-digit",
-                  year: "numeric",
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
                 }),
             });
             toast.success("Product updated successfully!");
@@ -147,6 +159,38 @@ const AddOrUpdateProductPage = () => {
         }
     };
 
+    const handleUpdatedCategoryImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUpdatedCategoryImageUploading(true);
+            try {
+                const url = await uploadImage(file);
+                setUpdatedCategoryImage(url);
+                toast.success('Updated category image uploaded successfully!');
+            } catch (error) {
+                toast.error('Updated category image upload failed');
+            } finally {
+                setUpdatedCategoryImageUploading(false);
+            }
+        }
+    };
+
+    const handleUpdatedSubcategoryImageUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUpdatedSubcategoryImageUploading(true);
+            try {
+                const url = await uploadImage(file);
+                setUpdatedSubcategoryImage(url);
+                toast.success('Updated subcategory image uploaded successfully!');
+            } catch (error) {
+                toast.error('Updated subcategory image upload failed');
+            } finally {
+                setUpdatedSubcategoryImageUploading(false);
+            }
+        }
+    };
+
     const handleCategoryChange = (index, value) => {
         const updatedProduct = { ...product, [`category${index}`]: value, [`subcategory${index}`]: '' };
         setProduct(updatedProduct);
@@ -157,41 +201,106 @@ const AddOrUpdateProductPage = () => {
     };
 
     const handleAddCategory = () => {
-        if (newCategory) {
-            addNewCategory(newCategory, newCategoryImage);
+        if (newCategory.trim()) {
+            addNewCategory(newCategory.trim(), newCategoryImage);
             toast.success(`Category "${newCategory}" added successfully!`);
             setNewCategory("");
             setNewCategoryImage("");
+        } else {
+            toast.error("Please enter a category name");
         }
     };
 
     const handleDeleteCategory = () => {
-        if (newCategory) {
-            deleteCategory(newCategory);
-            toast.success(`Category "${newCategory}" deleted successfully!`);
-            setNewCategory("");
-            setNewCategoryImage("");
+        if (selectedCategoryToDelete) {
+            deleteCategory(selectedCategoryToDelete);
+            toast.success(`Category "${selectedCategoryToDelete}" deleted successfully!`);
+            setSelectedCategoryToDelete("");
+        } else {
+            toast.error("Please select a category to delete");
+        }
+    };
+
+    const handleUpdateCategory = () => {
+        if (categoryToUpdate && updatedCategoryName.trim()) {
+            if (updateCategory) {
+                updateCategory(categoryToUpdate, updatedCategoryName.trim(), updatedCategoryImage);
+                toast.success(`Category "${categoryToUpdate}" updated successfully!`);
+            } else {
+                // Fallback: delete old and add new if updateCategory is not available
+                deleteCategory(categoryToUpdate);
+                addNewCategory(updatedCategoryName.trim(), updatedCategoryImage);
+                toast.success(`Category updated successfully!`);
+            }
+            setCategoryToUpdate("");
+            setUpdatedCategoryName("");
+            setUpdatedCategoryImage("");
+        } else {
+            toast.error("Please select a category and enter new name");
         }
     };
 
     const handleAddSubcategory = () => {
-        if (selectedCategoryForSub && newSubcategory) {
-            addNewSubcategory(selectedCategoryForSub, newSubcategory, newSubcategoryImage);
+        if (selectedCategoryForSub && newSubcategory.trim()) {
+            addNewSubcategory(selectedCategoryForSub, newSubcategory.trim(), newSubcategoryImage);
             toast.success(`Subcategory "${newSubcategory}" added to "${selectedCategoryForSub}" successfully!`);
             setNewSubcategory("");
             setNewSubcategoryImage("");
             setSelectedCategoryForSub("");
+        } else {
+            toast.error("Please select a category and enter subcategory name");
         }
     };
 
     const handleDeleteSubcategory = () => {
-        if (selectedCategoryForSub && newSubcategory) {
-            deleteSubcategory(selectedCategoryForSub, newSubcategory);
-            toast.success(`Subcategory "${newSubcategory}" deleted successfully!`);
-            setNewSubcategory("");
-            setNewSubcategoryImage("");
+        if (selectedCategoryForSub && selectedSubcategoryToDelete) {
+            deleteSubcategory(selectedCategoryForSub, selectedSubcategoryToDelete);
+            toast.success(`Subcategory "${selectedSubcategoryToDelete}" deleted successfully!`);
+            setSelectedSubcategoryToDelete("");
             setSelectedCategoryForSub("");
+        } else {
+            toast.error("Please select both category and subcategory to delete");
         }
+    };
+
+    const handleUpdateSubcategory = () => {
+        if (selectedCategoryForSubUpdate && subcategoryToUpdate && updatedSubcategoryName.trim()) {
+            if (updateSubcategory) {
+                updateSubcategory(selectedCategoryForSubUpdate, subcategoryToUpdate, updatedSubcategoryName.trim(), updatedSubcategoryImage);
+                toast.success(`Subcategory "${subcategoryToUpdate}" updated successfully!`);
+            } else {
+                // Fallback: delete old and add new if updateSubcategory is not available
+                deleteSubcategory(selectedCategoryForSubUpdate, subcategoryToUpdate);
+                addNewSubcategory(selectedCategoryForSubUpdate, updatedSubcategoryName.trim(), updatedSubcategoryImage);
+                toast.success(`Subcategory updated successfully!`);
+            }
+            setSelectedCategoryForSubUpdate("");
+            setSubcategoryToUpdate("");
+            setUpdatedSubcategoryName("");
+            setUpdatedSubcategoryImage("");
+        } else {
+            toast.error("Please select category, subcategory and enter new name");
+        }
+    };
+
+    const resetCategoryForms = () => {
+        setNewCategory("");
+        setNewCategoryImage("");
+        setSelectedCategoryToDelete("");
+        setCategoryToUpdate("");
+        setUpdatedCategoryName("");
+        setUpdatedCategoryImage("");
+    };
+
+    const resetSubcategoryForms = () => {
+        setNewSubcategory("");
+        setNewSubcategoryImage("");
+        setSelectedCategoryForSub("");
+        setSelectedSubcategoryToDelete("");
+        setSelectedCategoryForSubUpdate("");
+        setSubcategoryToUpdate("");
+        setUpdatedSubcategoryName("");
+        setUpdatedSubcategoryImage("");
     };
 
     if (loading) {
@@ -213,15 +322,12 @@ const AddOrUpdateProductPage = () => {
     const labelClass = "text-sm text-gray-300 mb-1 block";
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+        <div className="min-h-screen flex flex-col gap-2 items-center justify-center bg-gray-900 p-4">
             <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-2xl p-8 border border-gray-700">
                 <div className="mb-6 text-center">
                     <h2 className="text-2xl font-bold text-white mb-2">
                         {id ? 'Update Product' : 'Add Product'}
                     </h2>
-                    <p className="text-gray-400">
-                        Fill in the details below to {id ? 'update' : 'add'} a product.
-                    </p>
                 </div>
 
                 <form className="space-y-6" onSubmit={e => { e.preventDefault(); id ? updateProduct() : addProduct(); }}>
@@ -242,8 +348,8 @@ const AddOrUpdateProductPage = () => {
                             </div>
                             <div>
                                 <label className={labelClass}>Best Selling?</label>
-                                <select 
-                                    onChange={(e) => setProduct({ ...product, bestSell: e.target.value })} 
+                                <select
+                                    onChange={(e) => setProduct({ ...product, bestSell: e.target.value })}
                                     value={product.bestSell}
                                     className={`${inputClass} w-full`}
                                 >
@@ -259,7 +365,7 @@ const AddOrUpdateProductPage = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-white mb-3">Product Images</h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                            {[1,2,3,4,5].map((num) => (
+                            {[1, 2, 3, 4, 5].map((num) => (
                                 <div key={num} className="space-y-2">
                                     <label className={labelClass}>Image {num}</label>
                                     <input
@@ -270,11 +376,20 @@ const AddOrUpdateProductPage = () => {
                                         accept="image/*"
                                     />
                                     {product[`imgurl${num}`] && (
-                                        <img
-                                            src={product[`imgurl${num}`]}
-                                            alt={`Preview ${num}`}
-                                            className="w-20 h-20 object-cover rounded border border-gray-600"
-                                        />
+                                        <div className="relative">
+                                            <img
+                                                src={product[`imgurl${num}`]}
+                                                alt={`Preview ${num}`}
+                                                className="w-20 h-20 object-cover rounded border border-gray-600"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setProduct({ ...product, [`imgurl${num}`]: "" })}
+                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                             ))}
@@ -362,7 +477,7 @@ const AddOrUpdateProductPage = () => {
                     </div>
 
                     {/* Submit Button */}
-                    <button 
+                    <button
                         type="submit"
                         className={`${buttonClass} w-full bg-primary-600 text-white hover:bg-primary-700 ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
                         disabled={loading}
@@ -376,15 +491,58 @@ const AddOrUpdateProductPage = () => {
                         {id ? 'Update Product' : 'Add Product'}
                     </button>
                 </form>
+            </div>
 
+            <div className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-2xl p-8 border border-gray-700">
                 {/* Category Management */}
-                <div className="mt-8 border-t border-gray-700 pt-6">
-                    <h3 className="text-lg font-semibold text-white mb-4">Category Management</h3>
-                    
-                    {/* Category Controls */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div className="space-y-3">
-                            <h4 className="font-medium text-gray-300">Manage Categories</h4>
+                <h3 className="text-lg font-semibold text-white mb-4">Category Management</h3>
+                
+                {/* Management Mode Selector */}
+                <div className="mb-6">
+                    <div className="flex gap-2 mb-4">
+                        <button
+                            className={`${buttonClass} ${managementMode === 'add' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
+                            onClick={() => {
+                                setManagementMode('add');
+                                resetCategoryForms();
+                                resetSubcategoryForms();
+                            }}
+                        >
+                            Add
+                        </button>
+                        <button
+                            className={`${buttonClass} ${managementMode === 'update' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
+                            onClick={() => {
+                                setManagementMode('update');
+                                resetCategoryForms();
+                                resetSubcategoryForms();
+                            }}
+                        >
+                            Update
+                        </button>
+                        <button
+                            className={`${buttonClass} ${managementMode === 'delete' ? 'bg-primary-600 text-white' : 'bg-gray-600 text-gray-300'} hover:bg-primary-700`}
+                            onClick={() => {
+                                setManagementMode('delete');
+                                resetCategoryForms();
+                                resetSubcategoryForms();
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Category Management */}
+                    <div className="space-y-3">
+                        <h4 className="font-medium text-gray-300">
+                            {managementMode === 'add' && 'Add Categories'}
+                            {managementMode === 'update' && 'Update Categories'}
+                            {managementMode === 'delete' && 'Delete Categories'}
+                        </h4>
+                        
+                        {managementMode === 'add' && (
                             <div className="space-y-3">
                                 <input
                                     type="text"
@@ -412,35 +570,134 @@ const AddOrUpdateProductPage = () => {
                                         </div>
                                     )}
                                     {newCategoryImage && (
-                                        <img
-                                            src={newCategoryImage}
-                                            alt="Category Preview"
-                                            className="w-20 h-20 object-cover rounded border border-gray-600 mt-2"
-                                        />
+                                        <div className="relative inline-block mt-2">
+                                            <img
+                                                src={newCategoryImage}
+                                                alt="Category Preview"
+                                                className="w-20 h-20 object-cover rounded border border-gray-600"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setNewCategoryImage("")}
+                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
-                                <div className="flex gap-2">
-                                    <button 
-                                        className={`${buttonClass} bg-green-600 text-white hover:bg-green-700 flex-1`}
-                                        onClick={handleAddCategory}
-                                        disabled={categoryImageUploading}
-                                    >
-                                        Add Category
-                                    </button>
-                                    {!id && (
-                                        <button 
-                                            className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 flex-1`}
-                                            onClick={handleDeleteCategory}
-                                        >
-                                            Delete Category
-                                        </button>
-                                    )}
-                                </div>
+                                <button
+                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 w-full`}
+                                    onClick={handleAddCategory}
+                                    disabled={categoryImageUploading}
+                                >
+                                    Add Category
+                                </button>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="space-y-3">
-                            <h4 className="font-medium text-gray-300">Manage Subcategories</h4>
+                        {managementMode === 'update' && (
+                            <div className="space-y-3">
+                                <select
+                                    value={categoryToUpdate}
+                                    onChange={(e) => {
+                                        setCategoryToUpdate(e.target.value);
+                                        setUpdatedCategoryName(e.target.value);
+                                    }}
+                                    className={`${inputClass} w-full`}
+                                >
+                                    <option value="">Select Category to Update</option>
+                                    {Object.keys(categories).map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="New Category Name"
+                                    value={updatedCategoryName}
+                                    onChange={(e) => setUpdatedCategoryName(e.target.value)}
+                                    className={`${inputClass} w-full`}
+                                />
+                                <div>
+                                    <label className={labelClass}>New Category Image (Optional)</label>
+                                    <input
+                                        type="file"
+                                        onChange={handleUpdatedCategoryImageUpload}
+                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                                        accept="image/*"
+                                        disabled={updatedCategoryImageUploading}
+                                    />
+                                    {updatedCategoryImageUploading && (
+                                        <div className="flex items-center mt-2 text-sm text-gray-400">
+                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                            </svg>
+                                            Uploading...
+                                        </div>
+                                    )}
+                                    {updatedCategoryImage && (
+                                        <div className="relative inline-block mt-2">
+                                            <img
+                                                src={updatedCategoryImage}
+                                                alt="Updated Category Preview"
+                                                className="w-20 h-20 object-cover rounded border border-gray-600"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setUpdatedCategoryImage("")}
+                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700 w-full`}
+                                    onClick={handleUpdateCategory}
+                                    disabled={updatedCategoryImageUploading}
+                                >
+                                    Update Category
+                                </button>
+                            </div>
+                        )}
+
+                        {managementMode === 'delete' && (
+                            <div className="space-y-3">
+                                <select
+                                    value={selectedCategoryToDelete}
+                                    onChange={(e) => setSelectedCategoryToDelete(e.target.value)}
+                                    className={`${inputClass} w-full`}
+                                >
+                                    <option value="">Select Category to Delete</option>
+                                    {Object.keys(categories).map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
+                                <button
+                                    className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 w-full`}
+                                    onClick={handleDeleteCategory}
+                                >
+                                    Delete Category
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Subcategory Management */}
+                    <div className="space-y-3">
+                        <h4 className="font-medium text-gray-300">
+                            {managementMode === 'add' && 'Add Subcategories'}
+                            {managementMode === 'update' && 'Update Subcategories'}
+                            {managementMode === 'delete' && 'Delete Subcategories'}
+                        </h4>
+
+                        {managementMode === 'add' && (
                             <div className="space-y-3">
                                 <select
                                     value={selectedCategoryForSub}
@@ -480,32 +737,157 @@ const AddOrUpdateProductPage = () => {
                                         </div>
                                     )}
                                     {newSubcategoryImage && (
-                                        <img
-                                            src={newSubcategoryImage}
-                                            alt="Subcategory Preview"
-                                            className="w-20 h-20 object-cover rounded border border-gray-600 mt-2"
-                                        />
+                                        <div className="relative inline-block mt-2">
+                                            <img
+                                                src={newSubcategoryImage}
+                                                alt="Subcategory Preview"
+                                                className="w-20 h-20 object-cover rounded border border-gray-600"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setNewSubcategoryImage("")}
+                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
-                                <div className="flex gap-2">
-                                    <button 
-                                        className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 flex-1`}
-                                        onClick={handleAddSubcategory}
-                                        disabled={subcategoryImageUploading}
-                                    >
-                                        Add Subcategory
-                                    </button>
-                                    {!id && (
-                                        <button 
-                                            className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 flex-1`}
-                                            onClick={handleDeleteSubcategory}
-                                        >
-                                            Delete Subcategory
-                                        </button>
-                                    )}
-                                </div>
+                                <button
+                                    className={`${buttonClass} bg-primary-600 text-white hover:bg-primary-700 w-full`}
+                                    onClick={handleAddSubcategory}
+                                    disabled={subcategoryImageUploading}
+                                >
+                                    Add Subcategory
+                                </button>
                             </div>
-                        </div>
+                        )}
+
+                        {managementMode === 'update' && (
+                            <div className="space-y-3">
+                                <select
+                                    value={selectedCategoryForSubUpdate}
+                                    onChange={(e) => {
+                                        setSelectedCategoryForSubUpdate(e.target.value);
+                                        setSubcategoryToUpdate("");
+                                    }}
+                                    className={`${inputClass} w-full`}
+                                >
+                                    <option value="">Select Category</option>
+                                    {Object.keys(categories).map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={subcategoryToUpdate}
+                                    onChange={(e) => {
+                                        setSubcategoryToUpdate(e.target.value);
+                                        setUpdatedSubcategoryName(e.target.value);
+                                    }}
+                                    disabled={!selectedCategoryForSubUpdate}
+                                    className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
+                                >
+                                    <option value="">Select Subcategory to Update</option>
+                                    {selectedCategoryForSubUpdate &&
+                                        categories[selectedCategoryForSubUpdate].map((subcategory) => (
+                                            <option key={subcategory} value={subcategory}>
+                                                {subcategory}
+                                            </option>
+                                        ))}
+                                </select>
+                                <input
+                                    type="text"
+                                    placeholder="New Subcategory Name"
+                                    value={updatedSubcategoryName}
+                                    onChange={(e) => setUpdatedSubcategoryName(e.target.value)}
+                                    className={`${inputClass} w-full`}
+                                />
+                                <div>
+                                    <label className={labelClass}>New Subcategory Image (Optional)</label>
+                                    <input
+                                        type="file"
+                                        onChange={handleUpdatedSubcategoryImageUpload}
+                                        className="w-full text-sm text-gray-300 file:mr-2 file:py-1 file:px-2 file:border-0 file:text-sm file:font-medium file:bg-primary-600 file:text-white hover:file:bg-primary-700 file:rounded"
+                                        accept="image/*"
+                                        disabled={updatedSubcategoryImageUploading}
+                                    />
+                                    {updatedSubcategoryImageUploading && (
+                                        <div className="flex items-center mt-2 text-sm text-gray-400">
+                                            <svg className="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                                            </svg>
+                                            Uploading...
+                                        </div>
+                                    )}
+                                    {updatedSubcategoryImage && (
+                                        <div className="relative inline-block mt-2">
+                                            <img
+                                                src={updatedSubcategoryImage}
+                                                alt="Updated Subcategory Preview"
+                                                className="w-20 h-20 object-cover rounded border border-gray-600"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setUpdatedSubcategoryImage("")}
+                                                className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-700"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    className={`${buttonClass} bg-blue-600 text-white hover:bg-blue-700 w-full`}
+                                    onClick={handleUpdateSubcategory}
+                                    disabled={updatedSubcategoryImageUploading}
+                                >
+                                    Update Subcategory
+                                </button>
+                            </div>
+                        )}
+
+                        {managementMode === 'delete' && (
+                            <div className="space-y-3">
+                                <select
+                                    value={selectedCategoryForSub}
+                                    onChange={(e) => {
+                                        setSelectedCategoryForSub(e.target.value);
+                                        setSelectedSubcategoryToDelete("");
+                                    }}
+                                    className={`${inputClass} w-full`}
+                                >
+                                    <option value="">Select Category</option>
+                                    {Object.keys(categories).map((category) => (
+                                        <option key={category} value={category}>
+                                            {category}
+                                        </option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={selectedSubcategoryToDelete}
+                                    onChange={(e) => setSelectedSubcategoryToDelete(e.target.value)}
+                                    disabled={!selectedCategoryForSub}
+                                    className={`${inputClass} w-full disabled:bg-gray-600 disabled:text-gray-400`}
+                                >
+                                    <option value="">Select Subcategory to Delete</option>
+                                    {selectedCategoryForSub &&
+                                        categories[selectedCategoryForSub].map((subcategory) => (
+                                            <option key={subcategory} value={subcategory}>
+                                                {subcategory}
+                                            </option>
+                                        ))}
+                                </select>
+                                <button
+                                    className={`${buttonClass} bg-red-600 text-white hover:bg-red-700 w-full`}
+                                    onClick={handleDeleteSubcategory}
+                                >
+                                    Delete Subcategory
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

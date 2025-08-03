@@ -50,6 +50,32 @@ const Header = () => {
               Home
               <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </NavLink>
+             <NavLink 
+              to="/shop" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              shop
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
+            <NavLink 
+              to="/contact" 
+              className={({ isActive }) => 
+                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
+                  isActive 
+                    ? 'text-primary bg-primary/20 border border-primary/30' 
+                    : 'text-gray-300 hover:text-white hover:bg-white/10'
+                }`
+              }
+            >
+              Contact
+              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </NavLink>
             
             <NavLink 
               to="/about" 
@@ -65,32 +91,8 @@ const Header = () => {
               <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </NavLink>
             
-            <NavLink 
-              to="/contact" 
-              className={({ isActive }) => 
-                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
-                  isActive 
-                    ? 'text-primary bg-primary/20 border border-primary/30' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`
-              }
-            >
-              Contact
-              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </NavLink>
-            {/* <NavLink 
-              to="/shop" 
-              className={({ isActive }) => 
-                `text-base font-medium px-4 py-2 rounded-xl transition-all duration-300 relative group ${
-                  isActive 
-                    ? 'text-primary bg-primary/20 border border-primary/30' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`
-              }
-            >
-              shop
-              <div className="absolute inset-0 bg-primary/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </NavLink> */}
+            
+           
             {/* <NavLink 
               to="/exhibitions" 
               className={({ isActive }) => 
@@ -133,7 +135,7 @@ const Header = () => {
             </Link>
 
             {/* User Icon */}
-            <Link to="/signin" className="p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
+            <Link to="/admin" className="p-2 rounded-xl bg-white/10 border border-white/20 hover:bg-white/20 transition-all duration-300 group">
               <User className="w-5 h-5 text-white group-hover:scale-110 transition-transform duration-300" />
             </Link>
 

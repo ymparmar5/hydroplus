@@ -79,10 +79,12 @@ const App = () => {
             </ProtectedRouteForAdmin>
           } />
 
-
           <Route path="/error" element={<Error />} />
         </Routes>
-        <SocialSidebar />
+
+        <div className="hidden lg:block">
+          <SocialSidebar />
+        </div>
         <Footer />
         <Toaster />
 

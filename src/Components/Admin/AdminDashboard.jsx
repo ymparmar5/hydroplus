@@ -27,19 +27,26 @@ const AdminDashboard = () => {
                 {/* Right: Details */}
                 <div className="flex flex-col justify-center w-full md:w-2/3">
                     <div className="mb-4 text-center md:text-left space-y-2">
-                        <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Name: </span>{user?.name}</h1>
+                        <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Name: </span>{user?.name}</h1> 
                         <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Email: </span>{user?.email}</h1>
                         <h1 className="text-2xl font-semibold"><span className="font-bold text-primary">Role: </span>{user?.role}</h1>
                     </div>
                     <div className="flex justify-center md:justify-start gap-4">
-                        <Link to={'/AddProductPage'} className="w-full max-w-xs">
+                        <Link to={'/AddProductPage'} className=" max-w-xs">
                             <button className="bg-primary hover:bg-primary-700 text-secondary-white rounded-md px-6 py-2 font-semibold text-base mt-2 transition-colors duration-200 shadow focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 w-full">Add Product</button>
                         </Link>
-                         <Link to={'/AddUpdateImage'} className="w-full max-w-xs">
-                            <button className="bg-primary hover:bg-primary-700 text-secondary-white rounded-md px-6 py-2 font-semibold text-base mt-2 transition-colors duration-200 shadow focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 w-full">Images</button>
+                         <Link to={'/AddUpdateImage'} className=" max-w-xs">
+                            <button className="bg-primary hover:bg-primary-700 text-secondary-white rounded-md px-6 py-2 font-semibold text-base mt-2 transition-colors duration-200 shadow focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 w-full">Add Images</button>
                         </Link>
+                        
                     </div>
+                    
                 </div>
+                <Link to={'/sign-in'} className=" max-w-xs">
+                            <button className="bg-red-600 hover:bg-red-700 text-secondary-white rounded-md px-6 py-2 font-semibold text-base mt-2 transition-colors duration-200 shadow focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 w-full" onClick={()=>{
+                                localStorage.removeItem("users")
+                            }}>Logout</button>
+                        </Link>
             </div>
             <div className="w-full max-w-6xl mt-8">
                 <ProductDetail />
