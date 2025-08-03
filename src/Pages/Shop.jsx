@@ -1,14 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import myContext from '../Context/myContext';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Shop = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { category } = useParams(); // Get category from URL params
     const { getAllProduct, loading, categories } = useContext(myContext);
     const cartItems = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOption, setSortOption] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -18,32 +20,45 @@ const Shop = () => {
     
     const productsPerPage = 12;
 
+    // Determine if we're showing subcategories or products
+    const isShowingSubcategories = Boolean(category);
+    const subcategories = category ? (categories[category] || []) : [];
+console.log(subcategories)
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-        const category = queryParams.get('category');
-        const subcategory = queryParams.get('subcategory');
-        if (category) setSelectedCategory(category);
-        if (subcategory) setSelectedSubcategory(subcategory);
-    }, [location.search]);
+        if (category) {
+            // We're on /shop/:category route - showing subcategories
+            setSelectedCategory(category);
+            setExpandedCategory(category);
+            setSelectedSubcategory('');
+        } else {
+            // We're on /shop route - check query params for filtering
+            const queryParams = new URLSearchParams(location.search);
+            const categoryParam = queryParams.get('category');
+            const subcategoryParam = queryParams.get('subcategory');
+            if (categoryParam) setSelectedCategory(categoryParam);
+            if (subcategoryParam) setSelectedSubcategory(subcategoryParam);
+        }
+    }, [category, location.search]);
 
     const handleSort = (e) => {
         setSortOption(e.target.value);
     };
 
-    const handleCategoryClick = (category) => {
-        setSelectedCategory(category);
+    const handleCategoryClick = (categoryName) => {
+        setSelectedCategory(categoryName);
         setSelectedSubcategory('');
-        setExpandedCategory(prev => prev === category ? '' : category);
-        navigate(`/subcategory/${encodeURIComponent(category)}`);
-        setSidebarOpen(false); // Close mobile sidebar after selection
+        setExpandedCategory(prev => prev === categoryName ? '' : categoryName);
+        navigate(`/shop/${encodeURIComponent(categoryName)}`);
+        setSidebarOpen(false);
     };
 
     const handleSubcategoryClick = (subcategory) => {
         setSelectedSubcategory(subcategory);
         navigate(`/shop?subcategory=${encodeURIComponent(subcategory)}`);
-        setSidebarOpen(false); // Close mobile sidebar after selection
+        setSidebarOpen(false);
     };
 
+    // Products filtering and sorting (only used when not showing subcategories)
     const sortedProducts = [...getAllProduct].sort((a, b) => {
         if (sortOption === 'price-low-high') {
             return a.price - b.price;
@@ -66,7 +81,7 @@ const Shop = () => {
                 product.subcategory4 === selectedSubcategory
             );
         }
-        if (selectedCategory) {
+        if (selectedCategory && !category) { // Only filter by category if we're not showing subcategories
             return (
                 product.category1 === selectedCategory ||
                 product.category2 === selectedCategory ||
@@ -77,14 +92,21 @@ const Shop = () => {
         return true;
     });
 
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+    // Pagination logic
+    const dataToShow = isShowingSubcategories ? subcategories : filteredProducts;
+    const indexOfLastItem = currentPage * productsPerPage;
+    const indexOfFirstItem = indexOfLastItem - productsPerPage;
+    const currentItems = dataToShow.slice(indexOfFirstItem, indexOfLastItem);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const totalProducts = filteredProducts.length;
-    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    const totalItems = dataToShow.length;
+    const totalPages = Math.ceil(totalItems / productsPerPage);
+
+    // Reset pagination when switching between views
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [category, selectedSubcategory]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
@@ -192,75 +214,113 @@ const Shop = () => {
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                                 <div>
                                     <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                                        {selectedSubcategory || selectedCategory || 'All Products'}
+                                        {isShowingSubcategories 
+                                            ? category 
+                                            : (selectedSubcategory || selectedCategory || 'All Products')
+                                        }
                                     </h1>
                                     <p className="text-gray-600">
-                                        {totalProducts} {totalProducts === 1 ? 'product' : 'products'} found
+                                        {totalItems} {isShowingSubcategories ? 'subcategories' : 'products'} found
                                     </p>
                                 </div>
                                 
-                                <div className="flex items-center space-x-3">
-                                    <label htmlFor="sort" className="text-sm font-medium text-gray-700 whitespace-nowrap">
-                                        Sort by:
-                                    </label>
-                                    <select
-                                        id="sort"
-                                        onChange={handleSort}
-                                        value={sortOption}
-                                        className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200"
-                                    >
-                                        <option value="">Default</option>
-                                        <option value="price-low-high">Price: Low to High</option>
-                                        <option value="price-high-low">Price: High to Low</option>
-                                        <option value="name-az">Name: A to Z</option>
-                                        <option value="name-za">Name: Z to A</option>
-                                    </select>
-                                </div>
+                                {/* Only show sorting for products, not subcategories */}
+                                {!isShowingSubcategories && (
+                                    <div className="flex items-center space-x-3">
+                                        <label htmlFor="sort" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                                            Sort by:
+                                        </label>
+                                        <select
+                                            id="sort"
+                                            onChange={handleSort}
+                                            value={sortOption}
+                                            className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors duration-200"
+                                        >
+                                            <option value="">Default</option>
+                                            <option value="price-low-high">Price: Low to High</option>
+                                            <option value="price-high-low">Price: High to Low</option>
+                                            <option value="name-az">Name: A to Z</option>
+                                            <option value="name-za">Name: Z to A</option>
+                                        </select>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
-                        {/* Products Grid */}
+                        {/* Content Grid */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                             {loading ? (
                                 <div className="flex items-center justify-center py-20">
                                     <div className="text-center">
                                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                                        <p className="text-gray-600 font-medium">Loading products...</p>
+                                        <p className="text-gray-600 font-medium">Loading...</p>
                                     </div>
                                 </div>
-                            ) : currentProducts.length === 0 ? (
+                            ) : currentItems.length === 0 ? (
                                 <div className="text-center py-20">
                                     <div className="text-6xl mb-4">🔍</div>
-                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">No products found</h3>
-                                    <p className="text-gray-600">Try adjusting your filters or search criteria</p>
+                                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                        No {isShowingSubcategories ? 'subcategories' : 'products'} found
+                                    </h3>
+                                    <p className="text-gray-600">
+                                        {isShowingSubcategories 
+                                            ? 'This category has no subcategories' 
+                                            : 'Try adjusting your filters or search criteria'
+                                        }
+                                    </p>
                                 </div>
                             ) : (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                    {currentProducts.map((item, index) => (
-                                        <div
-                                            key={index}
-                                            className="group bg-white border border-gray-200 rounded-xl p-4 cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                                            onClick={() => navigate(`/productinfo/${item.id}`)}
-                                        >
-                                            <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-50">
-                                                <img
-                                                    src={item.imgurl1}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
-                                                />
+                                    {isShowingSubcategories ? (
+                                        // Render Subcategories
+                                        currentItems.map((subcat, index) => (
+                                            <div
+                                                key={index}
+                                                className="group bg-white border border-gray-200 rounded-xl p-4 cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                                                onClick={() => handleSubcategoryClick(subcat)}
+                                            >
+                                                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-50 flex items-center justify-center">
+                                                    <img
+                                                        src="/ENGINE.png"
+                                                        alt={subcat}
+                                                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                                    />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-700 transition-colors duration-200">
+                                                        {subcat.substring(0, 50)}{subcat.length > 50 ? '...' : ''}
+                                                    </h3>
+                                                </div>
                                             </div>
-                                            <div className="text-center">
-                                                <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-700 transition-colors duration-200">
-                                                    {item.title.substring(0, 50)}{item.title.length > 50 ? '...' : ''}
-                                                </h3>
-                                                {item.price && (
-                                                    <p className="text-xl font-bold text-primary-600">
-                                                        ₹{item.price.toLocaleString()}
-                                                    </p>
-                                                )}
+                                        ))
+                                    ) : (
+                                        // Render Products
+                                        currentItems.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="group bg-white border border-gray-200 rounded-xl p-4 cursor-pointer shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                                                onClick={() => navigate(`/productinfo/${item.id}`)}
+                                            >
+                                                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-50">
+                                                    <img
+                                                        src={item.imgurl1}
+                                                        alt={item.title}
+                                                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+                                                    />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-700 transition-colors duration-200">
+                                                        {item.title.substring(0, 50)}{item.title.length > 50 ? '...' : ''}
+                                                    </h3>
+                                                    {item.price && (
+                                                        <p className="text-xl font-bold text-primary-600">
+                                                            ₹{item.price.toLocaleString()}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -331,7 +391,7 @@ const Shop = () => {
                                 </div>
                                 
                                 <div className="text-center mt-4 text-sm text-gray-600">
-                                    Showing {indexOfFirstProduct + 1} to {Math.min(indexOfLastProduct, totalProducts)} of {totalProducts} products
+                                    Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, totalItems)} of {totalItems} {isShowingSubcategories ? 'subcategories' : 'products'}
                                 </div>
                             </div>
                         )}
