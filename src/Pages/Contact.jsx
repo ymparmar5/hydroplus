@@ -24,14 +24,25 @@ const ContactPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    setFormData({ name: '', email: '', subject: '', message: '' });
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  // Simulate form submission delay
+  await new Promise(resolve => setTimeout(resolve, 2000));
+
+  const { name, email, subject, message } = formData;
+
+  const text = `Name: ${name}%0AEmail: ${email}%0ASubject: ${subject}%0AMessage: ${message}`;
+  const phone = "918000074088"; // without + sign
+
+  const whatsappUrl = `https://wa.me/${phone}?text=${text}`;
+  window.open(whatsappUrl, "_blank");
+
+  setIsSubmitting(false);
+  setFormData({ name: '', email: '', subject: '', message: '' });
+};
+
 
   const FloatingShape = ({ delay, duration, size, top, left }) => (
     <div
@@ -218,7 +229,7 @@ const ContactPage = () => {
           </div>
 
         </div>
-        
+
         <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/10">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {/* Item */}
@@ -254,11 +265,25 @@ const ContactPage = () => {
           </div>
         </div>
 
+        <div className="w-full  my-10">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3718.096654626436!2d72.9467617!3d21.2676413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be047df044a45d1%3A0xcabc91354e1cb1c3!2sHydroplus%20International!5e0!3m2!1sen!2sin!4v1754221303088!5m2!1sen!2sin"
+            className="w-full h-[50vh]"
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+
+
       </div>
+
 
       {/* Additional Background Elements */}
       <div className="absolute bottom-0 left-0 w-full h-16 xs:h-24 sm:h-32 bg-gradient-to-t from-primary/10 to-transparent"></div>
       <div className="absolute top-0 right-0 w-40 xs:w-52 sm:w-64 h-40 xs:h-52 sm:h-64 bg-gradient-radial from-primary/20 to-transparent rounded-full blur-3xl"></div>
+
     </div>
   );
 };
