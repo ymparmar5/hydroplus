@@ -45,7 +45,7 @@ function MyState({ children }) {
                     categoryData[data.name] = data.subcategories || [];
                     categoryImageData[data.name] = data.image || '';
                     
-                    // Handle subcategory images
+                    // Handle subcategory images - this is already working correctly
                     if (data.subcategoryImages) {
                         subcategoryImageData[data.name] = data.subcategoryImages;
                     }
@@ -59,6 +59,22 @@ function MyState({ children }) {
         } catch (error) {
             console.error("Error fetching categories: ", error);
         }
+    };
+
+    // Helper function to get subcategory image
+    const getSubcategoryImage = (categoryName, subcategoryName) => {
+        return subcategoryImages[categoryName]?.[subcategoryName] || '';
+    };
+
+    // Helper function to get all subcategories with their images for a category
+    const getSubcategoriesWithImages = (categoryName) => {
+        const subs = categories[categoryName] || [];
+        const subImages = subcategoryImages[categoryName] || {};
+        
+        return subs.map(subName => ({
+            name: subName,
+            image: subImages[subName] || ''
+        }));
     };
 
     const extractCategories = (products) => {
@@ -221,6 +237,8 @@ function MyState({ children }) {
             categories,
             categoryImages,
             subcategoryImages,
+            getSubcategoryImage,          // New helper function
+            getSubcategoriesWithImages,   // New helper function
             addNewCategory,
             addNewSubcategory,
             deleteCategory,

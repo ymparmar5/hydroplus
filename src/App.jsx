@@ -23,7 +23,6 @@ import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import Certificates from "./Pages/Certificates";
 import SocialSidebar from "./Components/SocialSidebar";
-import Subcategory from "./Pages/Subcategory";
 import Exhibitions from "./Pages/exhibitions";
 import AddUpdateImage from "./Components/Admin/AddUpdateImage";
 import AddOrUpdateProductPage from "./Components/Admin/AddOrUpdateProductPage";
